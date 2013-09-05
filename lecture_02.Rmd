@@ -1,0 +1,55 @@
+Lecture 02 -- Sept 05 2015
+========================================================
+
+
+Model the data
+
+
+
+```{r}
+library(lmSupport)
+library(ggplot2)
+d <- lm.readDat("data/data_apgar.dat")
+describe(d)
+# Predict APGAR from weight gain
+m1 <- lm(apgar ~ wgtgain, d)
+summary(m1)
+qplot(data = d, x = wgtgain, y = apgar)
+```
+
+Standardize the weight gain and APGAR scores, so they are both expressed in standard deviation units. Observe that standardization did not change the _p_-values.
+
+```{r fig.width=7, fig.height=6}
+d <-  transform(d, zwgtgain = scale(wgtgain), zapgar = scale(apgar), zsmokes = scale(smokes))
+describe(d)
+m2 <- lm(zapgar ~ zwgtgain, d)
+summary(m2)
+```
+
+
+Regress APGAR on smoking. Standardized categorical variables are hard to interpret.
+
+```{r}
+m3 <- lm(apgar ~ smokes, d)
+summary(m3)
+qplot(data = d, x = smokes, y = apgar) + geom_smooth(method="lm")
+# Standardized variables
+m4 <- lm(zapgar ~ zsmokes, d)
+summary(m4)
+qplot(data = d, x = zsmokes, y = zapgar) + geom_smooth(method="lm")
+```
+
+Regress APGAR on weight-gain and smoking. The coefficient of weight-gain is predicted change in APGAR for a unit change in weight-gain, when statistically controlling for smoking. The coefficient for smoking is expected change in APGAR if the mother smokes, over and above the effect of weight-gain. Note that the individual predictors for smoking and weight-gain become more significant. By controlling for one variable, the other variable can explain a larger proportion of the variance in the dependent variable. The standardized effects allow us to coarsely compare the effects to each other.
+
+We allow exogenous variables to be correlated. Exogenous variables to have a cause specified in the modelling. 
+
+```{r}
+m5 <- lm(apgar ~ wgtgain + smokes, d)
+summary(m5)
+# Standardized variables
+m6 <- lm(zapgar ~ zwgtgain + zsmokes, d)
+summary(m6)
+```
+
+Covariance is the correlation of the variable times the standard deviation of each variable. Covariance takes into account the unit of measurement of the variables. 
+cov = r * SD1 * SD2
