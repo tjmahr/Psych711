@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Questions about Rex Kline&#39;s book (for Tue., Sept. 10)</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+
+
+<!-- MathJax scripts -->
+<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+</head>
+
+<body>
+<h1>Questions about Rex Kline&#39;s book (for Tue., Sept. 10)</h1>
+
+<h2>Chapter 1</h2>
+
+<h3>What are the five most widely used model-fitting programs for structural equation modeling (SEM)?</h3>
+
+<ol>
+<li>
+2.
+3.
+4.
+5.</li>
+</ol>
+
+<h3>Is SEM primarily a confirmatory or primarily an exploratory data analysis technique? Why?</h3>
+
+<p>In order to do structural equation modelling, we have to know something about the domain of interest, namely &ldquo;which variables are assumed to affect other variables and the directionalities of these effects&rdquo; (p. 8). Our hypotheses constitute a priori model specifications. The text therefore describes three ways of using SEM, depending on how much our model specifications restrict us. Under <strong>strictly confirmatory</strong> modeling, a <em>single</em> model is accepted or rejected based on how well it accounts for the data. Under <strong>alternative models</strong> testing, the researcher specifies multiple models beforehand and selects the model that best corresponds to the data. Under <strong>model generation</strong>, we start with an initial model and iteratively test and modify models until we find the best one. This model of course should be justified by theory, parsimony, and the data. These three contexts of doing SEM fall along a continuum between confirmation and exploration.</p>
+
+<h3>What is the difference between &ldquo;observed&rdquo; and &ldquo;latent&rdquo; variables? Can both types of variables be categorical and continuous in SEM? What is an &ldquo;indicator&rdquo;?</h3>
+
+<p>The observed variables are the data we collect. These may be categorical, ordinal, or continuous. Observed variables may serve as indicators, indirect measurements of an unobserved hypothetical constructs or factors.</p>
+
+<p>Latent variables are explantory variables are hypothetical constructs or factors</p>
+
+<h3>What is the difference between covariance and correlation? If one changes the unit of measurement, does this affect the correlation and/or the covariance? What is the relationship between correlation and covariance when both variables have been standardized?</h3>
+
+<p>Equations for covariance and correlation are given below. </p>
+
+<p>\[ 
+  \begin{align}
+    cov_{XY} &= r_{XY} \: SD_{X} \: SD_{Y} \\
+    \\
+    r_{XY} &= \frac{cov_{XY}}{SD_{X} \; SD_{Y}} 
+  \end{align}
+ \]</p>
+
+<p>Correlation is the standardized covariance; the standard deviations of the variables are divided out of the covariance. Changing the unit of measurement will not affect the correlation. When variables come already standardized, the standard deviations equal 1 and the covariance equals the correlation.</p>
+
+<h3>Imagine I want to test a structural equation model with 22 parameters. How many participants do I need to include in my study?</h3>
+
+<p>An <em>ideal</em> <strong><em>N</em>:<em>q</em> ratio</strong> (<em>N</em> = number of cases, <em>q</em> = number of parameters) is 20:1, so you would want 440 subjects. </p>
+
+<h3>Are multiple regression and SEM fundamentally different data analysis techniques? If yes, what is the fundamental difference? If no, how are the two techniques related to each other?</h3>
+
+<p>The general linear model, which includes multiple regression, is a subset of structural equation modeling.</p>
+
+<h3>Are the results of SEM analyses generally reported correctly in scientific articles?</h3>
+
+<p>Results sections for SEM analyses are prone to reporting errors, including omitting parameter estimates, not fully describing the model specification or not reporting on alternative models.</p>
+
+<h3>Some people call SEM a &ldquo;disconfirmatory&rdquo; data analysis technique. Why?</h3>
+
+<p>The true model, which relates data to reality, is unknown and unknowable. At best, SEM can tell us that our model is consistent with the data, or that we should reject our model if it is inconsistent with the data. SEM can never prove or confirm a model.</p>
+
+<h2>Chapter 2 (pp. 19-28 only)</h2>
+
+<h3>Which estimation technique is generally used to estimate parameters in multiple regression? Which one is generally used to estimate parameters in SEM?</h3>
+
+<p>Ordinary least squares. Maximum Likelihood.</p>
+
+<h3>What is the difference between &ldquo;standardized&rdquo; and &ldquo;unstandardized&rdquo; estimates in multiple regression analysis? What are beta weights?</h3>
+
+<p>Beta weights take into account intercorrelation of predictors.</p>
+
+<h3>Consider &ldquo;standardized&rdquo; and &ldquo;unstandardized&rdquo; regression coefficients. Which type of coefficients can be directly compared across predictors (same sample)? Which type of coefficients can be directly compared across samples (same predictor)?</h3>
+
+<h3>What is the conceptual meaning of R2? What are two different ways to calculate it, one in the framework of correlation analysis and one in the framework of multiple regression analysis?</h3>
+
+<h3>What is a &ldquo;specification error&rdquo;? Under what conditions are specification errors particularly problematic? How can specification errors be avoided?</h3>
+
+<h3>What is &ldquo;suppression&rdquo;?</h3>
+
+<h3>What does Rex Kline think about tools that automatically modify structural models so that they have a better fit?</h3>
+
+<p>&ldquo;Death to stepwise regression, think for yourself&rdquo; (p. 27). Stepwise regression capitalizes on chance and does so to an extreme.</p>
+
+</body>
+
+</html>
+

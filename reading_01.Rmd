@@ -79,7 +79,10 @@ Beta weights take into account intercorrelation of predictors.
 
 ### What is a "specification error"? Under what conditions are specification errors particularly problematic? How can specification errors be avoided? 
 
+L.O.V.E.: Left-out variable error.
+
 ### What is "suppression"?
 
 ### What does Rex Kline think about tools that automatically modify structural models so that they have a better fit? 
+
 "Death to stepwise regression, think for yourself" (p. 27). Stepwise regression capitalizes on chance and does so to an extreme.
