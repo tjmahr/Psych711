@@ -15,13 +15,17 @@ Chapter 1
 * RAMONA
 * SEPATH
 
+These tools should yield identical results, maybe with some differences once you get a few decimal places out.
+
 **Is SEM primarily a confirmatory or primarily an exploratory data analysis technique? Why?**
 
-In order to do structural equation modelling, we have to know something about the domain of interest, namely "which variables are assumed to affect other variables and the directionalities of these effects" (p. 8). Our hypotheses constitute a priori model specifications. The text therefore describes three ways of using SEM, depending on how much our model specifications restrict us. Under **strictly confirmatory** modeling, a _single_ model is accepted or rejected based on how well it accounts for the data. Under **alternative models** testing, the researcher specifies multiple models beforehand and selects the model that best corresponds to the data. Under **model generation**, we start with an initial model and iteratively test and modify models until we find the best one. This model of course should be justified by theory, parsimony, and the data. These three contexts of doing SEM fall along a continuum between confirmation and exploration.
+Primarily a confirmatory model. In order to do structural equation modelling, we have to know something about the domain of interest, namely "which variables are assumed to affect other variables and the directionalities of these effects" (p. 8). Our hypotheses constitute a priori model specifications. The text therefore describes three ways of using SEM, depending on how much our model specifications restrict us. Under **strictly confirmatory** modeling, a _single_ model is accepted or rejected based on how well it accounts for the data. Under **alternative models** testing, the researcher specifies multiple models beforehand and selects the model that best corresponds to the data. Under **model generation**, we start with an initial model and iteratively test and modify models until we find the best one. This model of course should be justified by theory, parsimony, and the data. These three contexts of doing SEM fall along a continuum between confirmation and exploration.
 
 **What is the difference between "observed" and "latent" variables? Can both types of variables be categorical and continuous in SEM? What is an "indicator"?**
 
 We measure observed variables as we collect data. Such data may be categorical, ordinal, or continuous. We hypothesize latent variables; these hypothetical constructs, or factors, are meant to be explanatory in nature. Latent variables are continuous, by definition, as they are "presumed reflect a continuum that is not directly observable" (p. 9). Observed variables may serve as indicators, i.e., as indirect measurements of an explanatory factor.
+
+Observed variables are drawn in rectangles. Latent variables are drawn in round shapes.
 
 **What is the difference between covariance and correlation? If one changes the unit of measurement, does this affect the correlation and/or the covariance? What is the relationship between correlation and covariance when both variables have been standardized?**
 
@@ -37,9 +41,11 @@ $$
 
 Correlation is the standardized covariance; the standard deviations of the variables are divided out of the covariance. Changing the unit of measurement will not affect the correlation. When variables come already standardized, the standard deviations equal 1 and the covariance equals the correlation.
 
+The covariance of a variable with itself is the variance.
+
 **Imagine I want to test a structural equation model with 22 parameters. How many participants do I need to include in my study?**
 
-An _ideal_ **_N_:_q_ ratio** (_N_ = number of cases, _q_ = number of parameters) is 20:1, so you would want 440 subjects. 
+An _ideal_ **_N_ : _q_ ratio** (_N_ = number of cases, _q_ = number of parameters) is 20:1, so you would want 440 subjects. 
 
 **Are multiple regression and SEM fundamentally different data analysis techniques? If yes, what is the fundamental difference? If no, how are the two techniques related to each other?**
 
@@ -51,7 +57,7 @@ Results sections for SEM analyses are prone to reporting errors, including omitt
 
 **Some people call SEM a "disconfirmatory" data analysis technique. Why?**
 
-The true model, which relates data to reality, is unknown and unknowable. At best, SEM can tell us that our model is consistent with the data, or that we should reject our model if it is inconsistent with the data. SEM can never prove or confirm a model.
+The true model, which relates data to reality, is unknown and unknowable. At best, SEM can tell us that our model fits the data, or that we should reject our model if it is inconsistent with the data. SEM can never prove or confirm a model. The same caveats applied to mediation analysis in our previous stats class.
 
 
 
@@ -83,19 +89,22 @@ $$
 
 **Consider "standardized" and "unstandardized" regression coefficients. Which type of coefficients can be directly compared across predictors (same sample)? Which type of coefficients can be directly compared across samples (same predictor)?**
 
-
+Standardized predictors can be compared to each other, but not between different samples.
 
 **What is the conceptual meaning of R2? What are two different ways to calculate it, one in the framework of correlation analysis and one in the framework of multiple regression analysis?**
 
-
+R^2 is the proportion of the variance explained by the predictors. It can be computed by squaring the correlation between the y's and the y-hats. It can also computed by timesing the beta-weights and the 
 
 **What is a "specification error"? Under what conditions are specification errors particularly problematic? How can specification errors be avoided?**
 
-L.O.V.E.: Left-out variable error.
+Specification errors are mistakes of L.O.V.E. (_left-out variable error_). Multiple regression assumes that the predictors that you omitted do not correlate with the predictors you included. These omitted variables may explain for a unique amount of the total variance, and the relationship between the included variables and the predictor variable may be biased (i.e., over- or under-estimated) because of the omission of relevant variables. To some extent, specification errors are impossible to avoid because we may not be able to specify all the relevant variables beforehand. 
 
 **What is "suppression"?**
 
+Suppression occurs when: 
 
+* a predictor's beta weight (its absolute value) is greater than its correlation with the dependent variable: |_b_| > _r_
+* a predictor's beta weight has a different sign than the correlation: _r_ < 0 < _b_ or _b_ < 0 < _r_
 
 **What does Rex Kline think about tools that automatically modify structural models so that they have a better fit?**
 

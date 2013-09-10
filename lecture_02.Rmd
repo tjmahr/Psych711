@@ -1,10 +1,7 @@
-Lecture 02 -- Sept 05 2015
-========================================================
-
+Lecture 02/03 -- Sept 05/10 2015
+===============================================================================
 
 Model the data
-
-
 
 ```{r}
 library(lmSupport)
@@ -41,7 +38,7 @@ qplot(data = d, x = zsmokes, y = zapgar) + geom_smooth(method="lm")
 
 Regress APGAR on weight-gain and smoking. The coefficient of weight-gain is predicted change in APGAR for a unit change in weight-gain, when statistically controlling for smoking. The coefficient for smoking is expected change in APGAR if the mother smokes, over and above the effect of weight-gain. Note that the individual predictors for smoking and weight-gain become more significant. By controlling for one variable, the other variable can explain a larger proportion of the variance in the dependent variable. The standardized effects allow us to coarsely compare the effects to each other.
 
-We allow exogenous variables to be correlated. Exogenous variables to have a cause specified in the modelling. 
+We allow exogenous variables to be correlated, in an unanalyzed relationship. Exogenous variables do not have a cause specified in the modelling. Weight gain and smoking would be exogenous variables in these variables. Double arrow is an unanalyzed relationship. Two single arrows form a mutual influence relationship.
 
 ```{r}
 m5 <- lm(apgar ~ wgtgain + smokes, d)
@@ -53,3 +50,4 @@ summary(m6)
 
 Covariance is the correlation of the variable times the standard deviation of each variable. Covariance takes into account the unit of measurement of the variables. 
 cov = r * SD1 * SD2
+

@@ -162,13 +162,17 @@ hr {
 <li>SEPATH</li>
 </ul>
 
+<p>These tools should yield identical results, maybe with some differences once you get a few decimal places out.</p>
+
 <p><strong>Is SEM primarily a confirmatory or primarily an exploratory data analysis technique? Why?</strong></p>
 
-<p>In order to do structural equation modelling, we have to know something about the domain of interest, namely &ldquo;which variables are assumed to affect other variables and the directionalities of these effects&rdquo; (p. 8). Our hypotheses constitute a priori model specifications. The text therefore describes three ways of using SEM, depending on how much our model specifications restrict us. Under <strong>strictly confirmatory</strong> modeling, a <em>single</em> model is accepted or rejected based on how well it accounts for the data. Under <strong>alternative models</strong> testing, the researcher specifies multiple models beforehand and selects the model that best corresponds to the data. Under <strong>model generation</strong>, we start with an initial model and iteratively test and modify models until we find the best one. This model of course should be justified by theory, parsimony, and the data. These three contexts of doing SEM fall along a continuum between confirmation and exploration.</p>
+<p>Primarily a confirmatory model. In order to do structural equation modelling, we have to know something about the domain of interest, namely &ldquo;which variables are assumed to affect other variables and the directionalities of these effects&rdquo; (p. 8). Our hypotheses constitute a priori model specifications. The text therefore describes three ways of using SEM, depending on how much our model specifications restrict us. Under <strong>strictly confirmatory</strong> modeling, a <em>single</em> model is accepted or rejected based on how well it accounts for the data. Under <strong>alternative models</strong> testing, the researcher specifies multiple models beforehand and selects the model that best corresponds to the data. Under <strong>model generation</strong>, we start with an initial model and iteratively test and modify models until we find the best one. This model of course should be justified by theory, parsimony, and the data. These three contexts of doing SEM fall along a continuum between confirmation and exploration.</p>
 
 <p><strong>What is the difference between &ldquo;observed&rdquo; and &ldquo;latent&rdquo; variables? Can both types of variables be categorical and continuous in SEM? What is an &ldquo;indicator&rdquo;?</strong></p>
 
 <p>We measure observed variables as we collect data. Such data may be categorical, ordinal, or continuous. We hypothesize latent variables; these hypothetical constructs, or factors, are meant to be explanatory in nature. Latent variables are continuous, by definition, as they are &ldquo;presumed reflect a continuum that is not directly observable&rdquo; (p. 9). Observed variables may serve as indicators, i.e., as indirect measurements of an explanatory factor.</p>
+
+<p>Observed variables are drawn in rectangles. Latent variables are drawn in round shapes.</p>
 
 <p><strong>What is the difference between covariance and correlation? If one changes the unit of measurement, does this affect the correlation and/or the covariance? What is the relationship between correlation and covariance when both variables have been standardized?</strong></p>
 
@@ -184,9 +188,11 @@ hr {
 
 <p>Correlation is the standardized covariance; the standard deviations of the variables are divided out of the covariance. Changing the unit of measurement will not affect the correlation. When variables come already standardized, the standard deviations equal 1 and the covariance equals the correlation.</p>
 
+<p>The covariance of a variable with itself is the variance.</p>
+
 <p><strong>Imagine I want to test a structural equation model with 22 parameters. How many participants do I need to include in my study?</strong></p>
 
-<p>An <em>ideal</em> <strong><em>N</em>:<em>q</em> ratio</strong> (<em>N</em> = number of cases, <em>q</em> = number of parameters) is 20:1, so you would want 440 subjects. </p>
+<p>An <em>ideal</em> <strong><em>N</em> : <em>q</em> ratio</strong> (<em>N</em> = number of cases, <em>q</em> = number of parameters) is 20:1, so you would want 440 subjects. </p>
 
 <p><strong>Are multiple regression and SEM fundamentally different data analysis techniques? If yes, what is the fundamental difference? If no, how are the two techniques related to each other?</strong></p>
 
@@ -198,7 +204,7 @@ hr {
 
 <p><strong>Some people call SEM a &ldquo;disconfirmatory&rdquo; data analysis technique. Why?</strong></p>
 
-<p>The true model, which relates data to reality, is unknown and unknowable. At best, SEM can tell us that our model is consistent with the data, or that we should reject our model if it is inconsistent with the data. SEM can never prove or confirm a model.</p>
+<p>The true model, which relates data to reality, is unknown and unknowable. At best, SEM can tell us that our model fits the data, or that we should reject our model if it is inconsistent with the data. SEM can never prove or confirm a model. The same caveats applied to mediation analysis in our previous stats class.</p>
 
 <h2>Chapter 2 (pp. 19-28 only)</h2>
 
@@ -226,13 +232,24 @@ hr {
 
 <p><strong>Consider &ldquo;standardized&rdquo; and &ldquo;unstandardized&rdquo; regression coefficients. Which type of coefficients can be directly compared across predictors (same sample)? Which type of coefficients can be directly compared across samples (same predictor)?</strong></p>
 
+<p>Standardized predictors can be compared to each other, but not between different samples.</p>
+
 <p><strong>What is the conceptual meaning of R2? What are two different ways to calculate it, one in the framework of correlation analysis and one in the framework of multiple regression analysis?</strong></p>
+
+<p>R<sup>2</sup> is the proportion of the variance explained by the predictors. It can be computed by squaring the correlation between the y&#39;s and the y-hats. It can also computed by timesing the beta-weights and the </p>
 
 <p><strong>What is a &ldquo;specification error&rdquo;? Under what conditions are specification errors particularly problematic? How can specification errors be avoided?</strong></p>
 
-<p>L.O.V.E.: Left-out variable error.</p>
+<p>Specification errors are mistakes of L.O.V.E. (<em>left-out variable error</em>). Multiple regression assumes that the predictors that you omitted do not correlate with the predictors you included. These omitted variables may explain for a unique amount of the total variance, and the relationship between the included variables and the predictor variable may be biased (i.e., over- or under-estimated) because of the omission of relevant variables. To some extent, specification errors are impossible to avoid because we may not be able to specify all the relevant variables beforehand. </p>
 
 <p><strong>What is &ldquo;suppression&rdquo;?</strong></p>
+
+<p>Suppression occurs when: </p>
+
+<ul>
+<li>a predictor&#39;s beta weight (its absolute value) is greater than its correlation with the dependent variable: |<em>b</em>| &gt; <em>r</em></li>
+<li>a predictor&#39;s beta weight has a different sign than the correlation: <em>r</em> &lt; 0 &lt; <em>b</em> or <em>b</em> &lt; 0 &lt; <em>r</em></li>
+</ul>
 
 <p><strong>What does Rex Kline think about tools that automatically modify structural models so that they have a better fit?</strong></p>
 
