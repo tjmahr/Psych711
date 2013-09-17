@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Lecture 02/03/04 &ndash; Sept 05/10/12 2013</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: rgb(88, 72, 246)
+   }
+
+   pre .number {
+     color: rgb(0, 0, 205);
+   }
+
+   pre .comment {
+     color: rgb(76, 136, 107);
+   }
+
+   pre .keyword {
+     color: rgb(0, 0, 255);
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: rgb(3, 106, 7);
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+
+</head>
+
+<body>
+<h1>Lecture 02/03/04 &ndash; Sept 05/10/12 2013</h1>
+
+<p>Model the data</p>
+
+<pre><code class="r">library(lmSupport)
+library(ggplot2)
+library(lavaan)
+d &lt;- lm.readDat(&quot;data/data_apgar.dat&quot;)
+describe(d)
+</code></pre>
+
+<pre><code>##         var  n  mean    sd median trimmed   mad min max range  skew
+## apgar     1 60  6.68  2.10    7.0    6.77  2.22   1  10     9 -0.39
+## gestat    2 60 37.12  5.39   38.0   38.33  2.97  20  42    22 -2.10
+## smokes    3 60  0.27  0.45    0.0    0.21  0.00   0   1     1  1.03
+## prenat    4 60  1.97  0.99    2.0    2.08  1.48   0   3     3 -0.55
+## anninc    5 60 55.78 40.58   41.5   49.79 30.39  10 180   170  1.26
+## wgtgain   6 60 27.08 12.59   25.0   25.38  9.64   8  75    67  1.51
+## gender    7 60  0.50  0.50    0.5    0.50  0.74   0   1     1  0.00
+##         kurtosis   se
+## apgar      -0.37 0.27
+## gestat      3.81 0.70
+## smokes     -0.96 0.06
+## prenat     -0.83 0.13
+## anninc      0.97 5.24
+## wgtgain     2.87 1.63
+## gender     -2.03 0.07
+</code></pre>
+
+<pre><code class="r"># Predict APGAR from weight gain
+m1 &lt;- lm(apgar ~ wgtgain, d)
+summary(m1)
+</code></pre>
+
+<pre><code>## 
+## Call:
+## lm(formula = apgar ~ wgtgain, data = d)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -6.440 -1.121  0.069  1.379  3.446 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   7.8834     0.6307    12.5   &lt;2e-16 ***
+## wgtgain      -0.0443     0.0211    -2.1    0.041 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.05 on 58 degrees of freedom
+## Multiple R-squared:  0.0704, Adjusted R-squared:  0.0543 
+## F-statistic: 4.39 on 1 and 58 DF,  p-value: 0.0405
+</code></pre>
+
+<pre><code class="r">qplot(data = d, x = wgtgain, y = apgar)
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-1"/> </p>
+
+<p>Standardize the weight gain and APGAR scores, so they are both expressed in standard deviation units. Observe that standardization did not change the <em>p</em>-values.</p>
+
+<pre><code class="r">d &lt;- transform(d, zwgtgain = scale(wgtgain), zapgar = scale(apgar), zsmokes = scale(smokes))
+describe(d)
+</code></pre>
+
+<pre><code>##          var  n  mean    sd median trimmed   mad   min    max  range  skew
+## apgar      1 60  6.68  2.10   7.00    6.77  2.22  1.00  10.00   9.00 -0.39
+## gestat     2 60 37.12  5.39  38.00   38.33  2.97 20.00  42.00  22.00 -2.10
+## smokes     3 60  0.27  0.45   0.00    0.21  0.00  0.00   1.00   1.00  1.03
+## prenat     4 60  1.97  0.99   2.00    2.08  1.48  0.00   3.00   3.00 -0.55
+## anninc     5 60 55.78 40.58  41.50   49.79 30.39 10.00 180.00 170.00  1.26
+## wgtgain    6 60 27.08 12.59  25.00   25.38  9.64  8.00  75.00  67.00  1.51
+## gender     7 60  0.50  0.50   0.50    0.50  0.74  0.00   1.00   1.00  0.00
+## zwgtgain   8 60  0.00  1.00  -0.17   -0.14  0.77 -1.52   3.81   5.32  1.51
+## zapgar     9 60  0.00  1.00   0.15    0.04  1.06 -2.70   1.58   4.28 -0.39
+## zsmokes   10 60  0.00  1.00  -0.60   -0.13  0.00 -0.60   1.64   2.24  1.03
+##          kurtosis   se
+## apgar       -0.37 0.27
+## gestat       3.81 0.70
+## smokes      -0.96 0.06
+## prenat      -0.83 0.13
+## anninc       0.97 5.24
+## wgtgain      2.87 1.63
+## gender      -2.03 0.07
+## zwgtgain     2.87 0.13
+## zapgar      -0.37 0.13
+## zsmokes     -0.96 0.13
+</code></pre>
+
+<pre><code class="r">m2 &lt;- lm(zapgar ~ zwgtgain, d)
+summary(m2)
+</code></pre>
+
+<pre><code>## 
+## Call:
+## lm(formula = zapgar ~ zwgtgain, data = d)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.0621 -0.5328  0.0329  0.6559  1.6384 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept) -2.07e-16   1.26e-01     0.0    1.000  
+## zwgtgain    -2.65e-01   1.27e-01    -2.1    0.041 *
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.972 on 58 degrees of freedom
+## Multiple R-squared:  0.0704, Adjusted R-squared:  0.0543 
+## F-statistic: 4.39 on 1 and 58 DF,  p-value: 0.0405
+</code></pre>
+
+<p>Regress APGAR on smoking. Standardized categorical variables are hard to interpret.</p>
+
+<pre><code class="r">m3 &lt;- lm(apgar ~ smokes, d)
+summary(m3)
+</code></pre>
+
+<pre><code>## 
+## Call:
+## lm(formula = apgar ~ smokes, data = d)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -5.182 -1.182 -0.182  1.687  3.687 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    7.182      0.294   24.46   &lt;2e-16 ***
+## smokes        -1.869      0.569   -3.29   0.0017 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.95 on 58 degrees of freedom
+## Multiple R-squared:  0.157,  Adjusted R-squared:  0.143 
+## F-statistic: 10.8 on 1 and 58 DF,  p-value: 0.00172
+</code></pre>
+
+<pre><code class="r">qplot(data = d, x = smokes, y = apgar) + geom_smooth(method = &quot;lm&quot;)
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-3"/> </p>
+
+<pre><code class="r"># Standardized variables
+m4 &lt;- lm(zapgar ~ zsmokes, d)
+summary(m4)
+</code></pre>
+
+<pre><code>## 
+## Call:
+## lm(formula = zapgar ~ zsmokes, data = d)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.4638 -0.5619 -0.0864  0.8023  1.7533 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept) -1.84e-16   1.20e-01    0.00   1.0000   
+## zsmokes     -3.96e-01   1.21e-01   -3.29   0.0017 **
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.926 on 58 degrees of freedom
+## Multiple R-squared:  0.157,  Adjusted R-squared:  0.143 
+## F-statistic: 10.8 on 1 and 58 DF,  p-value: 0.00172
+</code></pre>
+
+<pre><code class="r">qplot(data = d, x = zsmokes, y = zapgar) + geom_smooth(method = &quot;lm&quot;)
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-3"/> </p>
+
+<p>Regress APGAR on weight-gain and smoking. The coefficient of weight-gain is predicted change in APGAR for a unit change in weight-gain, when statistically controlling for smoking. The coefficient for smoking is expected change in APGAR if the mother smokes, over and above the effect of weight-gain. Note that the individual predictors for smoking and weight-gain become more significant. By controlling for one variable, the other variable can explain a larger proportion of the variance in the dependent variable. The standardized effects allow us to coarsely compare the effects to each other.</p>
+
+<p>We allow exogenous variables to be correlated, in an unanalyzed relationship. Exogenous variables do not have a cause specified in the modelling. Weight gain and smoking would be exogenous variables in these variables. Double arrow is an unanalyzed relationship. Two single arrows form a mutual influence relationship.</p>
+
+<pre><code class="r">m5 &lt;- lm(apgar ~ wgtgain + smokes, d)
+summary(m5)
+</code></pre>
+
+<pre><code>## 
+## Call:
+## lm(formula = apgar ~ wgtgain + smokes, data = d)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -5.069 -1.005 -0.047  1.179  3.548 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   9.4728     0.6262   15.13  &lt; 2e-16 ***
+## wgtgain      -0.0771     0.0191   -4.03  0.00017 ***
+## smokes       -2.6334     0.5405   -4.87  9.2e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.73 on 57 degrees of freedom
+## Multiple R-squared:  0.344,  Adjusted R-squared:  0.321 
+## F-statistic: 14.9 on 2 and 57 DF,  p-value: 6.13e-06
+</code></pre>
+
+<pre><code class="r"># Standardized variables
+m6 &lt;- lm(zapgar ~ zwgtgain + zsmokes, d)
+summary(m6)
+</code></pre>
+
+<pre><code>## 
+## Call:
+## lm(formula = zapgar ~ zwgtgain + zsmokes, data = d)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.4100 -0.4780 -0.0224  0.5608  1.6869 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -1.26e-16   1.06e-01    0.00  1.00000    
+## zwgtgain    -4.61e-01   1.15e-01   -4.03  0.00017 ***
+## zsmokes     -5.58e-01   1.15e-01   -4.87  9.2e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.824 on 57 degrees of freedom
+## Multiple R-squared:  0.344,  Adjusted R-squared:  0.321 
+## F-statistic: 14.9 on 2 and 57 DF,  p-value: 6.13e-06
+</code></pre>
+
+<p>Covariance is the correlation of the variable times the standard deviation of each variable. Covariance takes into account the unit of measurement of the variables. 
+cov = r * SD1 * SD2</p>
+
+<p>Covariance matrix has 10 pieces of information. Correlation matrix has 6 pieces of information.</p>
+
+<pre><code class="r"># Observed correlation matrix
+d &lt;- subset(d, select = c(apgar, gestat, smokes, wgtgain))
+round(cor(subset(d, select = c(apgar, gestat, smokes, wgtgain))), 2)
+</code></pre>
+
+<pre><code>##         apgar gestat smokes wgtgain
+## apgar    1.00   0.53  -0.40   -0.27
+## gestat   0.53   1.00  -0.53    0.35
+## smokes  -0.40  -0.53   1.00   -0.35
+## wgtgain -0.27   0.35  -0.35    1.00
+</code></pre>
+
+<p>// We randomly assign path coefficients. Then we compute correlations.</p>
+
+<p>Why would variables be correlated?</p>
+
+<ol>
+<li>A causes B</li>
+<li>Mediation: A causes B causes C</li>
+<li>Unanalyzed effects: C causes A,B; C correlates with D, C causes A, D causes B causes E</li>
+</ol>
+
+<p>Assumed causal paths:</p>
+
+<p>S &lt;&ndash;a&ndash;&gt; W
+S  &ndash;b&ndash;&gt; G
+S  &ndash;c&ndash;&gt; A
+W  &ndash;d&ndash;&gt; G
+W  &ndash;e&ndash;&gt; A
+G  &ndash;f&ndash;&gt; A</p>
+
+<p>Correlation values based on the causal paths:</p>
+
+<p>cor_sw = a
+cor_sg = b + a*d
+cor_wa = e + d*f + a*c + a*b*f
+cor_sa = c + b*f + a*e + a*d*f
+cor_wg = d + a*b
+cor_ga = f + a*b*f + a*c*d + b*c + d*e</p>
+
+<p>Maximum-likelihood tries to find the best values for a:f to generate the model-implied correlation matrix</p>
+
+<pre><code class="r">
+m1 &lt;- &quot;\n      # regressions\n      gestat ~ smokes + wgtgain\n      apgar ~ smokes + wgtgain + gestat\n      # residual correlations\n      smokes ~~ wgtgain\n      &quot;
+
+fit &lt;- sem(m1, data = d, likelihood = &quot;wishart&quot;)
+</code></pre>
+
+<pre><code>## Warning: lavaan WARNING: model syntax contains
+## variance/covariance/intercept formulas involving (an) exogenous
+## variable(s): [smokes wgtgain]; Please use fixed.x=FALSE or leave them
+## alone
+</code></pre>
+
+<pre><code class="r">summary(fit, standardized = T)
+</code></pre>
+
+<pre><code>## lavaan (0.5-14) converged normally after  38 iterations
+## 
+##   Number of observations                            60
+## 
+##   Estimator                                         ML
+##   Minimum Function Test Statistic                0.000
+##   Degrees of freedom                                 0
+##   P-value (Chi-square)                           0.000
+## 
+## Parameter estimates:
+## 
+##   Information                                 Expected
+##   Standard Errors                             Standard
+## 
+##                    Estimate  Std.err  Z-value  P(&gt;|z|)   Std.lv  Std.all
+## Regressions:
+##   gestat ~
+##     smokes           -5.574    1.395   -3.997    0.000   -5.574   -0.461
+##     wgtgain           0.081    0.049    1.647    0.099    0.081    0.190
+##   apgar ~
+##     smokes           -1.393    0.486   -2.866    0.004   -1.393   -0.295
+##     wgtgain          -0.095    0.016   -6.094    0.000   -0.095   -0.570
+##     gestat            0.223    0.040    5.529    0.000    0.223    0.570
+## 
+## Covariances:
+##   smokes ~~
+##     wgtgain          -1.972    0.775   -2.545    0.011   -1.972   -0.351
+## 
+## Variances:
+##     gestat           20.003    3.683                     20.003    0.689
+##     apgar             1.912    0.352                      1.912    0.432
+##     smokes            0.199    0.037                      0.199    1.000
+##     wgtgain         158.518   29.186                    158.518    1.000
+</code></pre>
+
+<pre><code class="r">inspect(fit, &quot;sampstat&quot;)
+</code></pre>
+
+<pre><code>## $cov
+##         gestat  apgar   smokes  wgtgan 
+## gestat   29.020                        
+## apgar     5.953   4.423                
+## smokes   -1.269  -0.372   0.199        
+## wgtgain  23.888  -7.024  -1.972 158.518
+## 
+## $mean
+##  gestat   apgar  smokes wgtgain 
+##  37.117   6.683   0.267  27.083
+</code></pre>
+
+<pre><code class="r">fitted(fit)
+</code></pre>
+
+<pre><code>## $cov
+##         gestat  apgar   smokes  wgtgan 
+## gestat   29.020                        
+## apgar     5.953   4.423                
+## smokes   -1.269  -0.372   0.199        
+## wgtgain  23.888  -7.024  -1.972 158.518
+## 
+## $mean
+##  gestat   apgar  smokes wgtgain 
+##       0       0       0       0
+</code></pre>
+
+<pre><code class="r"># difference between the two covariance matrices
+resid(fit)
+</code></pre>
+
+<pre><code>## $cov
+##         gestat apgar smokes wgtgan
+## gestat  0                         
+## apgar   0      0                  
+## smokes  0      0     0            
+## wgtgain 0      0     0      0     
+## 
+## $mean
+##  gestat   apgar  smokes wgtgain 
+##       0       0       0       0
+</code></pre>
+
+<p>The model perfectly replicated the observed covariance matrix.</p>
+
+<p>Minimum function test statistic is a chi-squared test statistic.</p>
+
+<p>If the p-value is significant, we reject the model.
+If the p-value is not significant, we can accept the model.</p>
+
+<p>&ldquo;Disturbances&rdquo; are residuals of the model. They are latent variables. They contain all the other causes that were not specified in the model. Usually only have distrubances for the endogenous variables.</p>
+
+</body>
+
+</html>
+

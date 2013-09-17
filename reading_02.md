@@ -20,7 +20,7 @@ $$
     {\sqrt{1-\rho_{XZ}^2} \sqrt{1-\rho_{ZY}^2}}
 $$
 
-Beta weights are standardized regression coefficients. Partial correlations, when squared, can tell us about the proportion of variance in the dependent variable accounted for by one predictor, controlling for the others.
+Beta weights are standardized regression coefficients. Partial correlations, when squared, can tell us about the proportion of variance in the dependent variable accounted for by one predictor, controlling for the others. These three things are all different lenses to view the data.
 
 **Spearman's rank-order correlation describes the relationship between two dichotomous variables. True or false?**
 

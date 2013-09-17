@@ -1,6 +1,9 @@
 Questions about Rex Kline's book (for Tue., Sept. 17)
 ===============================================================================
 
+Olivia poverty policy, human development
+Rachel compensation policieso n investment choices
+
 Read pages 28-51 (until "Data screening") and pp. 52-53 (Topic Box 3.1) in Rex Kline's book and prepare the answers to the following questions.
 
 Chapter 2
@@ -20,11 +23,11 @@ $$
     {\sqrt{1-\rho_{XZ}^2} \sqrt{1-\rho_{ZY}^2}}
 $$
 
-Beta weights are standardized regression coefficients. Partial correlations, when squared, can tell us about the proportion of variance in the dependent variable accounted for by one predictor, controlling for the others.
+The choice is yours. Beta weights are standardized regression coefficients. Partial correlations, when squared, can tell us about the proportion of variance in the dependent variable accounted for by one predictor, controlling for the others. Partial correlations, part correlations, and beta weights are all different lenses to view the data.
 
 **Spearman's rank-order correlation describes the relationship between two dichotomous variables. True or false?**
 
-False. It is for a pair of ranked variables.
+False. It is for a pair of ranked variables. The phi coefficient correlates two dichotomous variables.
 
 **Can SEM handle dichotomous outcome variables?**
 
@@ -32,7 +35,7 @@ Yes, by using the principles from logistic regression.
 
 **What is the "critical ratio"? Above which value are critical ratios generally statistically significant?**
 
-A critical ratio is a sample statistic over its standard error. For the _z_ statistic, the critical ratio is 1.96 at the 0.05 level and 2.58 at the 0.01 level in a two-tailed test. 
+A critical ratio is a sample statistic over its standard error (at some level of significance). For the _z_ statistic, the critical ratio is 1.96 at the 0.05 level and 2.58 at the 0.01 level in a two-tailed test. 
 
 **Name some factors that affect the statistical power of a test.**
 
@@ -46,15 +49,18 @@ A critical ratio is a sample statistic over its standard error. For the _z_ stat
 
 **For which types of solutions are standard errors generally calculated in maximum likelihood estimation: for the standardized or for the unstandardized solution? Once my SEM has generated the estimates for one type of solution, can I apply the statistical significance of the estimates to the other type of solution (i.e., does the statistical significance of the standardized regression weights apply to the unstandardized regression weights and/or vice versa)?**
 
-Standard errors are generally calculate for the unstandardized solution. The significance of the unstandardized estimate does not automatically carry over to the standarized estimate. 
+Standard errors are generally calculated for the unstandardized solution. The significance of the unstandardized estimate does not automatically carry over to the standarized estimate. 
 
 **We are going to evaluate our structural models by computing a Chi square statistic. Does chi square indicate the degree of perfect fit or the degree of approximate fit.**
 
-Approximate fit. 
+Approximate fit. It permits an acceptable degree of departure from a perfect or exact fit.
 
 **What is the difference between parametric and nonparametric bootstrapping?**
 
-In parametric bootstrapping, the observations are resampled from a theoretical probability distribution, whereas in nonparametric bootstrapping, observations are resampled from a pseudopopulation (our sample).
+In parametric bootstrapping, the observations are resampled from a theoretical probability distribution, whereas in nonparametric bootstrapping, observations are resampled (with replacement) from a pseudopopulation (our sample).
+
+
+
 
 Chapter 3
 -------------------------------------------------------------------------------
@@ -69,7 +75,7 @@ Use 4-decimal accuracy for matrix summaries.
 
 **Kline talks about matrices in "lower diagonal form". What does he refer to?**
 
-A matrix which omits any cells that fall above the diagonal:
+A matrix which omits any cells that fall above the diagonal.
 
 **Is it acceptable to submit for analyses just a correlation matrix without standard deviations? Justify your answer.**
 
@@ -127,9 +133,10 @@ cor(d, use="pairwise.complete.obs")
 # Mean substition
 SubstituteMean <- function(x) ifelse(is.na(x), mean(x, na.rm=T), x)
 d2 <- apply(d, 2, SubstituteMean)
-cor(d2)
+print(cor(d2), 2)
 ```
 
+Correlations will differ when the correlations are computed from differing numbers of participants.
 **Exercise 3 (p. 73)**
 
 ```{r}
@@ -162,3 +169,7 @@ det(cov_matrix)
 # No there's a negative eigenvalue
 eigen(cov_matrix)
 ```
+
+
+
+?force

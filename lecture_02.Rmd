@@ -3,9 +3,10 @@ Lecture 02/03/04 -- Sept 05/10/12 2013
 
 Model the data
 
-```{r}
+```{r, warn=FALSE, message=FALSE}
 library(lmSupport)
 library(ggplot2)
+library(lavaan)
 d <- lm.readDat("data/data_apgar.dat")
 describe(d)
 # Predict APGAR from weight gain
@@ -114,3 +115,6 @@ Minimum function test statistic is a chi-squared test statistic.
 
 If the p-value is significant, we reject the model.
 If the p-value is not significant, we can accept the model.
+
+"Disturbances" are residuals of the model. They are latent variables. They contain all the other causes that were not specified in the model. Usually only have distrubances for the endogenous variables.
+
