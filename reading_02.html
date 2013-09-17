@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Questions about Rex Kline&#39;s book (for Tue., Sept. 17)**</title>
+<title>Questions about Rex Kline&#39;s book (for Tue., Sept. 17)</title>
 
 <style type="text/css">
 body, td {
@@ -173,32 +173,72 @@ hljs.initHighlightingOnLoad();
 </script>
 
 
+<!-- MathJax scripts -->
+<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
 
 
 </head>
 
 <body>
-<h1>Questions about Rex Kline&#39;s book (for Tue., Sept. 17)**</h1>
+<h1>Questions about Rex Kline&#39;s book (for Tue., Sept. 17)</h1>
 
 <p>Read pages 28-51 (until &ldquo;Data screening&rdquo;) and pp. 52-53 (Topic Box 3.1) in Rex Kline&#39;s book and prepare the answers to the following questions.</p>
 
 <h2>Chapter 2</h2>
 
-<p><strong>When my goal is to describe (in standardized terms) the relative explanatory power of each predictor controlling for the rest, should I report beta weights or partial correlations?</strong></p>
+<p><strong>When my goal is to describe (in standardized terms) the relative explanatory power of each predictor controlling for the rest, should I report beta weights or partial correlations?</strong>  </p>
+
+<p>\[ 
+  b_{X} =
+    \frac{\rho_{XY} - \rho_{XZ}\rho_{ZY}}
+    {{1-\rho_{XZ}^2}}
+ \]</p>
+
+<p>\[ 
+  \rho_{XY\cdot Z } =
+    \frac{\rho_{XY} - \rho_{XZ}\rho_{ZY}}
+    {\sqrt{1-\rho_{XZ}^2} \sqrt{1-\rho_{ZY}^2}}
+ \]</p>
+
+<p>Beta weights are standardized regression coefficients. Partial correlations, when squared, can tell us about the proportion of variance in the dependent variable accounted for by one predictor, controlling for the others.</p>
 
 <p><strong>Spearman&#39;s rank-order correlation describes the relationship between two dichotomous variables. True or false?</strong></p>
 
+<p>False. It is for a pair of ranked variables.</p>
+
 <p><strong>Can SEM handle dichotomous outcome variables?</strong></p>
+
+<p>Yes, by using the principles from logistic regression.</p>
 
 <p><strong>What is the &ldquo;critical ratio&rdquo;? Above which value are critical ratios generally statistically significant?</strong></p>
 
+<p>A critical ratio is a sample statistic over its standard error. For the <em>z</em> statistic, the critical ratio is 1.96 at the 0.05 level and 2.58 at the 0.01 level in a two-tailed test. </p>
+
 <p><strong>Name some factors that affect the statistical power of a test.</strong></p>
+
+<ol>
+<li>Magnitude of the actual effect in the population</li>
+<li>Sample size</li>
+<li>Significance level</li>
+<li>Direction of hypothesis (tailed-ness of test)</li>
+<li>Independent vs dependent samples</li>
+<li>Whether a parametric or nonparametric statistic is used</li>
+<li>Measurement reliability</li>
+</ol>
 
 <p><strong>For which types of solutions are standard errors generally calculated in maximum likelihood estimation: for the standardized or for the unstandardized solution? Once my SEM has generated the estimates for one type of solution, can I apply the statistical significance of the estimates to the other type of solution (i.e., does the statistical significance of the standardized regression weights apply to the unstandardized regression weights and/or vice versa)?</strong></p>
 
+<p>Standard errors are generally calculate for the unstandardized solution. The significance of the unstandardized estimate does not automatically carry over to the standarized estimate. </p>
+
 <p><strong>We are going to evaluate our structural models by computing a Chi square statistic. Does chi square indicate the degree of perfect fit or the degree of approximate fit.</strong></p>
 
+<p>Approximate fit. </p>
+
 <p><strong>What is the difference between parametric and nonparametric bootstrapping?</strong></p>
+
+<p>In parametric bootstrapping, the observations are resampled from a theoretical probability distribution, whereas in nonparametric bootstrapping, observations are resampled from a pseudopopulation (our sample).</p>
 
 <h2>Chapter 3</h2>
 
@@ -214,11 +254,31 @@ hljs.initHighlightingOnLoad();
 
 <p><strong>Kline talks about matrices in &ldquo;lower diagonal form&rdquo;. What does he refer to?</strong></p>
 
+<p>A matrix which omits any cells that fall above the diagonal:</p>
+
 <p><strong>Is it acceptable to submit for analyses just a correlation matrix without standard deviations? Justify your answer.</strong></p>
+
+<p>Only if the raw data just happens to have a covariance matrix that is identical to its correlation matrix. </p>
 
 <p><strong>A data matrix is positive definite only if it possesses certain characteristics. Name at least three of these characteristics:</strong></p>
 
+<ol>
+<li>The matrix is nonsingular, or invertible.</li>
+<li>All eigenvalues of the matrix are greater than zero.</li>
+<li>The determinant of the matrix is greater than zero.</li>
+<li>All of the correlations and covariances are not out of bounds.</li>
+</ol>
+
 <p><strong>Name three of the most common causes of nonpositive definite matrices.</strong></p>
+
+<ol>
+<li>Extreme collinearity</li>
+<li>Outliers that inflate the correlations</li>
+<li>Pairwise deletion of missing data</li>
+<li>Transcription error</li>
+<li>Sampling error</li>
+<li>Using matrices of estimated Pearson correlations</li>
+</ol>
 
 <p><strong>Exercise 1 (p. 73): Compute a correlation matrix from a lower diagonal covariance matrix:</strong></p>
 
@@ -318,7 +378,6 @@ cor(d2)
 
 <pre><code class="r"># Transform the covariance matrix into a correlation matrix.
 cov_matrix &lt;- matrix(data = c(12, 13, 13, 10), nrow = 2)
-# The correlation is greater than 1.0, so it&#39;s out of bounds.
 cov2cor(cov_matrix)
 </code></pre>
 
@@ -326,6 +385,8 @@ cov2cor(cov_matrix)
 ## [1,] 1.000 1.187
 ## [2,] 1.187 1.000
 </code></pre>
+
+<p>The correlation is greater than 1.0, so it&#39;s out of bounds. </p>
 
 <p><strong>Exercise 4 (p. 73). Hint: There two ways to show that a matrix is nonpositive definite. Either you submit the covariance matrix to an online matrix calculator (e.g., <a href="http://www.bluebit.gr/matrix-calculator">www.bluebit.gr/matrix-calculator</a>). Or you show that the correlation matrix contains an out-of-bounds value.</strong></p>
 
@@ -340,8 +401,9 @@ str(d)
 ##  $ W   : int  13 12 NA 8 7 10 10
 </code></pre>
 
+<p><em>Does the correlation matrix have an OOB value?</em> Yes.</p>
+
 <pre><code class="r">cov_matrix &lt;- cov(x = d[, 2:4], use = &quot;pairwise.complete.obs&quot;)
-# Does the correlation matrix have an OOB value? Yes.
 cov2cor(cov_matrix)
 </code></pre>
 
@@ -351,7 +413,7 @@ cov2cor(cov_matrix)
 ## W  0.7501 -1.4792  1.0000
 </code></pre>
 
-<p><em>Is the covariance matrix nonpositive definitive?</em></p>
+<p><em>Is the covariance matrix nonpositive definitive?</em> No.</p>
 
 <pre><code class="r"># No the determinant is negative
 det(cov_matrix)

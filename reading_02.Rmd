@@ -1,28 +1,61 @@
-Questions about Rex Kline's book (for Tue., Sept. 17)**
+Questions about Rex Kline's book (for Tue., Sept. 17)
 ===============================================================================
 
 Read pages 28-51 (until "Data screening") and pp. 52-53 (Topic Box 3.1) in Rex Kline's book and prepare the answers to the following questions.
- 
+
 Chapter 2
 -------------------------------------------------------------------------------
 
-**When my goal is to describe (in standardized terms) the relative explanatory power of each predictor controlling for the rest, should I report beta weights or partial correlations?**
- 
+**When my goal is to describe (in standardized terms) the relative explanatory power of each predictor controlling for the rest, should I report beta weights or partial correlations?**  
+
+$$
+  b_{X} =
+    \frac{\rho_{XY} - \rho_{XZ}\rho_{ZY}}
+    {{1-\rho_{XZ}^2}}
+$$
+
+$$
+  \rho_{XY\cdot Z } =
+    \frac{\rho_{XY} - \rho_{XZ}\rho_{ZY}}
+    {\sqrt{1-\rho_{XZ}^2} \sqrt{1-\rho_{ZY}^2}}
+$$
+
+Beta weights are standardized regression coefficients. Partial correlations, when squared, can tell us about the proportion of variance in the dependent variable accounted for by one predictor, controlling for the others.
+
 **Spearman's rank-order correlation describes the relationship between two dichotomous variables. True or false?**
- 
+
+False. It is for a pair of ranked variables.
+
 **Can SEM handle dichotomous outcome variables?**
- 
+
+Yes, by using the principles from logistic regression.
+
 **What is the "critical ratio"? Above which value are critical ratios generally statistically significant?**
- 
+
+A critical ratio is a sample statistic over its standard error. For the _z_ statistic, the critical ratio is 1.96 at the 0.05 level and 2.58 at the 0.01 level in a two-tailed test. 
+
 **Name some factors that affect the statistical power of a test.**
- 
+
+1. Magnitude of the actual effect in the population
+2. Sample size
+3. Significance level
+4. Direction of hypothesis (tailed-ness of test)
+5. Independent vs dependent samples
+6. Whether a parametric or nonparametric statistic is used
+7. Measurement reliability
+
 **For which types of solutions are standard errors generally calculated in maximum likelihood estimation: for the standardized or for the unstandardized solution? Once my SEM has generated the estimates for one type of solution, can I apply the statistical significance of the estimates to the other type of solution (i.e., does the statistical significance of the standardized regression weights apply to the unstandardized regression weights and/or vice versa)?**
- 
+
+Standard errors are generally calculate for the unstandardized solution. The significance of the unstandardized estimate does not automatically carry over to the standarized estimate. 
+
 **We are going to evaluate our structural models by computing a Chi square statistic. Does chi square indicate the degree of perfect fit or the degree of approximate fit.**
- 
+
+Approximate fit. 
+
 **What is the difference between parametric and nonparametric bootstrapping?**
- 
- 
+
+In parametric bootstrapping, the observations are resampled from a theoretical probability distribution, whereas in nonparametric bootstrapping, observations are resampled from a pseudopopulation (our sample).
+
 Chapter 3
 -------------------------------------------------------------------------------
  
@@ -33,17 +66,31 @@ Chapter 3
 3. Correlation matrix + standard deviations
 
 Use 4-decimal accuracy for matrix summaries.
- 
+
 **Kline talks about matrices in "lower diagonal form". What does he refer to?**
- 
+
+A matrix which omits any cells that fall above the diagonal:
+
 **Is it acceptable to submit for analyses just a correlation matrix without standard deviations? Justify your answer.**
- 
+
+Only if the raw data just happens to have a covariance matrix that is identical to its correlation matrix. 
+
 **A data matrix is positive definite only if it possesses certain characteristics. Name at least three of these characteristics:**
- 
+
+1. The matrix is nonsingular, or invertible.
+2. All eigenvalues of the matrix are greater than zero.
+3. The determinant of the matrix is greater than zero.
+4. All of the correlations and covariances are not out of bounds.
+
 **Name three of the most common causes of nonpositive definite matrices.**
- 
- 
- 
+
+1. Extreme collinearity
+2. Outliers that inflate the correlations
+3. Pairwise deletion of missing data
+4. Transcription error
+5. Sampling error
+6. Using matrices of estimated Pearson correlations
+
 **Exercise 1 (p. 73): Compute a correlation matrix from a lower diagonal covariance matrix:**
 
 ```{r}
@@ -88,22 +135,26 @@ cor(d2)
 ```{r}
 # Transform the covariance matrix into a correlation matrix. 
 cov_matrix <- matrix(data=c(12, 13, 13, 10), nrow=2)
-# The correlation is greater than 1.0, so it's out of bounds. 
 cov2cor(cov_matrix)
 ```
 
+The correlation is greater than 1.0, so it's out of bounds. 
 
 **Exercise 4 (p. 73). Hint: There two ways to show that a matrix is nonpositive definite. Either you submit the covariance matrix to an online matrix calculator (e.g., www.bluebit.gr/matrix-calculator). Or you show that the correlation matrix contains an out-of-bounds value.**
 
 ```{r}
 d <- read.csv("data/chap02_ex04.csv")
 str(d)
+```
+
+_Does the correlation matrix have an OOB value?_ Yes.
+
+```{r}
 cov_matrix <- cov(x=d[, 2:4], use="pairwise.complete.obs")
-# Does the correlation matrix have an OOB value? Yes.
 cov2cor(cov_matrix)
 ```
 
-_Is the covariance matrix nonpositive definitive?_
+_Is the covariance matrix nonpositive definitive?_ No.
 
 ```{r}
 # No the determinant is negative
@@ -111,5 +162,3 @@ det(cov_matrix)
 # No there's a negative eigenvalue
 eigen(cov_matrix)
 ```
-
-
