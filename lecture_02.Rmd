@@ -51,3 +51,66 @@ summary(m6)
 Covariance is the correlation of the variable times the standard deviation of each variable. Covariance takes into account the unit of measurement of the variables. 
 cov = r * SD1 * SD2
 
+
+Covariance matrix has 10 pieces of information. Correlation matrix has 6 pieces of information.
+```{r}
+# Observed correlation matrix
+d <- subset(d, select=c(apgar, gestat, smokes, wgtgain))
+round(cor(subset(d, select=c(apgar, gestat, smokes, wgtgain))), 2)
+```
+
+
+
+// We randomly assign path coefficients. Then we compute correlations.
+
+Why would variables be correlated?
+
+1. A causes B
+2. Mediation: A causes B causes C
+3. Unanalyzed effects: C causes A,B; C correlates with D, C causes A, D causes B causes E
+
+Assumed causal paths:
+
+S <--a--> W
+S  --b--> G
+S  --c--> A
+W  --d--> G
+W  --e--> A
+G  --f--> A
+
+Correlation values based on the causal paths:
+
+cor_sw = a
+cor_sg = b + a*d
+cor_wa = e + d*f + a*c + a*b*f
+cor_sa = c + b*f + a*e + a*d*f
+cor_wg = d + a*b
+cor_ga = f + a*b*f + a*c*d + b*c + d*e
+
+Maximum-likelihood tries to find the best values for a:f to generate the model-implied correlation matrix
+
+
+
+```{r}
+
+m1 <- '
+      # regressions
+      gestat ~ smokes + wgtgain
+      apgar ~ smokes + wgtgain + gestat
+      # residual correlations
+      smokes ~~ wgtgain
+      '
+
+fit <- sem(m1, data=d, likelihood="wishart")
+summary(fit, standardized=T)
+inspect(fit, "sampstat")
+fitted(fit)
+# difference between the two covariance matrices
+resid(fit) 
+```
+The model perfectly replicated the observed covariance matrix.
+
+Minimum function test statistic is a chi-squared test statistic.
+
+If the p-value is significant, we reject the model.
+If the p-value is not significant, we can accept the model.

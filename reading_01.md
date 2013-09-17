@@ -101,7 +101,7 @@ Specification errors are mistakes of L.O.V.E. (_left-out variable error_). Multi
 
 **What is "suppression"?**
 
-Suppression occurs when: 
+Suppression occurs when our data surprises us, namely:
 
 * a predictor's beta weight (its absolute value) is greater than its correlation with the dependent variable: |_b_| > _r_
 * a predictor's beta weight has a different sign than the correlation: _r_ < 0 < _b_ or _b_ < 0 < _r_
