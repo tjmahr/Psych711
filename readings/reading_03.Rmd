@@ -4,9 +4,10 @@ library(reshape2)
 library(psych)
 library(car)
 library(plyr)
-
+library(lmSupport)
+library(ggplot2)
+setwd("C:/Users/tjmahr/SkyDrive/Documents/Psych711/")
 load(file="data/HW3.Rdata")
-names(results) <- str_replace(names(results), "TScore", "")
 results$Latency <- log(results$Latency)
 scores <- dcast(results, formula = Subject + EVT + PPVT + Age ~ Condition, 
                 mean, value.var = "Latency")
@@ -33,26 +34,61 @@ In order for us to do the SEM analysis on the covariance matrix (a description o
 3. The determinant of the matrix is greater than zero.
 4. All of the correlations and covariances are not out of bounds.
 
+Causes: Include errors, outliers, collinearity.
+
+This problem will kill your model, so its pretty obvious to detect.
+
 **Collinearity (between a pair of variables and between a variable and two or more others)**
 
-Collinearity indicates that two separate variables are measuring the same thing. 
-
+Collinearity indicates that 2+ different variables are measuring the same thing. Redundant variables need to be eliminated or combined together. Check with VIF, squared multiple correlation, or tolleratnce.
 
 **Outliers (univariate outliers, multivariate outliers)**
 
-Outliers are extreme values that distort or exaggerate trends in the data.
+Outliers are extreme values that distort or exaggerate trends in the data. Set with a cutoff like 3SD or a distance measure. An outlier may not belong to the sample's true population. Multivariate outliers are calculated with Mahalanonis distance. 
+
+```{r}
+md <- mahalanobis(just_scores, colMeans(just_scores), cov=cov(just_scores))
+qplot(x=md)
+mardia(just_scores)
+mod <- lm(Latency ~ PPVT + Condition + EVT + Age, long_scores)
+lm.caseAnalysis(mod, "influenceplot")
+```
+
+(_Review Cook's D, hat values, Studentized values_)
+
 
 **Missing data (ignorable, systematic, MAR, MCAR, available case methods, mean substitution, regression-based imputation, model-based imputation)**
 
-Ignorable missing data is not systematic. If missingness is systematic, the results from the available cases may not generalize to the targeted population. Missing at random means that the missing scores only vary by chance. 
+Ignorable missing data is not systematic. If missingness is systematic, the results from the available cases may not generalize to the targeted population. Missing at random means that the missing scores only vary by chance. Missing completely at random means that missingness is not predicted by any other variable in the dataset. Available case methods are ways of dealing with missing data, including excluding incomplete subjects or trying to use as many of the observations as possible. Imputations describe different ways to fill in the missing data points. During a sensitivity analysis, we would compare results from analyses with different assumptions to see how they compare. For example, do the results under listwise deletion differ from the imputed results?
+
+
+```{r}
+library(mice)
+md.pattern(results)
+qqPlot(results$Latency)
+```
 
 **Normality (univariate, multivariate) and transformations**
 
+ML assumes normality. Normality tells us whether the data follow a classical bell curve or whether the data are skewed or have abnormal tails (kurtosis). Transformations try to compress parts of the data distribution with the goal of achieving a more normal distribution. 
+
+Multivariate normality implies that 
+
+1. Each variable is univariate normal
+2. Each pair of variables is bivariate normal.
+3. All bivariate scatterplots exhibit linearity and homoscedacity. 
+
 **Linearity and homoscedasticity**
+
+Linearity meets that bivariate scatter plots are linear. Homescedacity means that residuals have constant variance, i.e., a uniform distributation
 
 **Relative variances**
 
+In order for the ML algorithm to converge, the variances should have relatively comparable units of measures. The ratio of the largest variance to the smallest variance should be 10 or less, ideally, arbitrarily.
+
 **Reliability and validity**
+
+Reliability measures the extent to which you are measure something meaningful, as opposed to random error. Validity
 
 > B. Make a table that looks like the trouble shooting guide of the last dishwasher you bought. In the left column are the potential problems, in the middle column are the ways to diagnose the problems, and in the right column are ways to solve the problems (0.5 to 1 page max.). 
 
@@ -94,12 +130,32 @@ scatterplotMatrix(just_scores)
 describe(just_scores)
 ```
 
+Linearity and heteroscedacity were assessed for the additive model that regresses reaction time onto the four predictor variables, using a function that checks whether the GLM's assumptions hold for a model. All assumptions, including linearity and heteroscedacity, held for the additive model with log-transformed reaction times.
+
+
+```{r}
+m <- lm(Latency ~ Condition + EVT + PPVT + Age, long_scores)
+summary(m)
+lm.modelAssumptions(m)
+```
 
 
 
 
 
 > D. Do exercise 5 on page 74 (preferably in R but other software is fine too). Write a one-sentence conclusion. 
+
+
+```{r}
+dataset <- list(Score = c(10:17, 27), Counts = c(6, 15, 19, 18, 5, 5, 4, 1, 1))
+full_data <- unlist(Map(rep, dataset$Score, dataset$Counts))
+m <- lm(full_data ~ 1)
+plot.lm(m, which=2)
+plot.lm(m, which=7)
+qqnorm(y=full_data, )
+```
+
+??pp
 
 > Create a single word document with your troubleshooting table (B.), the summary of your data screening (C.), the normal probability plot plus conclusion (D.), and an appendix (optional) and send me the document on Tuesday, by 11:30 am. _Note: You should do these exercises by yourself but feel free to consult with others and to ask them for help. If you give help to others, help them find the solution themselves rather than giving them the solution._
 

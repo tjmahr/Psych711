@@ -7,6 +7,8 @@ Model the data
 library(lmSupport)
 library(ggplot2)
 library(lavaan)
+install.packages("OpenMx")
+library(OpenMx)
 d <- lm.readDat("data/data_apgar.dat")
 describe(d)
 # Predict APGAR from weight gain
@@ -116,5 +118,67 @@ Minimum function test statistic is a chi-squared test statistic.
 If the p-value is significant, we reject the model.
 If the p-value is not significant, we can accept the model.
 
-"Disturbances" are residuals of the model. They are latent variables. They contain all the other causes that were not specified in the model. Usually only have distrubances for the endogenous variables.
+"Disturbances" are residuals of the model. They are latent variables. They contain all the other causes that were not specified in the model. Usually only have distrubances for the endogenous variables. Disturbances have the same unit of measurement as their associated variable.
 
+The variances in the inspecti.fit give the variances in of the disturbances for the endogenous variables.
+
+
+```{r}
+# Variances of the disturbances for gestat: 20.003
+var(d$gestat) # 29.02
+
+# Explaining 31% of the variance
+1 - (20.003 / 29.02)
+
+
+apgar_variance <- fitted(fit)$cov["apgar", "apgar"]
+# Disturbances in APGAR: 
+apgar_distrurbances <- 1.912
+
+R_squared <- 1 - (apgar_distrurbances / apgar_variance)
+R_squared
+
+
+```
+
+### Standardized solution
+
+Don't need to report variances in the standardized solution.
+
+Need to footnote that you ran the model on non-standardized variables and got the values for the standardized solution for that.
+
+
+## 
+
+```{r}
+m1b <- '
+  # regressions
+  gestat ~ smokes + wgtgain
+  apgar ~ smokes + wgtgain + gestat
+'
+fit <- sem(m1b, data=d, likelihood="wishart")
+summary(fit, standardized=T)
+```
+
+Output does not include unanalyzed relationships. 
+
+Wishart variance divides by n-1. Normal or biased variance divides by n. i
+
+## Weird model
+4 exogenous variables, 0 endogenous variables, allowing exogenous vars to correlate. We are going to estimate the four variances.
+
+```{r}
+m1b <- '
+  # residual correlations
+  smokes ~~ wgtgain
+  smokes ~~ gestat
+  smokes ~~ apgar
+  wgtgain ~~ gestat
+  wgtgain ~~ apgar
+  gestat ~~ apgar
+  '
+fit2 <- sem(m1b, d, likelihood="wishart")
+summary(fit2, standardized=T)
+```
+
+The weird model has 1 for all the disturbances in the standardized solution. Chi-squared = 0. 

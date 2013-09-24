@@ -2,9 +2,252 @@
 
 
 
+Exercises about Rex Kline's book (for Tue., Sept. 24)
+===============================================================================
+
+> A. Read pages 51--72 very carefully. Be prepared to explain to a novice what the topics below mean and why they are particularly important in SEM. For each of the topics you should be able to say two or three sentences without looking at your notes. 
+
+**Positive definiteness of matrices (causes, indicators of nonpositive definiteness)**
+
+In order for us to do the SEM analysis on the covariance matrix (a description of the variables in our data and how they vary together), the matrix needs to be well-formed--that is, positive definite--so that we can do some linear algebra on them. The indicators of nonpositive definiteness:
+
+1. The matrix is nonsingular, or invertible.
+2. All eigenvalues of the matrix are greater than zero.
+3. The determinant of the matrix is greater than zero.
+4. All of the correlations and covariances are not out of bounds.
+
+**Collinearity (between a pair of variables and between a variable and two or more others)**
+
+Collinearity indicates that two separate variables are measuring the same thing. 
+
+
+**Outliers (univariate outliers, multivariate outliers)**
+
+Outliers are extreme values that distort or exaggerate trends in the data.
+
+**Missing data (ignorable, systematic, MAR, MCAR, available case methods, mean substitution, regression-based imputation, model-based imputation)**
+
+Ignorable missing data is not systematic. If missingness is systematic, the results from the available cases may not generalize to the targeted population. Missing at random means that the missing scores only vary by chance. 
+
+**Normality (univariate, multivariate) and transformations**
 
 
 
+**Linearity and homoscedasticity**
+
+**Relative variances**
+
+**Reliability and validity**
+
+> B. Make a table that looks like the trouble shooting guide of the last dishwasher you bought. In the left column are the potential problems, in the middle column are the ways to diagnose the problems, and in the right column are ways to solve the problems (0.5 to 1 page max.). 
+
+
+
+> C. Once you are done with A. and B., take a recent data set of yours, select 5 to 10 variables that are important to your hypotheses, and do some data screening. Among the selected variables there should be at most one experimental manipulation with two levels. Selecting only measured variables is fine, too. Go through the table you made in B. Check whether each problem is present in your variables, i.e., check whether your covariance matrix is positive definite, check whether there is a collinearity problem in your data (e.g., by computing the variance inflation factor for each of the variables), check whether there are outliers (e.g., by computing Mahalanobis distance for each observation), and so forth. Summarize your data screening (what you did and what you found) in ½ to 1 page. If you want you can put additional information (R script, box plots, etc.) in an appendix, but your summary should be informative by itself (I must be able to understand it without looking in the appendix). 
+
+I have chosen to screen some reaction time data from a language processing task with 30--45 month-old children. I am interested in whether vocabulary size predicts reaction time. There are two trial conditions, one in which the child is prompted to look a familiar object named using a real word (e.g., _dog_) and another condition in which the child is prompted to look at unfamiliar object named with a nonsense word. Therefore the five variables in this dataset are are two different measures of vocabulary, age in months, reaction time and trial condition.
+
+These reaction times already underwent one iteration of screening and correction: Blinks and other random missingness in the eye-tracking data were imputed using neighboring data, RTs that were impossible fast (by virtue of how eye-movements work) were excluded and then RTs that were more than 2 SDs above the mean were dropped within each condition. Since reaction times are practically unbounded durations, trimming the slowest 5% of RTs seems appropriate.
+
+Missingness was present in the dataset because not every trial yielded a usable reaction time, and a number of reaction times were trimmed as described above. It is possible that attention to the task predicts the number of usable reaction times, and therefore that the number of usable observations within each subject is not ignorable missing data. I checked against this possibility by regressing the number of reaction times onto condition, two measures of vocabulary, and age. There was a signifcant effect of age such that increasing one-month in age predicted an increase in usable data by 0.76 trials, controlling all other predictors. In other words, older kids may dispropriately represented in the unaggregated data-set.
+
+
+```r
+lengths <- melt(lengths, measure.vars = c("nonsense", "real"))
+lengths <- mutate(lengths, Condition = ifelse(variable == "nonsense", -0.5, 
+    0.5))
+summary(lm(value ~ EVT + PPVT + Age + Condition, lengths))
+```
+
+```
+## 
+## Call:
+## lm(formula = value ~ EVT + PPVT + Age + Condition, data = lengths)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -12.92  -6.24  -3.19   2.92  32.24 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)  
+## (Intercept)  -3.8466    12.4584   -0.31    0.759  
+## EVT           0.0722     0.1566    0.46    0.647  
+## PPVT         -0.1825     0.1083   -1.68    0.099 .
+## Age           0.7670     0.3613    2.12    0.039 *
+## Condition     0.9200     2.9389    0.31    0.756  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 10.4 on 45 degrees of freedom
+## Multiple R-squared:  0.124,	Adjusted R-squared:  0.0461 
+## F-statistic: 1.59 on 4 and 45 DF,  p-value: 0.193
+```
+
+
+For the purposes of this exercise, I aggregated observations by condition within each subject by computing mean reaction times. (A more robust analysis would use these repeated measures to its advantage, of course.) The aggregated data contains no missing observations.
+
+The covariance matrix showed positive eigenvalues, so it is positive definite.
+
+
+```r
+eigen(cov(just_scores))
+```
+
+```
+## $values
+## [1] 5.633e+02 7.533e+01 1.691e+01 4.084e-04 2.271e-04
+## 
+## $vectors
+##            [,1]       [,2]      [,3]       [,4]       [,5]
+## [1,] -5.274e-01  0.8388612  0.134771  0.0007000 -0.0007102
+## [2,] -8.423e-01 -0.5370409  0.046732 -0.0007632  0.0006004
+## [3,] -1.116e-01  0.0888626 -0.989772  0.0018844 -0.0013769
+## [4,]  4.300e-05 -0.0005739  0.000591 -0.3456488 -0.9383636
+## [5,] -5.169e-05 -0.0014525  0.002143  0.9383615 -0.3456458
+```
+
+
+Collinearity was assessed by computing the squared multiple correlations of each variable as well as examining the bivariate correlations. All of these correlations were less than 0.90. The highest correlation was between expressive and receptive vocabulary measures, _r_ = 0.73, which suggests that these scores measure different aspects of the same underlying vocabulary construct. 
+
+
+```r
+smc(just_scores)
+```
+
+```
+##      EVT     PPVT      Age nonsense     real 
+##   0.6677   0.7117   0.4492   0.1451   0.4033
+```
+
+```r
+cor(just_scores)
+```
+
+```
+##              EVT     PPVT     Age  nonsense    real
+## EVT       1.0000 0.727440  0.5124 -0.196520 -0.1975
+## PPVT      0.7274 1.000000  0.4811  0.009557  0.1656
+## Age       0.5124 0.481129  1.0000 -0.199605 -0.3445
+## nonsense -0.1965 0.009557 -0.1996  1.000000  0.0577
+## real     -0.1975 0.165621 -0.3445  0.057698  1.0000
+```
+
+
+Univariate normality was using measures for skew and kurtosis. Adequate values were found for these measures.
+
+
+```r
+scatterplotMatrix(just_scores)
+```
+
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
+
+```r
+describe(just_scores)
+```
+
+```
+##          var  n  mean    sd median trimmed   mad   min    max range  skew
+## EVT        1 25 56.60 14.49  55.00   55.95 11.86 27.00  90.00 63.00  0.38
+## PPVT       2 25 77.04 20.53  73.00   76.38 25.20 45.00 118.00 73.00  0.30
+## Age        3 25 40.52  4.92  40.00   40.71  4.45 31.00  48.00 17.00 -0.27
+## nonsense   4 25  1.86  0.02   1.86    1.86  0.01  1.83   1.91  0.08  0.35
+## real       5 25  1.87  0.02   1.87    1.87  0.02  1.83   1.93  0.09  0.59
+##          kurtosis   se
+## EVT         -0.18 2.90
+## PPVT        -1.22 4.11
+## Age         -0.98 0.98
+## nonsense     0.37 0.00
+## real        -0.35 0.00
+```
+
+
+Linearity and heteroscedacity were assessed for the additive model that regresses reaction time onto the four predictor variables, using a function that checks whether the GLM's assumptions hold for a model. All assumptions, including linearity and heteroscedacity, held for the additive model with log-transformed reaction times.
+
+
+
+```r
+m <- lm(Latency ~ Condition + EVT + PPVT + Age, long_scores)
+summary(m)
+```
+
+```
+## 
+## Call:
+## lm(formula = Latency ~ Condition + EVT + PPVT + Age, data = long_scores)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.02936 -0.01450  0.00220  0.00978  0.05920 
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)    1.913272   0.023117   82.76   <2e-16 ***
+## Conditionreal  0.003359   0.005416    0.62   0.5382    
+## EVT           -0.000663   0.000289   -2.30   0.0262 *  
+## PPVT           0.000612   0.000200    3.06   0.0037 ** 
+## Age           -0.001442   0.000666   -2.17   0.0356 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.0191 on 45 degrees of freedom
+## Multiple R-squared:  0.246,	Adjusted R-squared:  0.179 
+## F-statistic: 3.66 on 4 and 45 DF,  p-value: 0.0115
+```
+
+```r
+lm.modelAssumptions(m)
+```
+
+```
+## Descriptive Statistics for Studentized Residuals
+## 
+## Call:
+## lm(formula = Latency ~ Condition + EVT + PPVT + Age, data = long_scores)
+## 
+## Coefficients:
+##   (Intercept)  Conditionreal            EVT           PPVT            Age  
+##      1.913272       0.003359      -0.000663       0.000612      -0.001442  
+## 
+## 
+## ASSESSMENT OF THE LINEAR MODEL ASSUMPTIONS
+## USING THE GLOBAL TEST ON 4 DEGREES-OF-FREEDOM:
+## Level of Significance =  0.05 
+## 
+## Call:
+##  gvlma(x = model) 
+## 
+##                      Value p-value                Decision
+## Global Stat        5.55481   0.235 Assumptions acceptable.
+## Skewness           2.39536   0.122 Assumptions acceptable.
+## Kurtosis           0.67731   0.411 Assumptions acceptable.
+## Link Function      0.00566   0.940 Assumptions acceptable.
+## Heteroscedasticity 2.47647   0.116 Assumptions acceptable.
+```
+
+
+
+
+
+
+> D. Do exercise 5 on page 74 (preferably in R but other software is fine too). Write a one-sentence conclusion. 
+
+
+
+```r
+dataset <- list(Score = c(10:17, 27), Counts = c(6, 15, 19, 18, 5, 5, 4, 1, 
+    1))
+full_data <- unlist(Map(rep, dataset$Score, dataset$Counts))
+m <- lm(full_data ~ 1)
+plot.lm(m, which = 2)
+```
+
+![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png) 
+
+
+
+
+> Create a single word document with your troubleshooting table (B.), the summary of your data screening (C.), the normal probability plot plus conclusion (D.), and an appendix (optional) and send me the document on Tuesday, by 11:30 am. _Note: You should do these exercises by yourself but feel free to consult with others and to ask them for help. If you give help to others, help them find the solution themselves rather than giving them the solution._
 
 
 
