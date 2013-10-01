@@ -84,11 +84,11 @@ Linearity meets that bivariate scatter plots are linear. Homescedacity means tha
 
 **Relative variances**
 
-In order for the ML algorithm to converge, the variances should have relatively comparable units of measures. The ratio of the largest variance to the smallest variance should be 10 or less, ideally, arbitrarily.
+In order for the ML algorithm to converge, the variances should have relatively comparable units of measures. The ratio of the largest variance to the smallest variance should be 10 or less, ideally, i.e., within a unit an order of magnitude.
 
 **Reliability and validity**
 
-Reliability measures the extent to which you are measure something meaningful, as opposed to random error. Validity
+Reliability is the extent to which you are measure something meaningful, as opposed to random error. Validity is the extent to which you are measuring the desired construct.
 
 > B. Make a table that looks like the trouble shooting guide of the last dishwasher you bought. In the left column are the potential problems, in the middle column are the ways to diagnose the problems, and in the right column are ways to solve the problems (0.5 to 1 page max.). 
 
@@ -151,13 +151,7 @@ dataset <- list(Score = c(10:17, 27), Counts = c(6, 15, 19, 18, 5, 5, 4, 1, 1))
 full_data <- unlist(Map(rep, dataset$Score, dataset$Counts))
 m <- lm(full_data ~ 1)
 plot.lm(m, which=2)
-plot.lm(m, which=7)
-qqnorm(y=full_data, )
+qqnorm(y=full_data)
 ```
 
-??pp
-
 > Create a single word document with your troubleshooting table (B.), the summary of your data screening (C.), the normal probability plot plus conclusion (D.), and an appendix (optional) and send me the document on Tuesday, by 11:30 am. _Note: You should do these exercises by yourself but feel free to consult with others and to ask them for help. If you give help to others, help them find the solution themselves rather than giving them the solution._
-
-
-
