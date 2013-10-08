@@ -3,9 +3,6 @@ Exercises about Rex Kline's book (for Tue., Oct. 08)
 
 > Read pages 124-127 (until " do so by default"), pages 130-137 (from "Unique estimates" to "...is discussed later"), and pages 146-153 (from "A healthy perspective" to end) of Rex Kline's book. Don't worry if you don't understand everything in the section on "rules for nonrecursive structural models" (pages 132-137). I simply want to you to know where to look when you run into problems one day. Please also read the excerpt from Niels Blunch's (2008) book I distributed in class last Thursday (pp. 110-118).
 
-sarah, developmental psych + calculation
-amanda, quality of reporting by financial firms
-
 **1. There are two necessary but insufficient conditions for identification. Name these conditions and be prepared to explain each of them in some detail.**
 
 1. **Counting Rule:** The model degrees of freedom must be at least zero.
