@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=9" >
+
+<title>Questions about Rex Kline&#39;s book (for Tue., Oct. 22)</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: rgb(88, 72, 246)
+   }
+
+   pre .number {
+     color: rgb(0, 0, 205);
+   }
+
+   pre .comment {
+     color: rgb(76, 136, 107);
+   }
+
+   pre .keyword {
+     color: rgb(0, 0, 255);
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: rgb(3, 106, 7);
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+
+</head>
+
+<body>
+<pre><code class="r">source(&quot;../power.r&quot;)
+print.PowerSummary &lt;- function(...) str(...)
+</code></pre>
+
+<h1>Questions about Rex Kline&#39;s book (for Tue., Oct. 22)</h1>
+
+<blockquote>
+<p>Read pages 154-175, 182 (summary), and 222-228 in Kline&#39;s book. Be prepared to answer the questions below WITHOUT LOOKING AT YOUR NOTES. </p>
+</blockquote>
+
+<h2>Chapter 7</h2>
+
+<h4>1. Explain what (full information) maximum likelihood estimation is. Pretend you are explaining it to a SEM novice.</h4>
+
+<p>You want to find some equations that describe how the data fit together. To do this, you need to estimate the relationships between the variables. Maximum likelihood generates estimates that maximize the likelihood that these relationships were sampled from the full population. Full-information means that the computer tries to solve the all the equations simultaneously instead of one-by-one. In order to maximize the likelihood, the computer minimizes a corresponding fit function which describes the deviance between the model&#39;s predictions and the data. </p>
+
+<p>ML estimation are generally iterative, meaning that the computer starts with an initial solution and tries to refine its estimates. ML also assumes multivariate normality for the endogenous variables, whatever that means.</p>
+
+<p>ML is both scale free and scale invariant which means that we can linearly transform estimates to different scales and that scale of measurement does not affect the fitting function.</p>
+
+<h4>2. Kline suggests to us to pay particular attention to the start values. Why is that?</h4>
+
+<p>Accurate start values may help the estimation converge more quickly, and conversely, horribly inaccurate start values may prevent the estimation from converging or converging on an optimal solution. In this case, you should be ready to provide some initial estimates to help the model out.</p>
+
+<h4>3. What are Heywood cases?</h4>
+
+<p>Parameter estimates with nonsensical values, like a negative variance estimate or estimated correlations with an absolute value greater than 1. Causes include:</p>
+
+<ul>
+<li>Errors in specification</li>
+<li>Model non-identification</li>
+<li>Outliers that wreck the solution</li>
+<li>Small N plus having just two indicators per factor</li>
+<li>Bad initial estimates</li>
+<li>Extreme population correlations (yielding empirical underidentification)</li>
+</ul>
+
+<h4>4a. In Figure 7.1(a), the path from &ldquo;school support&rdquo; to &ldquo;teacher-pupil interaction&rdquo; has a value of .097. Interpret this path.</h4>
+
+<p>An additional point of school support is predicted to yield a 0.097 unit increase in positive teacher-pupil interaction, when holding constant the direct effects of coercive control and teacher burnout on interaction. (Although the support variable needs to be un-transformed in order to be properly interpreted).</p>
+
+<h4>4b. Is it not surprising that this path coefficient becomes bigger, rather than smaller, in the standardized solution (.203)?</h4>
+
+<p>No. SD-Support / SD-Teacher-Pupil = 10.5212 / 5 = 2.1042. The ratio scales the path coefficient into a larger value: 2.1042 * 0.097 = 0.2041, which approximates the standardized solution.</p>
+
+<h4>5. Explain what direct effects, indirect effects, total indirect effects, and total effects are. Pretend you are explaining it to a SEM novice.</h4>
+
+<p>Consider a triangle with paths x~y, x~m, m~y. There are two ways to get from x to y. One is the direct path from x to y. This is the direct effect: It describes how a change in x corresponds to a change in y, controlling for the m~y effect. The indirect path from x to y involves the intermediate paths x to m and m to y. The indirect effect describes how a change in x yields a change in m yields a change in y. It&#39;s the effect of x on y via m, equal to the product of the two direct effects that make up the path x~m * m~y. The sum of all paths from x to y is the total effect. The total indirect effects is the sum of all the indirect paths.</p>
+
+<h4>6. According to Kline, it is not all surprising that all the correlation residuals involving coercive control, teacher burnout, school support, and teacher-pupil interaction are zero (see Table 7.5). In other words, we could have known that they are zero by simply looking at the path analytic model in Figure 7.1. Why is that?</h4>
+
+<p>Because that subset of the model is just-identified. There is a path between every pair of variables. Such models tend to perfectly fit the data.</p>
+
+<h2>Chapter 8</h2>
+
+<h4>7. If one wants to test a model with 2 df and one wants to have a model power-level of at least .80, how many participants does one need to include in the study?</h4>
+
+<pre><code class="r">compute_sample_size(df = 2, rmseaa = 0.01)
+</code></pre>
+
+<pre><code>## List of 7
+##  $ df         : num 2
+##  $ n          : num 2381
+##  $ rmsea0     : num 0.05
+##  $ rmseaa     : num 0.01
+##  $ alpha      : num 0.05
+##  $ hyptothesis: chr &quot;Not-close-fit hypothesis&quot;
+##  $ power      : num 0.8
+##  - attr(*, &quot;class&quot;)= chr &quot;PowerSummary&quot;
+</code></pre>
+
+<pre><code class="r">compute_sample_size(df = 2, rmseaa = 0.08)
+</code></pre>
+
+<pre><code>## List of 7
+##  $ df         : num 2
+##  $ n          : num 3500
+##  $ rmsea0     : num 0.05
+##  $ rmseaa     : num 0.08
+##  $ alpha      : num 0.05
+##  $ hyptothesis: chr &quot;Close-fit hypothesis&quot;
+##  $ power      : num 0.801
+##  - attr(*, &quot;class&quot;)= chr &quot;PowerSummary&quot;
+</code></pre>
+
+<ul>
+<li>3500 for the close-fit test. </li>
+<li>2381.25 for the not-close-fit test.</li>
+</ul>
+
+<h4>8. Go to <a href="http://www.quantpsy.org/rmsea/rmsea.htm">Kris Preacher&#39;s web page</a> and generate the power values that are reported for the Roth et al. model in Table 8.7 of Kline&#39;s book (.317 and .229).  In other words, what does it mean to have a power of .317 for the close-fit test and a power of .229 for the not-close-fit test?</h4>
+
+<blockquote>
+<p>The web page will ask you, among other things, for two pieces of information: the &ldquo;Null RMSEA&rdquo;, which should always be .05, and the &ldquo;Alt. RMSEA&rdquo;, which should be either .01 (for the not-close fit test) or .08 (for the close-fit test). Interpret the values you get (without looking at your notes).</p>
+</blockquote>
+
+<p><strong>Not-close-fit hypothesis:</strong> There is a 23% change of detecting a model with a good fit from N = 373 observations. </p>
+
+<pre><code class="r">compute_power(df = 5, n = 373, rmseaa = 0.01)
+</code></pre>
+
+<pre><code>## List of 7
+##  $ df         : num 5
+##  $ n          : num 373
+##  $ rmsea0     : num 0.05
+##  $ rmseaa     : num 0.01
+##  $ alpha      : num 0.05
+##  $ hyptothesis: chr &quot;Not-close-fit hypothesis&quot;
+##  $ power      : num 0.229
+##  - attr(*, &quot;class&quot;)= chr &quot;PowerSummary&quot;
+</code></pre>
+
+<p><strong>Close-fit hypothesis:</strong> There is a 32% chance of correctly rejecting a bad model from N = 373 observations.</p>
+
+<pre><code class="r">compute_power(df = 5, n = 373, rmseaa = 0.08)
+</code></pre>
+
+<pre><code>## List of 7
+##  $ df         : num 5
+##  $ n          : num 373
+##  $ rmsea0     : num 0.05
+##  $ rmseaa     : num 0.08
+##  $ alpha      : num 0.05
+##  $ hyptothesis: chr &quot;Close-fit hypothesis&quot;
+##  $ power      : num 0.317
+##  - attr(*, &quot;class&quot;)= chr &quot;PowerSummary&quot;
+</code></pre>
+
+<h4>9. Using Kris Preacher&#39;s web page to determine the power values for a model with 5 df and 60 observations (like our model apgar4)? Interpret these values.</h4>
+
+<pre><code class="r">compute_power(df = 5, n = 60, rmseaa = 0.01)
+</code></pre>
+
+<pre><code>## List of 7
+##  $ df         : num 5
+##  $ n          : num 60
+##  $ rmsea0     : num 0.05
+##  $ rmseaa     : num 0.01
+##  $ alpha      : num 0.05
+##  $ hyptothesis: chr &quot;Not-close-fit hypothesis&quot;
+##  $ power      : num 0.0668
+##  - attr(*, &quot;class&quot;)= chr &quot;PowerSummary&quot;
+</code></pre>
+
+<pre><code class="r">compute_power(df = 5, n = 60, rmseaa = 0.08)
+</code></pre>
+
+<pre><code>## List of 7
+##  $ df         : num 5
+##  $ n          : num 60
+##  $ rmsea0     : num 0.05
+##  $ rmseaa     : num 0.08
+##  $ alpha      : num 0.05
+##  $ hyptothesis: chr &quot;Close-fit hypothesis&quot;
+##  $ power      : num 0.0969
+##  - attr(*, &quot;class&quot;)= chr &quot;PowerSummary&quot;
+</code></pre>
+
+<h4>10. Given that it is unrealistic to expect from a researcher to consider all equivalent and near-equivalent models, what does Kline suggest we should do?</h4>
+
+<p>Consider the theoretically substantive alternative models.</p>
+
+<h4>11. Using the Roth et al. dataset (see last homework), get as many fit indices as possible for the two models described in the second paragraph on page 228 of Kline&#39;s book. Interpret the results and explain why these two models are considered &ldquo;near-equivalent&rdquo;.</h4>
+
+<pre><code class="r">library(lavaan)
+</code></pre>
+
+<pre><code>## Loading required package: MASS
+## Loading required package: boot
+## Loading required package: mnormt
+## Loading required package: pbivnorm
+## Loading required package: quadprog
+## This is lavaan 0.5-14
+## lavaan is BETA software! Please report any bugs.
+</code></pre>
+
+<pre><code class="r">d &lt;- read.csv(&quot;../data/roth_data.csv&quot;)
+# Change first column to row names
+row.names(d) &lt;- d$X
+d &lt;- as.matrix(d[-1])
+
+m0 &lt;- &quot;\n  # regressions\n  illness ~  fitness + stress\n  stress ~ hardiness\n  fitness ~ exercise\n&quot;
+
+m1 &lt;- &quot;\n  # regressions\n  illness ~  fitness + stress\n  stress ~ hardiness + fitness\n  fitness ~ exercise\n&quot;
+
+m2 &lt;- &quot;\n  # regressions\n  illness ~  fitness + stress\n  stress ~ hardiness\n  fitness ~ exercise + stress\n&quot;
+
+m0_fit &lt;- sem(m0, sample.cov = d, sample.nobs = 373, likelihood = &quot;wishart&quot;)
+m1_fit &lt;- sem(m1, sample.cov = d, sample.nobs = 373, likelihood = &quot;wishart&quot;)
+m2_fit &lt;- sem(m2, sample.cov = d, sample.nobs = 373, likelihood = &quot;wishart&quot;)
+
+summary(m0_fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+</code></pre>
+
+<pre><code>## lavaan (0.5-14) converged normally after  22 iterations
+## 
+##   Number of observations                           373
+## 
+##   Estimator                                         ML
+##   Minimum Function Test Statistic               11.078
+##   Degrees of freedom                                 5
+##   P-value (Chi-square)                           0.050
+## 
+## Model test baseline model:
+## 
+##   Minimum Function Test Statistic              165.164
+##   Degrees of freedom                                 9
+##   P-value                                        0.000
+## 
+## Full model versus baseline model:
+## 
+##   Comparative Fit Index (CFI)                    0.961
+##   Tucker-Lewis Index (TLI)                       0.930
+## 
+## Loglikelihood and Information Criteria:
+## 
+##   Loglikelihood user model (H0)              -9946.777
+##   Loglikelihood unrestricted model (H1)      -9941.223
+## 
+##   Number of free parameters                          7
+##   Akaike (AIC)                               19907.554
+##   Bayesian (BIC)                             19935.005
+##   Sample-size adjusted Bayesian (BIC)        19912.796
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.057
+##   90 Percent Confidence Interval          0.001  0.103
+##   P-value RMSEA &lt;= 0.05                          0.338
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.051
+## 
+## Parameter estimates:
+## 
+##   Information                                 Expected
+##   Standard Errors                             Standard
+## 
+##                    Estimate  Std.err  Z-value  P(&gt;|z|)   Std.lv  Std.all
+## Regressions:
+##   illness ~
+##     fitness          -0.424    0.080   -5.316    0.000   -0.424   -0.253
+##     stress            0.287    0.044    6.538    0.000    0.287    0.311
+##   stress ~
+##     hardiness        -0.406    0.089   -4.558    0.000   -0.406   -0.230
+##   fitness ~
+##     exercise          0.216    0.026    8.169    0.000    0.216    0.390
+## 
+## Variances:
+##     illness        3212.567  235.557                   3212.567    0.840
+##     stress         4251.532  311.737                   4251.532    0.947
+##     fitness        1148.260   84.195                   1148.260    0.848
+## 
+## R-Square:
+## 
+##     illness           0.160
+##     stress            0.053
+##     fitness           0.152
+</code></pre>
+
+<pre><code class="r">residuals(m0_fit, type = &quot;cor&quot;)
+</code></pre>
+
+<pre><code>## $cor
+##           illnss stress fitnss hrdnss exercs
+## illness    0.000                            
+## stress     0.030  0.000                     
+## fitness   -0.038 -0.133  0.000              
+## hardiness -0.091  0.000  0.082  0.000       
+## exercise   0.016 -0.057  0.000  0.000  0.000
+## 
+## $mean
+##   illness    stress   fitness hardiness  exercise 
+##         0         0         0         0         0
+</code></pre>
+
+<pre><code class="r">residuals(m0_fit, type = &quot;standardized&quot;)
+</code></pre>
+
+<pre><code>## $cov
+##           illnss stress fitnss hrdnss exercs
+## illness    1.252                            
+## stress     2.015     NA                     
+## fitness   -2.156 -2.552     NA              
+## hardiness -1.906     NA  1.710  0.000       
+## exercise   0.331 -1.128     NA  0.000  0.000
+## 
+## $mean
+##   illness    stress   fitness hardiness  exercise 
+##         0         0         0         0         0
+</code></pre>
+
+<pre><code class="r">
+summary(m1_fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+</code></pre>
+
+<pre><code>## lavaan (0.5-14) converged normally after  22 iterations
+## 
+##   Number of observations                           373
+## 
+##   Estimator                                         ML
+##   Minimum Function Test Statistic                5.921
+##   Degrees of freedom                                 4
+##   P-value (Chi-square)                           0.205
+## 
+## Model test baseline model:
+## 
+##   Minimum Function Test Statistic              165.164
+##   Degrees of freedom                                 9
+##   P-value                                        0.000
+## 
+## Full model versus baseline model:
+## 
+##   Comparative Fit Index (CFI)                    0.988
+##   Tucker-Lewis Index (TLI)                       0.972
+## 
+## Loglikelihood and Information Criteria:
+## 
+##   Loglikelihood user model (H0)              -9944.192
+##   Loglikelihood unrestricted model (H1)      -9941.223
+## 
+##   Number of free parameters                          8
+##   Akaike (AIC)                               19904.384
+##   Bayesian (BIC)                             19935.756
+##   Sample-size adjusted Bayesian (BIC)        19910.375
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.036
+##   90 Percent Confidence Interval          0.000  0.092
+##   P-value RMSEA &lt;= 0.05                          0.583
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.034
+## 
+## Parameter estimates:
+## 
+##   Information                                 Expected
+##   Standard Errors                             Standard
+## 
+##                    Estimate  Std.err  Z-value  P(&gt;|z|)   Std.lv  Std.all
+## Regressions:
+##   illness ~
+##     fitness          -0.424    0.080   -5.282    0.000   -0.424   -0.250
+##     stress            0.287    0.044    6.483    0.000    0.287    0.307
+##   stress ~
+##     hardiness        -0.391    0.088   -4.430    0.000   -0.391   -0.222
+##     fitness          -0.208    0.091   -2.284    0.022   -0.208   -0.115
+##   fitness ~
+##     exercise          0.216    0.026    8.169    0.000    0.216    0.390
+## 
+## Variances:
+##     illness        3212.567  235.557                   3212.567    0.826
+##     stress         4193.009  307.446                   4193.009    0.938
+##     fitness        1148.260   84.195                   1148.260    0.848
+## 
+## R-Square:
+## 
+##     illness           0.174
+##     stress            0.062
+##     fitness           0.152
+</code></pre>
+
+<pre><code class="r">residuals(m1_fit, type = &quot;cor&quot;)
+</code></pre>
+
+<pre><code>## $cor
+##           illnss stress fitnss hrdnss exercs
+## illness    0.000                            
+## stress     0.005  0.000                     
+## fitness   -0.005 -0.018  0.000              
+## hardiness -0.095 -0.009  0.082  0.000       
+## exercise   0.029 -0.012  0.000  0.000  0.000
+## 
+## $mean
+##   illness    stress   fitness hardiness  exercise 
+##         0         0         0         0         0
+</code></pre>
+
+<pre><code class="r">residuals(m1_fit, type = &quot;standardized&quot;)
+</code></pre>
+
+<pre><code>## $cov
+##           illnss stress fitnss hrdnss exercs
+## illness    0.661                            
+## stress     1.001  0.692                     
+## fitness   -1.248 -1.604     NA              
+## hardiness -1.963 -1.398  1.710  0.000       
+## exercise   0.643 -0.260     NA  0.000  0.000
+## 
+## $mean
+##   illness    stress   fitness hardiness  exercise 
+##         0         0         0         0         0
+</code></pre>
+
+<pre><code class="r">
+summary(m2_fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+</code></pre>
+
+<pre><code>## lavaan (0.5-14) converged normally after  23 iterations
+## 
+##   Number of observations                           373
+## 
+##   Estimator                                         ML
+##   Minimum Function Test Statistic                5.668
+##   Degrees of freedom                                 4
+##   P-value (Chi-square)                           0.225
+## 
+## Model test baseline model:
+## 
+##   Minimum Function Test Statistic              165.164
+##   Degrees of freedom                                 9
+##   P-value                                        0.000
+## 
+## Full model versus baseline model:
+## 
+##   Comparative Fit Index (CFI)                    0.989
+##   Tucker-Lewis Index (TLI)                       0.976
+## 
+## Loglikelihood and Information Criteria:
+## 
+##   Loglikelihood user model (H0)              -9944.065
+##   Loglikelihood unrestricted model (H1)      -9941.223
+## 
+##   Number of free parameters                          8
+##   Akaike (AIC)                               19904.130
+##   Bayesian (BIC)                             19935.502
+##   Sample-size adjusted Bayesian (BIC)        19910.121
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.033
+##   90 Percent Confidence Interval          0.000  0.091
+##   P-value RMSEA &lt;= 0.05                          0.607
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.031
+## 
+## Parameter estimates:
+## 
+##   Information                                 Expected
+##   Standard Errors                             Standard
+## 
+##                    Estimate  Std.err  Z-value  P(&gt;|z|)   Std.lv  Std.all
+## Regressions:
+##   illness ~
+##     fitness          -0.424    0.081   -5.272    0.000   -0.424   -0.250
+##     stress            0.287    0.044    6.499    0.000    0.287    0.308
+##   stress ~
+##     hardiness        -0.406    0.089   -4.558    0.000   -0.406   -0.230
+##   fitness ~
+##     exercise          0.213    0.026    8.111    0.000    0.213    0.385
+##     stress           -0.061    0.026   -2.337    0.019   -0.061   -0.111
+## 
+## Variances:
+##     illness        3212.567  235.557                   3212.567    0.826
+##     stress         4251.532  311.737                   4251.532    0.947
+##     fitness        1131.683   82.979                   1131.683    0.840
+## 
+## R-Square:
+## 
+##     illness           0.174
+##     stress            0.053
+##     fitness           0.160
+</code></pre>
+
+<pre><code class="r">residuals(m2_fit, type = &quot;cor&quot;)
+</code></pre>
+
+<pre><code>## $cor
+##           illnss stress fitnss hrdnss exercs
+## illness    0.000                            
+## stress     0.005  0.000                     
+## fitness   -0.007 -0.022  0.000              
+## hardiness -0.086  0.000  0.056  0.000       
+## exercise   0.014 -0.057  0.005  0.000  0.000
+## 
+## $mean
+##   illness    stress   fitness hardiness  exercise 
+##         0         0         0         0         0
+</code></pre>
+
+<pre><code class="r">residuals(m2_fit, type = &quot;standardized&quot;)
+</code></pre>
+
+<pre><code>## $cov
+##           illnss stress fitnss hrdnss exercs
+## illness    0.615                            
+## stress     0.921     NA                     
+## fitness   -0.906 -1.100  0.647              
+## hardiness -1.795     NA  1.211  0.000       
+## exercise   0.297 -1.128  0.900  0.000  0.000
+## 
+## $mean
+##   illness    stress   fitness hardiness  exercise 
+##         0         0         0         0         0
+</code></pre>
+
+<pre><code class="r">
+measures &lt;- lapply(list(m0_fit, m1_fit, m2_fit), function(x) data.frame(as.list(fitMeasures(x))))
+Reduce(rbind, measures)
+</code></pre>
+
+<pre><code>##       fmin  chisq df  pvalue baseline.chisq baseline.df baseline.pvalue
+## 1 0.014889 11.078  5 0.04986          165.2           9               0
+## 2 0.007959  5.921  4 0.20509          165.2           9               0
+## 3 0.007618  5.668  4 0.22534          165.2           9               0
+##      cfi    tli   nnfi    rfi    nfi   pnfi    ifi    rni  logl
+## 1 0.9611 0.9299 0.9299 0.8793 0.9329 0.5183 0.9621 0.9611 -9947
+## 2 0.9877 0.9723 0.9723 0.9193 0.9641 0.4285 0.9881 0.9877 -9944
+## 3 0.9893 0.9760 0.9760 0.9228 0.9657 0.4292 0.9896 0.9893 -9944
+##   unrestricted.logl npar   aic   bic ntotal  bic2   rmsea rmsea.ci.lower
+## 1             -9941    7 19908 19935    373 19913 0.05709        0.00132
+## 2             -9941    8 19904 19936    373 19910 0.03589        0.00000
+## 3             -9941    8 19904 19936    373 19910 0.03344        0.00000
+##   rmsea.ci.upper rmsea.pvalue    rmr rmr_nomean    srmr srmr_nomean cn_05
+## 1        0.10301       0.3383 134.36     134.36 0.05128     0.05128 373.8
+## 2        0.09218       0.5830  75.46      75.46 0.03388     0.03388 598.6
+## 3        0.09054       0.6068  89.24      89.24 0.03118     0.03118 625.4
+##   cn_01    gfi   agfi   pgfi    mfi    ecvi
+## 1 509.0 0.9882 0.9647 0.3294 0.9919 0.06723
+## 2 837.3 0.9936 0.9761 0.2650 0.9974 0.05877
+## 3 874.7 0.9939 0.9771 0.2650 0.9978 0.05809
+</code></pre>
+
+</body>
+
+</html>
+

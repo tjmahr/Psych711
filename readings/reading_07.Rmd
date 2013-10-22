@@ -1,0 +1,147 @@
+```{r}
+source("../power.r")
+print.PowerSummary <- function(...) str(...)
+```
+
+Questions about Rex Kline's book (for Tue., Oct. 22)
+===============================================================================
+
+> Read pages 154-175, 182 (summary), and 222-228 in Kline's book. Be prepared to answer the questions below WITHOUT LOOKING AT YOUR NOTES. 
+ 
+## Chapter 7
+ 
+#### 1. Explain what (full information) maximum likelihood estimation is. Pretend you are explaining it to a SEM novice.
+
+You want to find some equations that describe how the data fit together. To do this, you need to estimate the relationships between the variables. Maximum likelihood generates estimates that maximize the likelihood that these relationships were sampled from the full population. Full-information means that the computer tries to solve the all the equations simultaneously instead of one-by-one. In order to maximize the likelihood, the computer minimizes a corresponding fit function which describes the deviance between the model's predictions and the data. 
+
+ML estimation are generally iterative, meaning that the computer starts with an initial solution and tries to refine its estimates. ML also assumes multivariate normality for the endogenous variables, whatever that means.
+
+ML is both scale free and scale invariant which means that we can linearly transform estimates to different scales and that scale of measurement does not affect the fitting function.
+
+
+#### 2. Kline suggests to us to pay particular attention to the start values. Why is that? 
+
+Accurate start values may help the estimation converge more quickly, and conversely, horribly inaccurate start values may prevent the estimation from converging or converging on an optimal solution. In this case, you should be ready to provide some initial estimates to help the model out.
+
+
+#### 3. What are Heywood cases? 
+
+Parameter estimates with nonsensical values, like a negative variance estimate or estimated correlations with an absolute value greater than 1. Causes include:
+
+* Errors in specification
+* Model non-identification
+* Outliers that wreck the solution
+* Small N plus having just two indicators per factor
+* Bad initial estimates
+* Extreme population correlations (yielding empirical underidentification)
+
+
+#### 4a. In Figure 7.1(a), the path from "school support" to "teacher-pupil interaction" has a value of .097. Interpret this path.
+
+An additional point of school support is predicted to yield a 0.097 unit increase in positive teacher-pupil interaction, when holding constant the direct effects of coercive control and teacher burnout on interaction. (Although the support variable needs to be un-transformed in order to be properly interpreted).
+
+
+#### 4b. Is it not surprising that this path coefficient becomes bigger, rather than smaller, in the standardized solution (.203)?
+
+No. SD-Support / SD-Teacher-Pupil = 10.5212 / 5 = 2.1042. The ratio scales the path coefficient into a larger value: 2.1042 * 0.097 = 0.2041, which approximates the standardized solution.
+
+
+#### 5. Explain what direct effects, indirect effects, total indirect effects, and total effects are. Pretend you are explaining it to a SEM novice.
+
+Consider a triangle with paths x~y, x~m, m~y. There are two ways to get from x to y. One is the direct path from x to y. This is the direct effect: It describes how a change in x corresponds to a change in y, controlling for the m~y effect. The indirect path from x to y involves the intermediate paths x to m and m to y. The indirect effect describes how a change in x yields a change in m yields a change in y. It's the effect of x on y via m, equal to the product of the two direct effects that make up the path x~m * m~y. The sum of all paths from x to y is the total effect. The total indirect effects is the sum of all the indirect paths.
+
+
+#### 6. According to Kline, it is not all surprising that all the correlation residuals involving coercive control, teacher burnout, school support, and teacher-pupil interaction are zero (see Table 7.5). In other words, we could have known that they are zero by simply looking at the path analytic model in Figure 7.1. Why is that?
+
+Because that subset of the model is just-identified. There is a path between every pair of variables. Such models tend to perfectly fit the data.
+
+ 
+## Chapter 8
+
+#### 7. If one wants to test a model with 2 df and one wants to have a model power-level of at least .80, how many participants does one need to include in the study?
+
+```{r}
+compute_sample_size(df = 2, rmseaa = 0.01)
+compute_sample_size(df = 2, rmseaa = 0.08)
+```
+
+ * 3500 for the close-fit test. 
+ * 2381.25 for the not-close-fit test.
+
+
+#### 8. Go to [Kris Preacher's web page](http://www.quantpsy.org/rmsea/rmsea.htm) and generate the power values that are reported for the Roth et al. model in Table 8.7 of Kline's book (.317 and .229).  In other words, what does it mean to have a power of .317 for the close-fit test and a power of .229 for the not-close-fit test?
+
+> The web page will ask you, among other things, for two pieces of information: the "Null RMSEA", which should always be .05, and the "Alt. RMSEA", which should be either .01 (for the not-close fit test) or .08 (for the close-fit test). Interpret the values you get (without looking at your notes).
+
+**Not-close-fit hypothesis:** There is a 23% change of detecting a model with a good fit from N = 373 observations. 
+
+```{r}
+compute_power(df = 5, n = 373, rmseaa = 0.01)
+```
+
+**Close-fit hypothesis:** There is a 32% chance of correctly rejecting a bad model from N = 373 observations.
+
+```{r}
+compute_power(df = 5, n = 373, rmseaa = 0.08)
+```
+
+#### 9. Using Kris Preacher's web page to determine the power values for a model with 5 df and 60 observations (like our model apgar4)? Interpret these values.
+
+```{r}
+compute_power(df = 5, n = 60, rmseaa = 0.01)
+compute_power(df = 5, n = 60, rmseaa = 0.08)
+```
+
+#### 10. Given that it is unrealistic to expect from a researcher to consider all equivalent and near-equivalent models, what does Kline suggest we should do?
+
+Consider the theoretically substantive alternative models.
+
+#### 11. Using the Roth et al. dataset (see last homework), get as many fit indices as possible for the two models described in the second paragraph on page 228 of Kline's book. Interpret the results and explain why these two models are considered "near-equivalent".
+
+```{r}
+library(lavaan)
+d <- read.csv("../data/roth_data.csv")
+# Change first column to row names
+row.names(d) <- d$X
+d <- as.matrix(d[-1])
+
+m0 <- '
+  # regressions
+  illness ~  fitness + stress
+  stress ~ hardiness
+  fitness ~ exercise
+'
+
+m1 <- '
+  # regressions
+  illness ~  fitness + stress
+  stress ~ hardiness + fitness
+  fitness ~ exercise
+'
+
+m2 <- '
+  # regressions
+  illness ~  fitness + stress
+  stress ~ hardiness
+  fitness ~ exercise + stress
+'
+
+m0_fit <- sem(m0, sample.cov = d, sample.nobs = 373, likelihood = "wishart")
+m1_fit <- sem(m1, sample.cov = d, sample.nobs = 373, likelihood = "wishart")
+m2_fit <- sem(m2, sample.cov = d, sample.nobs = 373, likelihood = "wishart")
+
+summary(m0_fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+residuals(m0_fit, type = "cor")      
+residuals(m0_fit, type = "standardized")          
+
+summary(m1_fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+residuals(m1_fit, type = "cor")      
+residuals(m1_fit, type = "standardized")          
+
+summary(m2_fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+residuals(m2_fit, type = "cor")      
+residuals(m2_fit, type = "standardized")          
+
+measures <- lapply(list(m0_fit, m1_fit, m2_fit), function(x) data.frame(as.list(fitMeasures(x))))
+Reduce(rbind, measures)
+```
