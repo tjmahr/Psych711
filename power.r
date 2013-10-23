@@ -35,6 +35,19 @@ compute_power <- function(df, n, rmseaa, rmsea0 = 0.05, alpha = 0.05) {
 print.PowerSummary <- function(...) str(...)
 
 
+not_close_fit <- function(df, n, rmseaa = 0.01, rmsea0 = 0.05, alpha = 0.05) {
+  if (rmseaa >= rmsea0) stop("RMSEA-Alt should be less than RMSEA-0")
+  compute_power(df, n, rmseaa, rmsea0, alpha)
+}
+
+
+close_fit <- function(df, n, rmseaa = 0.08, rmsea0 = 0.05, alpha = 0.05) {
+  if (rmseaa <= rmsea0) stop("RMSEA-Alt should be greater than RMSEA-0")
+  compute_power(df, n, rmseaa, rmsea0, alpha)
+}
+
+
+
 #' Computation of minimum sample size for test of fit
 #' 
 #' @param df degrees of freedom  
