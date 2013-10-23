@@ -24,7 +24,7 @@ compute_power(df = 5, n = 60, rmseaa = 0.01, rmsea0 = 0.05, alpha = 0.05)
 ##  $ rmsea0     : num 0.05
 ##  $ rmseaa     : num 0.01
 ##  $ alpha      : num 0.05
-##  $ hyptothesis: chr "Not-close-fit hypothesis"
+##  $ hypothesis: chr "Not-close-fit hypothesis"
 ##  $ power      : num 0.0668
 ##  - attr(*, "class")= chr "PowerSummary"
 ```
@@ -40,7 +40,7 @@ compute_power(df = 5, n = 60, rmseaa = 0.01)
 ##  $ rmsea0     : num 0.05
 ##  $ rmseaa     : num 0.01
 ##  $ alpha      : num 0.05
-##  $ hyptothesis: chr "Not-close-fit hypothesis"
+##  $ hypothesis: chr "Not-close-fit hypothesis"
 ##  $ power      : num 0.0668
 ##  - attr(*, "class")= chr "PowerSummary"
 ```
@@ -56,7 +56,7 @@ compute_power(df = 5, n = 60, rmseaa = 0.08)
 ##  $ rmsea0     : num 0.05
 ##  $ rmseaa     : num 0.08
 ##  $ alpha      : num 0.05
-##  $ hyptothesis: chr "Close-fit hypothesis"
+##  $ hypothesis: chr "Close-fit hypothesis"
 ##  $ power      : num 0.0969
 ##  - attr(*, "class")= chr "PowerSummary"
 ```
@@ -79,7 +79,7 @@ not_close_fit(df = 5, n = 373, rmseaa = 0.02)
 ##  $ rmsea0     : num 0.05
 ##  $ rmseaa     : num 0.02
 ##  $ alpha      : num 0.05
-##  $ hyptothesis: chr "Not-close-fit hypothesis"
+##  $ hypothesis: chr "Not-close-fit hypothesis"
 ##  $ power      : num 0.19
 ##  - attr(*, "class")= chr "PowerSummary"
 ```
@@ -96,7 +96,7 @@ not_close_fit(df = 5, n = 373)
 ##  $ rmsea0     : num 0.05
 ##  $ rmseaa     : num 0.01
 ##  $ alpha      : num 0.05
-##  $ hyptothesis: chr "Not-close-fit hypothesis"
+##  $ hypothesis: chr "Not-close-fit hypothesis"
 ##  $ power      : num 0.229
 ##  - attr(*, "class")= chr "PowerSummary"
 ```
@@ -126,7 +126,7 @@ close_fit(df = 5, n = 373, rmseaa = 0.1)
 ##  $ rmsea0     : num 0.05
 ##  $ rmseaa     : num 0.1
 ##  $ alpha      : num 0.05
-##  $ hyptothesis: chr "Close-fit hypothesis"
+##  $ hypothesis: chr "Close-fit hypothesis"
 ##  $ power      : num 0.631
 ##  - attr(*, "class")= chr "PowerSummary"
 ```
@@ -143,7 +143,7 @@ close_fit(df = 5, n = 373)
 ##  $ rmsea0     : num 0.05
 ##  $ rmseaa     : num 0.08
 ##  $ alpha      : num 0.05
-##  $ hyptothesis: chr "Close-fit hypothesis"
+##  $ hypothesis: chr "Close-fit hypothesis"
 ##  $ power      : num 0.317
 ##  - attr(*, "class")= chr "PowerSummary"
 ```
@@ -174,7 +174,7 @@ compute_sample_size(df = 2, rmseaa = 0.01, rmsea0 = 0.05, desired = 0.8, alpha =
 ##  $ rmsea0     : num 0.05
 ##  $ rmseaa     : num 0.01
 ##  $ alpha      : num 0.05
-##  $ hyptothesis: chr "Not-close-fit hypothesis"
+##  $ hypothesis: chr "Not-close-fit hypothesis"
 ##  $ power      : num 0.8
 ##  - attr(*, "class")= chr "PowerSummary"
 ```
@@ -191,7 +191,7 @@ compute_sample_size(df = 2, rmseaa = 0.01)
 ##  $ rmsea0     : num 0.05
 ##  $ rmseaa     : num 0.01
 ##  $ alpha      : num 0.05
-##  $ hyptothesis: chr "Not-close-fit hypothesis"
+##  $ hypothesis: chr "Not-close-fit hypothesis"
 ##  $ power      : num 0.8
 ##  - attr(*, "class")= chr "PowerSummary"
 ```
@@ -207,7 +207,7 @@ compute_sample_size(df = 2, rmseaa = 0.08)
 ##  $ rmsea0     : num 0.05
 ##  $ rmseaa     : num 0.08
 ##  $ alpha      : num 0.05
-##  $ hyptothesis: chr "Close-fit hypothesis"
+##  $ hypothesis: chr "Close-fit hypothesis"
 ##  $ power      : num 0.801
 ##  - attr(*, "class")= chr "PowerSummary"
 ```
