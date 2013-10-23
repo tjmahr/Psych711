@@ -28,7 +28,7 @@ compute_power <- function(df, n, rmseaa, rmsea0 = 0.05, alpha = 0.05) {
        rmsea0 = rmsea0,
        rmseaa = rmseaa,
        alpha = alpha,
-       hyptothesis = hypothesis,
+       hypothesis = hypothesis,
        power = pow), class = "PowerSummary")
 }
 
