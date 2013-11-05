@@ -1,6 +1,16 @@
 # Lifted from: http://www.quantpsy.org/rmsea/rmsea.htm
 
-# Power analysis
+#' Perform a power analysis
+#' 
+#' @param df degrees of freedom
+#' @param n number of participants
+#' @param rmseaa alternative-hypothesis RMSEA
+#' @param rmsea0 null-hypothesized RMSEA, default value is 0.05
+#' @param alpha alpha level, default value is 0.05
+#' @return 
+#' 
+#' @examples
+#' 
 compute_power <- function(df, n, rmseaa, rmsea0 = 0.05, alpha = 0.05) {
   # Set non-centrality parameters
   ncp <- function(rmsea, this_df = df, this_n = n) {
@@ -32,6 +42,7 @@ compute_power <- function(df, n, rmseaa, rmsea0 = 0.05, alpha = 0.05) {
        power = pow), class = "PowerSummary")
 }
 
+#' @method print PowerSummary
 print.PowerSummary <- function(...) str(...)
 
 
@@ -50,11 +61,8 @@ close_fit <- function(df, n, rmseaa = 0.08, rmsea0 = 0.05, alpha = 0.05) {
 
 #' Computation of minimum sample size for test of fit
 #' 
-#' @param df degrees of freedom  
-#' @param rmseaa alternative hypothesized RMSEA
-#' @param rmsea0 null hypothesized RMSEA, default = 0.05
-#' @param desired desired power level, default = 0.80
-#' @param alpha alpha level, default = 0.05
+#' @inheritParams compute_power
+#' @param desired the desired power level, default value is 0.80
 #' @return 
 compute_sample_size <- function(df, rmseaa, rmsea0 = 0.05, desired = 0.8, alpha = 0.05) {
   # initialize values

@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=9" >
+
+<title>Questions about Rex Kline&#39;s book (for Tue., Nov. 5)</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: rgb(88, 72, 246)
+   }
+
+   pre .number {
+     color: rgb(0, 0, 205);
+   }
+
+   pre .comment {
+     color: rgb(76, 136, 107);
+   }
+
+   pre .keyword {
+     color: rgb(0, 0, 255);
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: rgb(3, 106, 7);
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+
+</head>
+
+<body>
+<h1>Questions about Rex Kline&#39;s book (for Tue., Nov. 5)</h1>
+
+<blockquote>
+<p>Read pp. 112-118 (chap. 5) and pp. 230-245 (chap. 9) of Rex Kline&#39;s book. Be prepared to answer the questions below. Please also do the data analysis exercise described below. </p>
+</blockquote>
+
+<h4>1. What can researchers do when some of their indicators are formulated in one direction and other indicators in the other direction?</h4>
+
+<p>Reverse-code all the indicators in one direction, so that all indicators have the same direction.</p>
+
+<pre><code class="r">reverse_code &lt;- function(values, min, max) max + min - values
+reverse_code(1:5, min = 1, max = 5)
+</code></pre>
+
+<pre><code>## [1] 5 4 3 2 1
+</code></pre>
+
+<h4>2. Explain to a novice the difference between unidimensional and multidimensional measurement in factor models.</h4>
+
+<p>In unidimensional measurement: </p>
+
+<ul>
+<li>each indicator measures a single factor, and </li>
+<li>measurement errors are independent.</li>
+</ul>
+
+<p>In multidimensional measurement, one of these constraints is violated: </p>
+
+<ul>
+<li>an indicator may measure more than one factor, or </li>
+<li>its measurement errors may covary with the error of another indicator.</li>
+</ul>
+
+<p>When we allow measurement errors to covary, we are saying that the measurement errors have something in common beyond the factors inside the model. When we don&#39;t allow errors to covary, we are saying that the correlation between a pair of indicators to due to their shared factor loadings.</p>
+
+<h5>Sidebar</h5>
+
+<p>Suppose we have two covarying factors, each with three independent indicators. We would like to see:</p>
+
+<ol>
+<li>Convergent validity: High standardized factor loadings for each indicator, x &gt; 0.70</li>
+<li>Discriminant validity: Not-excessively-high estimated correlations between the factors, r &lt; 0.90</li>
+</ol>
+
+<h4>3. What are the major differences between exploratory factor analysis (EFA) and confirmatory factor analysis (CFA)?</h4>
+
+<p>In EFA:</p>
+
+<ul>
+<li>You don&#39;t have to formulate hypotheses about factor-indicator correspondences or how many factors are at play.</li>
+<li>Models are unrestricted factor models, which in general may not be identified. That is, each indicator can load onto every factor, making a unique solution of estimates impossible. (There may be infinite number of solutions.)</li>
+</ul>
+
+<p>CFA on the other hand deals with hypothesis-driven, restricted-factor, largely identified models. In CFA, we also allow factors to covary.</p>
+
+<h4>4. Assuming each indicator is specified to load on only one factor, how do we interpret unstandardized and standardized factor loadings?</h4>
+
+<ul>
+<li><p>Unstandardized factor loadings are interpreted like regression coefficients. </p>
+
+<ul>
+<li>Except for the coefficient set to 1 to give the factor its scale. This coefficient does not have a standard error and hence no test of significance.</li>
+</ul></li>
+<li><p>Standardized factor loadings are interpreted like correlations between the two indicators. </p>
+
+<ul>
+<li>If you square one, you get the proportion of variance in the indicator explained by the factor. </li>
+<li>Hopefully, the factor will explain more than 50% of the variance in each indicator.</li>
+</ul></li>
+</ul>
+
+<h4>5. Why can we use a chi-square difference test to compare a single-factor model to a multi-factor model?</h4>
+
+<p>Fixing the correlation between two factors to equal 1 essentially combines the two factors into a single factor. Therefore, the single-factor form of the model is nested within the two-factor version. We can use the chi-square difference test because the single factor model is a special case of the multi-factor model.</p>
+
+<h4>6. Kline concludes that the two-factor model in Figure 9.1 is unacceptable. Why?</h4>
+
+<ul>
+<li>Model chi-square is significant. Exact-fit hypothesis is rejected.</li>
+<li>Upper bound of RMSEA exceeds 0.10, so poor-fit hypothesis is not rejected.</li>
+<li>Five of the residual correlations have an absolute value &gt; 0.10.</li>
+<li>[<em>Positively</em>] Lower bound of RMSEA is less than 0.05, so close-fit hypothesis is not rejected.</li>
+<li>He also didn&#39;t like the low power.</li>
+</ul>
+
+<h4>7. What pattern of results suggests that you specified too many factors? Too few factors?</h4>
+
+<ul>
+<li>Poor discriminant validity: High factor correlations: Too many factors</li>
+<li>Poor convergent validity: Low correlation (standardized estimates) between a factor and its indicators: Too few factors.</li>
+</ul>
+
+<h4>8. What are we testing when we fix the covariances between multiple factors to zero and we then compare the chi-square of this model to that of another model in which the factors are allowed to covary?</h4>
+
+<p>We are doing the <em>test for orthogonality</em>. This lets us know whether all of the factor covariances jointly/overall differ significantly from zero.</p>
+
+<h2>Data Analysis Exercise</h2>
+
+<h4>9. Analyze the KABC dataset described on pages 234&ndash;239.</h4>
+
+<pre><code class="r"># Transform correlation matrix into a covariance matrix
+library(lavaan)
+</code></pre>
+
+<pre><code>## Loading required package: MASS
+## Loading required package: boot
+## Loading required package: mnormt
+## Loading required package: pbivnorm
+## Loading required package: quadprog
+## This is lavaan 0.5-14
+## lavaan is BETA software! Please report any bugs.
+</code></pre>
+
+<pre><code class="r">d &lt;- read.csv(&quot;data/kabc_cor2.csv&quot;, row.names = 1)
+cor_mat &lt;- as.matrix(d)
+sd &lt;- c(3.4, 2.4, 2.9, 2.7, 2.7, 4.2, 2.8, 3)
+covar_matrix &lt;- cor2cov(cor_mat, sd)
+covar_matrix &lt;- round(covar_matrix, digits = 3)
+</code></pre>
+
+<blockquote>
+<p>Start out with a one-factor model. What chi-square value do you find when you round the values of the data covariance matrix to 3 decimals (which is what I did in the script above)? Note: this value is similar but not identical to the value reported in the book. If you don&#39;t get a similar value, check whether you specified N = 200.</p>
+</blockquote>
+
+<pre><code class="r">m1 &lt;- &quot;f =~ hand + number + word + gestalt + triangles + spatial + analogies + photo&quot;
+fit1 &lt;- cfa(m1, sample.cov = covar_matrix, sample.nobs = 200, likelihood = &quot;wishart&quot;)
+summary(fit1, fit.measures = TRUE)
+</code></pre>
+
+<pre><code>## lavaan (0.5-14) converged normally after  36 iterations
+## 
+##   Number of observations                           200
+## 
+##   Estimator                                         ML
+##   Minimum Function Test Statistic              104.876
+##   Degrees of freedom                                20
+##   P-value (Chi-square)                           0.000
+## 
+## Model test baseline model:
+## 
+##   Minimum Function Test Statistic              495.829
+##   Degrees of freedom                                28
+##   P-value                                        0.000
+## 
+## Full model versus baseline model:
+## 
+##   Comparative Fit Index (CFI)                    0.819
+##   Tucker-Lewis Index (TLI)                       0.746
+## 
+## Loglikelihood and Information Criteria:
+## 
+##   Loglikelihood user model (H0)              -3816.598
+##   Loglikelihood unrestricted model (H1)      -3763.896
+## 
+##   Number of free parameters                         16
+##   Akaike (AIC)                                7665.196
+##   Bayesian (BIC)                              7717.970
+##   Sample-size adjusted Bayesian (BIC)         7667.280
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.146
+##   90 Percent Confidence Interval          0.119  0.174
+##   P-value RMSEA &lt;= 0.05                          0.000
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.084
+## 
+## Parameter estimates:
+## 
+##   Information                                 Expected
+##   Standard Errors                             Standard
+## 
+##                    Estimate  Std.err  Z-value  P(&gt;|z|)
+## Latent variables:
+##   f =~
+##     hand              1.000
+##     number            0.636    0.112    5.694    0.000
+##     word              0.805    0.137    5.895    0.000
+##     gestalt           0.659    0.123    5.348    0.000
+##     triangles         0.963    0.138    6.967    0.000
+##     spatial           1.433    0.211    6.779    0.000
+##     analogies         0.883    0.137    6.443    0.000
+##     photo             1.166    0.160    7.306    0.000
+## 
+## Variances:
+##     hand              7.851    0.870
+##     number            4.261    0.460
+##     word              6.005    0.655
+##     gestalt           5.681    0.604
+##     triangles         3.850    0.471
+##     spatial          10.029    1.188
+##     analogies         4.950    0.563
+##     photo             3.956    0.535
+##     f                 3.709    0.928
+</code></pre>
+
+<pre><code class="r">fitMeasures(fit1, &quot;chisq&quot;)
+</code></pre>
+
+<pre><code>## chisq 
+## 104.9
+</code></pre>
+
+<h4>10. Now run the two-factor model described in Figure 9.1.</h4>
+
+<blockquote>
+<p>Do you find similar fit indices than the ones reported in Table 9.4? What is your value for chi-square and RMSEA? Do you have similar parameter estimates than the ones reported in Table 9.2? Compute your value for the standardized estimate of the path from &ldquo;F2&rdquo; to &ldquo;photo series&rdquo;. Explain your computations.</p>
+</blockquote>
+
+<pre><code class="r">m2 &lt;- &quot;f1 =~ hand + number + word\n       f2 =~ gestalt + triangles + spatial + analogies + photo&quot;
+fit2 &lt;- cfa(m2, sample.cov = covar_matrix, sample.nobs = 200, likelihood = &quot;wishart&quot;)
+summary(fit2, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+</code></pre>
+
+<pre><code>## lavaan (0.5-14) converged normally after  43 iterations
+## 
+##   Number of observations                           200
+## 
+##   Estimator                                         ML
+##   Minimum Function Test Statistic               38.129
+##   Degrees of freedom                                19
+##   P-value (Chi-square)                           0.006
+## 
+## Model test baseline model:
+## 
+##   Minimum Function Test Statistic              495.829
+##   Degrees of freedom                                28
+##   P-value                                        0.000
+## 
+## Full model versus baseline model:
+## 
+##   Comparative Fit Index (CFI)                    0.959
+##   Tucker-Lewis Index (TLI)                       0.940
+## 
+## Loglikelihood and Information Criteria:
+## 
+##   Loglikelihood user model (H0)              -3783.057
+##   Loglikelihood unrestricted model (H1)      -3763.896
+## 
+##   Number of free parameters                         17
+##   Akaike (AIC)                                7600.114
+##   Bayesian (BIC)                              7656.185
+##   Sample-size adjusted Bayesian (BIC)         7602.327
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.071
+##   90 Percent Confidence Interval          0.037  0.104
+##   P-value RMSEA &lt;= 0.05                          0.136
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.072
+## 
+## Parameter estimates:
+## 
+##   Information                                 Expected
+##   Standard Errors                             Standard
+## 
+##                    Estimate  Std.err  Z-value  P(&gt;|z|)   Std.lv  Std.all
+## Latent variables:
+##   f1 =~
+##     hand              1.000                               1.689    0.497
+##     number            1.147    0.181    6.325    0.000    1.937    0.807
+##     word              1.388    0.219    6.324    0.000    2.344    0.808
+##   f2 =~
+##     gestalt           1.000                               1.358    0.503
+##     triangles         1.445    0.228    6.336    0.000    1.961    0.726
+##     spatial           2.029    0.336    6.046    0.000    2.755    0.656
+##     analogies         1.212    0.213    5.702    0.000    1.646    0.588
+##     photo             1.727    0.266    6.505    0.000    2.345    0.782
+## 
+## Covariances:
+##   f1 ~~
+##     f2                1.277    0.327    3.908    0.000    0.557    0.557
+## 
+## Variances:
+##     hand              8.708    0.945                      8.708    0.753
+##     number            2.009    0.417                      2.009    0.349
+##     word              2.917    0.609                      2.917    0.347
+##     gestalt           5.446    0.590                      5.446    0.747
+##     triangles         3.443    0.461                      3.443    0.472
+##     spatial          10.048    1.211                     10.048    0.570
+##     analogies         5.130    0.582                      5.130    0.654
+##     photo             3.500    0.541                      3.500    0.389
+##     f1                2.852    0.844                      1.000    1.000
+##     f2                1.844    0.534                      1.000    1.000
+## 
+## R-Square:
+## 
+##     hand              0.247
+##     number            0.651
+##     word              0.653
+##     gestalt           0.253
+##     triangles         0.528
+##     spatial           0.430
+##     analogies         0.346
+##     photo             0.611
+</code></pre>
+
+<pre><code class="r"># Residuals
+residuals(fit2)
+</code></pre>
+
+<pre><code>## $cov
+##           hand   number word   gestlt trngls spatil analgs photo 
+## hand       0.000                                                 
+## number    -0.089  0.000                                          
+## word      -0.507  0.124  0.000                                   
+## gestalt    0.651 -0.752 -0.520  0.000                            
+## triangles  1.093 -0.366 -0.289  0.107  0.000                     
+## spatial    3.120 -0.049 -0.187 -0.339 -0.075  0.000              
+## analogies  2.165  0.374  0.287  0.109 -0.054  0.286  0.000       
+## photo      1.772 -0.442  0.158  0.218  0.098 -0.036 -0.332  0.000
+## 
+## $mean
+##      hand    number      word   gestalt triangles   spatial analogies 
+##         0         0         0         0         0         0         0 
+##     photo 
+##         0
+</code></pre>
+
+<pre><code class="r">residuals(fit2, &quot;cor&quot;)
+</code></pre>
+
+<pre><code>## $cor
+##           hand   number word   gestlt trngls spatil analgs photo 
+## hand       0.000                                                 
+## number    -0.011  0.000                                          
+## word      -0.051  0.018  0.000                                   
+## gestalt    0.071 -0.116 -0.066  0.000                            
+## triangles  0.119 -0.056 -0.037  0.015  0.000                     
+## spatial    0.218 -0.005 -0.015 -0.030 -0.007  0.000              
+## analogies  0.227  0.056  0.035  0.014 -0.007  0.024  0.000       
+## photo      0.174 -0.061  0.018  0.027  0.012 -0.003 -0.040  0.000
+## 
+## $mean
+##      hand    number      word   gestalt triangles   spatial analogies 
+##         0         0         0         0         0         0         0 
+##     photo 
+##         0
+</code></pre>
+
+<pre><code class="r">residuals(fit2, &quot;standardized&quot;)
+</code></pre>
+
+<pre><code>## $cov
+##           hand   number word   gestlt trngls spatil analgs photo 
+## hand          NA                                                 
+## number    -0.617     NA                                          
+## word      -4.105  1.800     NA                                   
+## gestalt    1.127 -2.334 -1.318     NA                            
+## triangles  2.050 -1.568 -1.008  0.432     NA                     
+## spatial    3.468 -0.113 -0.358 -0.790 -0.273     NA              
+## analogies  3.509  1.132  0.729  0.326 -0.249  0.671     NA       
+## photo      2.996 -2.026  0.529  0.924  0.714 -0.150 -2.049     NA
+## 
+## $mean
+##      hand    number      word   gestalt triangles   spatial analogies 
+##         0         0         0         0         0         0         0 
+##     photo 
+##         0
+</code></pre>
+
+<pre><code class="r"># Calculate r_photo from variances
+inspect(fit2, &quot;sampstat&quot;)
+</code></pre>
+
+<pre><code>## $cov
+##           hand   number word   gestlt trngls spatil analgs photo 
+## hand      11.560                                                 
+## number     3.182  5.760                                          
+## word       3.451  4.663  8.410                                   
+## gestalt    1.928  0.713  1.253  7.290                            
+## triangles  2.938  1.750  2.271  2.770  7.290                     
+## spatial    5.712  2.923  3.410  3.402  5.330 17.640              
+## analogies  3.713  2.150  2.436  2.344  3.175  4.822  7.840       
+## photo      3.978  2.088  3.219  3.402  4.698  6.426  3.528  9.000
+## 
+## $mean
+##      hand    number      word   gestalt triangles   spatial analogies 
+##         0         0         0         0         0         0         0 
+##     photo 
+##         0
+</code></pre>
+
+<pre><code class="r">r_squared &lt;- 1 - (3.5/9)
+sqrt(r_squared)
+</code></pre>
+
+<pre><code>## [1] 0.7817
+</code></pre>
+
+<p>The standardized estimates and the factor loadings are the same. The variances all differ slightly (still within 1 unit).</p>
+
+<h4>11.  Now run a different two-factor model. This time, &ldquo;number&rdquo; and &ldquo;word&rdquo; load on the first factor, all other variables load on the second factor. Look at as many fit indices that you can get. Is this a satisfactory model?</h4>
+
+<pre><code class="r">m3 &lt;- &quot;f1 =~ number + word\n       f2 =~ hand + gestalt + triangles + spatial + analogies + photo&quot;
+fit3 &lt;- cfa(m3, sample.cov = covar_matrix, sample.nobs = 200, likelihood = &quot;wishart&quot;)
+summary(fit3, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+</code></pre>
+
+<pre><code>## lavaan (0.5-14) converged normally after  50 iterations
+## 
+##   Number of observations                           200
+## 
+##   Estimator                                         ML
+##   Minimum Function Test Statistic               26.293
+##   Degrees of freedom                                19
+##   P-value (Chi-square)                           0.122
+## 
+## Model test baseline model:
+## 
+##   Minimum Function Test Statistic              495.829
+##   Degrees of freedom                                28
+##   P-value                                        0.000
+## 
+## Full model versus baseline model:
+## 
+##   Comparative Fit Index (CFI)                    0.984
+##   Tucker-Lewis Index (TLI)                       0.977
+## 
+## Loglikelihood and Information Criteria:
+## 
+##   Loglikelihood user model (H0)              -3777.109
+##   Loglikelihood unrestricted model (H1)      -3763.896
+## 
+##   Number of free parameters                         17
+##   Akaike (AIC)                                7588.218
+##   Bayesian (BIC)                              7644.290
+##   Sample-size adjusted Bayesian (BIC)         7590.432
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.044
+##   90 Percent Confidence Interval          0.000  0.081
+##   P-value RMSEA &lt;= 0.05                          0.564
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.047
+## 
+## Parameter estimates:
+## 
+##   Information                                 Expected
+##   Standard Errors                             Standard
+## 
+##                    Estimate  Std.err  Z-value  P(&gt;|z|)   Std.lv  Std.all
+## Latent variables:
+##   f1 =~
+##     number            1.000                               1.893    0.789
+##     word              1.302    0.187    6.950    0.000    2.464    0.850
+##   f2 =~
+##     hand              1.000                               1.852    0.545
+##     gestalt           0.717    0.133    5.402    0.000    1.329    0.492
+##     triangles         1.033    0.152    6.813    0.000    1.913    0.709
+##     spatial           1.510    0.229    6.586    0.000    2.797    0.666
+##     analogies         0.911    0.147    6.199    0.000    1.687    0.602
+##     photo             1.249    0.176    7.089    0.000    2.313    0.771
+## 
+## Covariances:
+##   f1 ~~
+##     f2                1.900    0.434    4.380    0.000    0.542    0.542
+## 
+## Variances:
+##     number            2.177    0.514                      2.177    0.378
+##     word              2.341    0.823                      2.341    0.278
+##     hand              8.130    0.893                      8.130    0.703
+##     gestalt           5.524    0.593                      5.524    0.758
+##     triangles         3.629    0.462                      3.629    0.498
+##     spatial           9.814    1.181                      9.814    0.556
+##     analogies         4.995    0.568                      4.995    0.637
+##     photo             3.651    0.529                      3.651    0.406
+##     f1                3.583    0.709                      1.000    1.000
+##     f2                3.430    0.901                      1.000    1.000
+## 
+## R-Square:
+## 
+##     number            0.622
+##     word              0.722
+##     hand              0.297
+##     gestalt           0.242
+##     triangles         0.502
+##     spatial           0.444
+##     analogies         0.363
+##     photo             0.594
+</code></pre>
+
+<pre><code class="r">residuals(fit3, type = &quot;cor&quot;)
+</code></pre>
+
+<pre><code>## $cor
+##           number word   hand   gestlt trngls spatil analgs photo 
+## number     0.000                                                 
+## word       0.000  0.000                                          
+## hand       0.157  0.099  0.000                                   
+## gestalt   -0.100 -0.067 -0.058  0.000                            
+## triangles -0.033 -0.036 -0.066  0.031  0.000                     
+## spatial    0.005 -0.027  0.037 -0.028 -0.002  0.000              
+## analogies  0.062  0.023  0.062  0.014 -0.007  0.009  0.000       
+## photo     -0.040  0.015 -0.030  0.041  0.034 -0.003 -0.044  0.000
+## 
+## $mean
+##    number      word      hand   gestalt triangles   spatial analogies 
+##         0         0         0         0         0         0         0 
+##     photo 
+##         0
+</code></pre>
+
+<pre><code class="r">residuals(fit3, type = &quot;standardized&quot;)
+</code></pre>
+
+<pre><code>## $cov
+##           number word   hand   gestlt trngls spatil analgs photo 
+## number        NA                                                 
+## word          NA     NA                                          
+## hand       2.900  1.936     NA                                   
+## gestalt   -1.987 -1.344 -1.278     NA                            
+## triangles -0.895 -1.024 -2.202  0.835     NA                     
+## spatial    0.126 -0.676  0.955 -0.729 -0.074     NA              
+## analogies  1.301  0.496  1.409  0.307 -0.229  0.254     NA       
+## photo     -1.336  0.477 -1.183  1.257  1.457 -0.166 -2.152     NA
+## 
+## $mean
+##    number      word      hand   gestalt triangles   spatial analogies 
+##         0         0         0         0         0         0         0 
+##     photo 
+##         0
+</code></pre>
+
+<ul>
+<li>RMSEA looks good.</li>
+<li>SRMR is small.</li>
+<li>Only one standardized estimate is less than .5</li>
+<li>4 of 8 indicators variances have R<sup>2</sup> &gt; 0.5.</li>
+<li>Only two residual correlations exceed 0.10.</li>
+<li>Model chi-square is not rejected.</li>
+<li>3-4 of the residual correlations are significant.</li>
+</ul>
+
+<p>It certainly is an improvement over the other model.</p>
+
+</body>
+
+</html>
+
