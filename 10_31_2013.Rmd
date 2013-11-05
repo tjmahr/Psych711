@@ -1,0 +1,147 @@
+RMSEA lower bound: want less than 0.05
+
+RMSEA upper bound: want less than 0.10
+
+SRMR: want less than 0.08
+
+
+# Factor analysis
+
+```{r}
+library(foreign)
+library(lavaan)
+library(lmSupport)
+library(psych)
+d <- lm.readDat("data/data_apgar.dat")
+
+m1 <- '
+  apgar ~ anninc
+  gestat ~ anninc
+  smokes ~ anninc
+  prenat ~ anninc
+  wgtgain ~ anninc
+  gender ~ anninc
+'
+
+# For some reason lavaan estimates covariances of endogenous variables
+
+fit1 <- sem(m1, data = d, likelihood = "wishart")
+summary(fit1, standardized = TRUE, fit.measures = TRUE)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Confirmatory factor analysis
+
+We want to see if a latent variable predicts these variables. The latent variable needs a scale. We set `Fsingle` to have the same scale as `visperc`. 
+
+* Endogenous variables are now indicators
+* Distrurbances are now measurement errors.
+* We still estimate the variance of `Fsingle`
+
+## Degrees of Freedom
+
+```
+p = 21
+
+q = 0 causal paths + 
+    0 covariances of exogenous variables + 
+    5 factor loadings (1 is fixed to one) + 
+    1 variances of latent factor + 
+    6 measurement errors 
+q = 12 
+
+df = 9
+```
+
+```{r}
+data_intell <- read.spss("data/Grnt_fem.sav", to.data.frame = TRUE)
+describe(data_intell)
+
+m1 <- '
+  # Latent variable definition.  
+  Fsingle =~ visperc + cubes + lozenges + paragrap + sentence + wordmean 
+  # Fsingle causes these things on the right
+'
+
+m2 <- '
+  # Latent variable definition.  
+  Fsingle =~ cubes + lozenges + paragrap + sentence + wordmean + visperc
+  # Fsingle causes these things on the right
+'
+
+fit1 <- cfa(m1, data = data_intell, likelihood = "wishart")
+fit2 <- cfa(m2, data = data_intell, likelihood = "wishart")
+
+summary(fit1, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+inspect(fit1, "sampstat")
+fitted(fit1)
+resid(fit1)
+resid(fit1, type = "cor")
+resid(fit1, type = "standardized")
+
+summary(fit2, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+
+
+```
+
+This is a very poor model.
+
+Don't get a test of estimate for the path we fixed to one.
+
+We say "visual perception loads on to the factor".
+
+The estimates change if the scale of the latent factor change.
+
+
+
+
+
+## Two factor model
+
+```
+p = 21
+q = 0 + 1 + 4 + 2 + 6 = 13
+```
+
+```{r}
+
+
+m3 <- '
+  spa =~ visperc + cubes + lozenges
+  ver =~  paragrap + sentence + wordmean
+'
+
+fit3 <- cfa(m3, data = data_intell, likelihood = "wishart")
+
+summary(fit3, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+fitted(fit3)
+resid(fit3)
+resid(fit3, type = "cor")
+resid(fit3, type = "standardized")
+
+source("power.r")
+nrow(data_intell)
+not_close_fit(df=8, n=73)
+close_fit(df=8, n=73)
+```
+
+
+
+
+
+
+
+
