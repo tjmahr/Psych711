@@ -7,9 +7,14 @@ Model the data
 library(lmSupport)
 library(ggplot2)
 library(lavaan)
-install.packages("OpenMx")
-library(OpenMx)
+rmsea <- function(...) fitMeasures(..., "rmsea")
+chisq <- function(...) fitMeasures(..., "chisq")
+
 d <- lm.readDat("data/data_apgar.dat")
+data_subset<-d[c("apgar", "gestat", "smokes", "anninc", "prenat")]
+covmatrix<-cov(data_subset) 
+covmatrix
+
 describe(d)
 # Predict APGAR from weight gain
 m1 <- lm(apgar ~ wgtgain, d)
@@ -56,6 +61,7 @@ cov = r * SD1 * SD2
 
 
 Covariance matrix has 10 pieces of information. Correlation matrix has 6 pieces of information.
+
 ```{r}
 # Observed correlation matrix
 d <- subset(d, select=c(apgar, gestat, smokes, wgtgain))
@@ -111,6 +117,7 @@ fitted(fit)
 # difference between the two covariance matrices
 resid(fit) 
 ```
+
 The model perfectly replicated the observed covariance matrix.
 
 Minimum function test statistic is a chi-squared test statistic.
@@ -130,12 +137,12 @@ var(d$gestat) # 29.02
 # Explaining 31% of the variance
 1 - (20.003 / 29.02)
 
-
 apgar_variance <- fitted(fit)$cov["apgar", "apgar"]
 # Disturbances in APGAR: 
 apgar_distrurbances <- 1.912
 
-R_squared <- 1 - (apgar_distrurbances / apgar_variance)
+# R squared
+1 - (apgar_distrurbances / apgar_variance)
 R_squared
 
 
@@ -182,3 +189,238 @@ summary(fit2, standardized=T)
 ```
 
 The weird model has 1 for all the disturbances in the standardized solution. Chi-squared = 0. 
+
+
+
+
+
+
+***
+
+Sept. 26, 2013
+
+### Why is the dumb model dumb?
+
+We can feed sample covariances into lavaan, so we have P=10 independent pieces of information. 
+
+```{r}
+cov(d)
+lower.tri(cov(d), diag = TRUE)
+```
+
+But we estimate Q=10 coefficients:
+
+* Number of path coefficents: 5
+* Unanalyzed relationships: 1
+* Vars of exogenous variance: 2
+* Vars of disturbances: 2
+
+### P < Q: Under-identified models
+
+can't even come up with path coefficients for these models.
+
+### P = Q: Just-identified (fully saturated) models
+
+by definition, you will fully replicate the sample covariance matrix and have chi-squared = 0. You do get path coefficients, however, and levels of statistical significance. On the other hand, you could have done this analysis from regression coefficients.
+
+### P > Q: Over-identified models
+
+We want this. These are more elegant, assume a reduced number of causal paths.
+
+Model 2
+
+Set smokes-apgar and wgtgain-gestat paths to 0.
+
+```{r}
+
+m2 <- '
+      # regressions
+      gestat ~ smokes
+      apgar ~ wgtgain + gestat
+      # residual correlations
+      smokes ~~ wgtgain
+      '
+
+fit <- sem(m2, data=d, likelihood="wishart")
+summary(fit, standardized=T)
+# Data's cov
+inspect(fit, "sampstat")
+# Model's cov
+fitted(fit)
+# difference between the two covariance matrices
+resid(fit) 
+
+```
+
+We have to reject this model because the deviance between the two covariance matrices is too big. The p-value tells us whether the deviance is significant.
+
+```{r}
+fitMeasures(fit, "rmsea")
+```
+
+We are falling short of our the ideal of having 10 participants for each parameter estimated.
+
+## Two fit indicators
+
+RMSEA is satisfactory when under 0.05. Chi-squared is unsatisfactory when under 0.05.
+
+
+
+
+
+## Independence Model
+
+Four perfectly orthogonal, independent variables. Have to fix the covariances to zero.
+
+```{r}
+
+m3 <- '
+  smokes ~~ 0*wgtgain
+  smokes ~~ 0*gestat
+  smokes ~~ 0*apgar
+  wgtgain ~~ 0*gestat
+  wgtgain ~~ 0*apgar
+  apgar ~~ 0*gestat'
+
+fit <- sem(m3, data=d, likelihood="wishart")
+summary(fit)
+# Data's cov
+inspect(fit, "sampstat")
+# Model's cov
+fitted(fit)
+# difference between the two covariance matrices
+resid(fit) 
+rmsea(fit)
+```
+
+P = 10, Q = 0 + 0 + 4 + 0, df = 6
+
+Model                     Chi-squared
+Just-identified model     0
+Apgar2                    in-between the extremes
+Independence model        79.20
+
+Chi^2 = 79.20
+
+
+
+```{r}
+d <- lm.readDat("data/data_apgar.dat")
+d$anninc <- d$anninc / 10
+m4 <- '
+  gestat ~ smokes
+  apgar ~ prenat + gestat + smokes + anninc
+  prenat ~ anninc'
+fit <- sem(m4, data = d, likelihood = "wishart")
+fit
+summary(fit, standardized = TRUE, fit.measures = TRUE)
+
+inspect(fit, "sampstat")
+fitted(fit)
+resid(fit) 
+rmsea(fit)
+fitMeasures(fit)
+```
+
+fit
+Chi-squared = 2.87, p = 0.413, satisfactory model
+rmsea = 0, bc chi^2 < df
+
+
+
+
+
+
+
+
+
+
+```{r}
+m5 <- '
+  gestat ~ smokes
+  apgar ~ prenat + gestat
+  prenat ~ anninc'
+fit_m5 <- sem(m5, data = d, likelihood = "wishart")
+fit_m5
+summary(fit_m5, standardized = TRUE)
+
+inspect(fit_m5, "sampstat")
+fitted(fit_m5)
+resid(fit_m5) 
+rmsea(fit_m5)
+str(as.list(fitMeasures(fit_m5)))
+parTable(fit_m5)
+
+m5c <- '
+  # Regressions
+  gestat ~ a*smokes
+  apgar ~ d*prenat + b*gestat
+  prenat ~ c*anninc
+  # Define indirect effects
+  ab := a*b
+  cd := c*d
+'
+fit_m5c <- sem(m5c, data = d, likelihood = "wishart")
+summary(fit_m5c, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+```
+
+Indirect effects now show up under Defined Parameters. RSquare shows the percentage of variance explained. 1 - RSquare is given in the fifth column, in the Variances section.
+
+
+
+
+
+
+p = 15, q = 4 + 1 + 2 + 3, df = 5
+
+Chi-squared of second model increased S-A and $-A paths were forced to be 0.
+
+Chi-squared difference test
+
+```{r}
+chisq(fit_m5) - chisq(fit)
+anova(fit, fit_m5)
+```
+
+The decrease in fit (increased deviance) is not significant. Conclude that m5 is more satistfacory than m4. The parameter estimates make sense. It has a non-significant chi-squared.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+library(hof)
+library(proto)
+Person <- function(name, age) structure(list(name = name, age = age), class = "Person")
+stooges <- list(Person("moe", 40), Person("larry", 50), Person("curly", 60))
+# pluck names for a list of listy objects
+the_names <- sapply(stooges, pluck("name"))
+the_ages <- sapply(stooges, pluck("age"))
+pluck("age")(stooges[[1]])
+stooges2 <- Map(Person, the_names, the_ages)
+# zip them together
+Map(c, the_names, the_ages)
+
+library(functional)
+add <- function(x, y) x + y
+add5 <- Curry(add, x=5)
+add5((1:15))
+```

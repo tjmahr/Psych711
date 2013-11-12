@@ -1,0 +1,59 @@
+Questions about Rex Kline's book (for Tue., Nov. 12)
+===============================================================================
+
+> Read Kline (pp. 245-261), Tabachnick and Fidell (pp. 734-749), and Kline (pp. 118-122). Be prepared to answer the questions below. Please also do the data analysis exercise described below. 
+ 
+#### 1. It has been shown that there is a set of infinitely many equivalent models for standard multifactor CFA models. Explain why.
+
+The covariance between the factors can be replaced by one or more factors. These factors  have unit-weighted loadings on all the indicators. Here's an example of such a replacement:
+
+![Figure from Raykov and Marcoulides (2001)](figure/09_infinite_models.PNG)
+
+#### 2. When analyzing a hierarchical CFA model, how many first-order factors do we need for the model to be identified?
+
+
+#### 3. Which types of models are nowadays used to examine the convergent and discriminant validity of factor: "correlated trait-correlated method models" or "correlated uniqueness models"? Why is one type no longer used?
+
+
+#### 4. Explain to a novice the different forms of measurement invariance: (1) Configural invariance, (2) Construct-level metric invariance, (3) Invariance of construct variances and covariances, (4) Invariance of residual variances and covariances
+
+
+#### 5. What fit index should we look at when we test for measurement invariance?
+
+
+#### 6. The unstandardized factor loadings in the bottom half of Table 9.10 are the same for the two samples, but the standardized loadings are not. And yet, the parameters were forced to be equal across samples. Do you think the standardized loadings are reported incorrectly?
+
+
+#### 7. "We can test all sorts of models (path analysis models, CFA models, structural regression models) for invariance across samples." True or false?
+
+
+#### 8. According to Tabachnick and Fidell, we are estimating 23 free parameters in the CFA model shown in Figure 14.8 (p. 733). Of these 23 parameters, 11 are regression coefficients (factor loadings) and 11 are variances. But aren't we estimating 9 regression coefficients and 13 variances (11 variances of measurement errors and 2 variances of exogenous factors)?
+
+
+#### 9. What are the "standardized residuals" reported on top of page 738 in Tabachnick and Fidell's book? How do we interpret them? If you don't remember reread chapter 6 of Kline's book.
+
+
+#### 10. Why do Tabachnick and Fidell conclude that the CODING variable is not related to the PERFORMANCE factor, as hypothesized in Figure 14.8?
+
+
+#### 11. Does the addition of a path predicting comprehension from the Performance factor improve the fit of the CFA model discussed by Tabachnick and Fidell?
+
+
+#### 12. The model modifications made by Tabachnik and Fidell were made post hoc, were purely data driven and therefore capitalized on chance. What would ideally be the next step?
+
+
+#### 13. There are more and more claims to avoid passive voice in the writing of scientific articles (see http://allendowney.com/essays/passive.html for an example). In fact, most journals now explicitly encourage authors to use active voice. Do Tabachnick and Fidell follow this advice in their sample results section on pages 748-749?
+
+
+#### 14. "In both path analysis models and (fully latent) structural regression models, the disturbances reflect omitted causes and measurement error." True or false?
+
+
+#### 15. Do a confirmatory factor analysis using the "carnet" data file I sent you last week ("data_carnet3.sav"). Analyze the variables mpn1 to mpn10 (N = 98). Start out with a one-factor model. You may have to adjust the starting values. I had good luck when I used 20 as a starting value for the variances of the factor and of the measurement errors. Is this model satisfactory?
+
+
+#### 16. Now test a three-factor model. The researchers hypothesize that the indicators mpn2, mpn4, mpn6, and mpn9 are caused by factor 1, that the indicators mpn1, mpn7, and mpn10 are caused by factor 2, and that the indicators mpn3, mpn5, and mpn8 are caused by factor 3. Be prepared to draw a graphic representation of the model with the (standardized) factor loadings and the correlations between the three factors. Is this model satisfactory?
+
+
+#### 17. If you concluded that the three-factor model is unsatisfactory, run a model in which you "fix" the problem you identified in the previous step. Be prepared to draw a graphic representation of the model with the (standardized) factor loadings and the correlations between the factors. Is your new model satisfactory?
+
+ 
