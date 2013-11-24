@@ -41,7 +41,7 @@ The just-identified mean structure will precisely estimate the means of the obse
 + HLM handles missing data and unbalanced data more flexibly than SEM.
 + SEM provides indices for evaluating whole-model fit.
 + SEM can handle multiple growth curves (multiple outcomes) simultaneously in a single model.
-+ SEM can model factors as outcome variables.
++ SEM can model factors as outcome variables. It can use factors as predictor variables as well, whereas HLM cannot, and it is generally easier to compute indirect effects among these latent factors.
 
 
 
