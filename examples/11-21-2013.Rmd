@@ -1,0 +1,118 @@
+```{r, echo = FALSE, message = FALSE}
+library(lavaan)
+```
+
+
+Mean structures
+===============================================================================
+
+```{r}
+d <- read.table(file="../data/data_apgar.dat", header = TRUE, row.names = "SubID")
+psych::describe(d)
+d$one <- 1
+```
+
+## Use regression analysis to get the mean
+
+### Get the mean of X
+
+The coefficient for `one` is the mean of X:
+
+```{r}
+reg1 <- lm(smokes ~ 0 + one, data = d)
+summary(reg1)
+```
+
+Using the intercept term instead of regressing onto `one` yields an equivalent model.
+
+```{r}
+reg1b <- lm(smokes ~ 1, data = d)
+```
+
+### Get the mean of Y
+
+The mean of Y is the total effect of `one` on Y:
+
+```{r}
+reg2 <- lm(gestat ~ 0 + smokes + one, data = d)
+summary(reg2)
+# Indirect effect
+one_to_smokes <- reg1$coefficients[["one"]]
+smokes_to_gestat <- reg2$coefficients[["smokes"]]
+# Direct effect
+one_to_gestat <- reg2$coefficients[["one"]]
+# Compute mean
+one_to_smokes * smokes_to_gestat + one_to_gestat
+mean(d$gestat)
+```
+
+As above, we get equivalent models by using an intercept term instead of regressing onto `one`.
+
+```{r}
+reg2b <- lm(gestat ~ 1 + smokes, data = d)
+# Don't even need the "~ 1" part if there is another predictor.
+reg2c <- lm(gestat ~ smokes, data = d)
+```
+
+## Using mean structures in `lavaan`
+
+```{r, tidy = FALSE}
+m2 <- '
+  gestat ~ smokes
+  apgar ~ wgtgain
+  apgar ~ gestat'
+fit2 <- sem(m2, data = d, likelihood = "wishart")
+summary(fit2, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+residuals(fit2, type = "cor")
+residuals(fit2, type = "standardized")
+```
+
+Model `apgar11` tries to add a mean-structure to `apgar2`. `lavaan` does not automatically estimate the covariance between the exogenous variables, so have to manually specify it, as in model `apgar12`.
+
+```{r, tidy = FALSE}
+m11 <- '
+  gestat ~ smokes
+  apgar ~ wgtgain
+  apgar ~ gestat
+  smokes + wgtgain + gestat + apgar ~ 1'
+fit11 <- sem(m11, data = d, likelihood = "wishart")
+summary(fit11, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+residuals(fit11, type = "cor")
+residuals(fit11, type = "standardized")
+```
+
+Specify the covariance between the exogenous variables.
+
+```{r, tidy = FALSE}
+m12 <- '
+  gestat ~ smokes
+  apgar ~ wgtgain
+  apgar ~ gestat
+  smokes ~~ wgtgain
+  smokes + wgtgain + gestat + apgar ~ 1'
+fit12 <- sem(m12, data = d, likelihood = "wishart")
+summary(fit12, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+residuals(fit12, type = "cor")
+residuals(fit12, type = "standardized")
+```
+
+We can also use `meanstructure = TRUE` instead of specifying all the intercept terms.
+
+```{r, tidy = FALSE}
+m13 <- '
+  gestat ~ smokes
+  apgar ~ wgtgain
+  apgar ~ gestat
+  smokes ~~ wgtgain'
+fit13 <- sem(m13, data = d, likelihood = "wishart", meanstructure = TRUE)
+summary(fit13, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+residuals(fit13, type = "cor")
+residuals(fit13, type = "standardized")
+```
+
+***
+
+```{r}
+sessionInfo()
+```
+
