@@ -1,0 +1,280 @@
+```{r, echo = FALSE, message = FALSE}
+library(foreign)
+library(lavaan)
+library(semPlot)
+```
+
+Questions about Rex Kline's book (for Tues., Nov. 26)
+===============================================================================
+
+> Read chapter 11 of Kline's book be prepared to answer the questions below. Please also do the data analysis exercise described at the end.
+
+#### 1. Assuming you include a mean structure, how do you determine the model-implied (predicted) mean for a given variable?
+
+The model-implied mean of X is the total effect of the constant variable ("1") on X. For an endogenous variable, this is the direct effect ("the intercept") plus the indirect effects (e.g., the mean of the exogenous variable Y ~ 1 times the path coefficient X ~ Y.)
+
+
+
+#### 2. What is the mean of a variable assumed to be if it is excluded from the mean structure?
+
+Zero.
+
+
+
+#### 3. "A heavily over-identified covariance structure can compensate for a mildly under-identified mean structure, and vice versa." True or false?
+
+False. "The identification status of a mean structure must be considered separately from that of the covariance structure" (p. 303).
+
+
+
+#### 4. What are the implications of adding a just-identified mean structure for model fit? 
+
+> In other words: If you add a just-identified mean structure, does this usually lead to A) better, B) worse, or C) equal model fit compared to the same model without mean structure?
+
+The just-identified mean structure will precisely estimate the means of the observed variables. The covariance structure will not be affected by the added mean structure, so the model will have C) equal model fit compared to the same model without the mean structure. 
+
+
+
+#### 5. Compare the advantages and disadvantages of HLM and SEM for the estimation of latent growth models.
+
++ SEM growth models require **time-structured data**. This means that the subjects are measured with uniform inter-measurement intervals. HLM does not require time-structured data.
++ HLM handles missing data and unbalanced data more flexibly than SEM.
++ SEM provides indices for evaluating whole-model fit.
++ SEM can handle multiple growth curves (multiple outcomes) simultaneously in a single model.
++ SEM can model factors as outcome variables.
+
+
+
+#### 6. When we specify a latent growth model in SEM, do we usually allow the "Initial Status" factor and the "Linear Change" factor to covary? If not, why not? If yes, what is the meaning of this covariance?  
+
+Yes. The covariance describes how much the Initial Status predicts later rates of Linear Change. It makes sense that the baseline level would be correlated with later changes away from that baseline level.
+
+
+
+#### 7. Compare latent growth analysis in SEM with more traditional data analysis techniques, such as "repeated measures analysis of variance" (within-subject ANOVA), "multivariate analysis of variance" (MANOVA). What assumptions do these different techniques make for the measurement errors? How do they treat individual differences in growth trajectories?
+
+SEM provides a mechanism for modeling measurement error, and we can allow measurement errors to covary with each other. ANOVA assumes that error variance is constant and independent (tough assumptions for repeated measures within subjects). MANOVA requires less strict assumptions. "Both ANOVA and MANOVA treat individual differences in growth trajectories as error variance" (p. 307) whereas latent growth models can model such differences.
+
+
+
+#### 8. What would we do, if we wanted to estimate a curvilinear trend in addition to the linear trend specified in Figure 11.2? What would be the df of the model that includes also a curvilinear trend?
+
+With 4 observations, P = (4 * 7) / 2 = 14.
+
+Figure 11.2 has:
+
+```
+2 factor variances
+4 measurement error variances
+1 factor covariance
+3 error covariances
+2 factor means
+Q = 12 
+df = 14 - 12 = 2
+```
+
+Adding the quadratic change factor would also add:
+
+```
+1 factor mean
+1 factor variance
+2 factor covariances
+Q = 12 + 4 = 16
+df = 14 - 16 = -2
+```
+
+#### 9. Consider the "intell" data we analyzed several weeks ago. Be prepared to draw on the blackboard a multi-group measurement model that allows us to test for configural invariance.
+
+> As a reminder, we tested a CFA model with two factors and three indicators per factor. The factor "spatial" was assumed to influence the indicators "visperc", cubes", and "lozenges", and the factor "verbal" was assumed to influence the indicators "paragraph", "sentence", and "wordmean". There were two samples, women ("Grnt_fem.sav") and men ("Grnt_mal.sav"). We already did that. Just redraw the model we drew several weeks ago. What are the # of observations, # of estimated parameters, and df of this model? Is this model at least just-identified?
+
+```{r, warning = FALSE, tidy = FALSE}
+d_intell_fem <- read.spss("../data/Grnt_fem.sav", to.data.frame = TRUE)
+d_intell_mal <- read.spss("../data/Grnt_mal.sav", to.data.frame = TRUE)
+d_intell_fem$gender <- "female"
+d_intell_mal$gender <- "male"
+d <- rbind(d_intell_fem, d_intell_mal)
+# Configural invariance model
+m_form <- '
+  spatial =~ visperc + cubes + lozenges 
+  verbal =~ paragrap + sentence + wordmean'
+h_form <- cfa(m_form, data = d, likelihood = "wishart", group = "gender", 
+              meanstructure = FALSE)
+summary(h_form, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+# semPaths(h_form, layout = "tree", whatLabels = "est")
+```
+
+```
+P = (6 * 7) / 2 * 2 samples = 42
+2 factor variances
+1 factor covariance
+4 factor loadings
+6 measurement errors
+Q = 13 * 2 samples = 26
+df = 42 - 26 - 16
+```
+
+The model is over-identified.
+
+
+
+#### 10. Modify this model to test for "construct-level metric invariance". 
+
+> If you don't remember what this is, reread chapter 9 of Kline's book. You will have to constrain certain parameters to be the same across groups. Do so by assigning to them the same lower-case letter in both samples. What are the # of observations, # of estimated parameters, and df of this model? Is this model at least just-identified?
+
+Construct-level metric invariance specifies equal factor loadings across both groups. We have to estimate four fewer parameters because the same factor loadings will be used for each sample. Therefore, P = 42, Q = 26 - 4 = 22, df = 16 + 4 = 20. The model is overidentified.
+
+```{r, tidy = FALSE}
+m_lambda <- '
+  spatial =~ visperc + c(a, a)*cubes + c(b, b)*lozenges 
+  verbal =~ paragrap + c(c, c)*sentence + c(d, d)*wordmean'
+h_lambda <- cfa(m_lambda, data = d, likelihood = "wishart", group = "gender", 
+              meanstructure = FALSE)
+summary(h_lambda, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+```
+
+The chi-square difference test indicates that the fit is not significantly worse, so H-lambda is retained.
+
+```{r}
+anova(h_form, h_lambda)
+```
+
+
+#### 11. Add a mean structure to the previous model. In each sample, specify a path from the constant to each of the six indicators and to each of the two factors. 
+
+```{r, tidy = FALSE}
+# Write out the model syntax long-hand
+m_lambda_1s <- '
+  spatial =~ visperc + c(a, a)*cubes + c(b, b)*lozenges 
+  verbal =~ paragrap + c(c, c)*sentence + c(d, d)*wordmean
+  paragrap + sentence + wordmean + visperc + cubes + lozenges ~ 1
+  spatial + verbal ~ 1'
+# I think the under-indentified mean structure upsets lavaan
+h_lambda_1s <- cfa(m_lambda_1s, data = d, likelihood = "wishart", group = "gender")
+summary(h_lambda_1s, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+```
+
+> What are the # of observations, # of estimated parameters, and df of the covariance structure? Is the covariance structure at least just-identified? 
+
+The covariance structure is unaffected. P = 42, Q = 22, df = 20. It is over-identified.
+
+> What are the # of observations, # of estimated parameters, and df of the mean structure? Is the mean structure at least just-identified? 
+
+```
+P = 6 means * 2 samples = 12
+Q = (6 indicators means + 2 factor means) * 2 samples = 16
+df = -4
+```
+
+The mean structure is under-identified.
+
+> What are the # of observations, # of estimated parameters, and df of the total model? Is the total model at least just-identified?
+
+```
+P = 54
+Q = 22 covariance parameters + 16 mean parameters = 38
+df = 16
+```
+
+The total model is over-indentified.
+
+
+
+#### 12. Modify the model so that we can test whether there are gender differences on the two factors. You'll find detailed instructions on the bottom half of page 317 and on the bottom half of page 318 in Kline's book. Make sure both the covariance structure and the mean structure are at least just-identified. Once you are done, determine the df for the entire model.  
+
+
+
+
+
+
+
+
+
+
+
+
+#### 13. Respecify the model as a MIMIC model in which the two factors are regressed on a dichotomous cause indicator "gender".  What are the # of observations, # of estimated parameters, and df of this model? Is this model at least just-identified?
+
+
+
+#### 14. A MIMIC model to test for factor differences across groups makes a certain assumption, and yet does not allow us to test for this assumption. What is this assumption?
+
+
+
+#### 15. The manager of Abercrombie & Fitch would like to test whether sales increased over a 4-year period. She looks at the yearly sales in 51 stores in two regions (West and East). The covariance matrix and the means are below. Be prepared to draw the model and to show your computations for the df. Using lavaan, run a latent growth model according to the example in Figure 11.2 (but without correlations between the measurement errors). What conclusions can the manager draw: Is there a linear increase in sales?
+
+
+```{r}
+covmatrix <- matrix(
+  c(6.502500, 4.793490, 4.652985, 4.373760, 0.199410,
+    4.793490, 5.808100, 4.521401, 4.391984, 0.221720,
+    4.652985, 4.521401, 6.604900, 5.165700, 0.242351,
+    4.373760, 4.391984, 5.165700, 7.182400, 0.295872,
+    0.199410, 0.221720, 0.242351, 0.295872, 0.052900),
+  nrow=5, dimnames=list(
+    c("sales1", "sales2", "sales3", "sales4", "region"),
+    c("sales1", "sales2", "sales3", "sales4", "region"))
+  )
+ 
+myDataMeans <- c(6.08, 7.22, 8.14, 9.38, 0.48)
+names(myDataMeans) <- c("sales1", "sales2", "sales3", "sales4","region")
+```
+
+
+ 
+
+
+
+#### 16. The manager also wants to know if there are differences between the two regions. Were sales higher in one region than in the other at year 1? And did the sales in one region increase faster than in the other region? Using lavaan, run a latent growth model according to the example in Figure 11.3 (replace "gender" by "region" and drop "family status" from the model). Be prepared to draw the model and to show your computations for the df. What conclusions can the manager draw?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+***
+
+Questions 15 and 16 are tricky.
+
+I think that for question 15, you have to specify a covariance matrix that contains only the four variables used in this analysis. You can do this as follows:
+
+```{r}
+subset <- c("sales1", "sales2", "sales3", "sales4")
+   covmatrix_s <- covmatrix[subset, subset]
+```
+
+
+
+
+Further, you have to tell lavaan what the means are. I used the following script:
+```{r}
+fit1 <- sem (m1, likelihood = "wishart", sample.cov = covmatrix_s, sample.nobs = 51,
+            sample.mean = c(6.08, 7.22, 8.14, 9.38))
+```
+
+
+... but I am sure there are more elegant ways to do this.
+
+Finally, don't forget to specify that the path from the "one" to the observed variables should be zero. One way to do this is to include the following lines in the model statement:
+    sales1 ~ 0
+    sales2 ~ 0
+    sales3 ~ 0
+    sales4 ~ 0
+
+
+In question 16, you then have to use the full (5 x 5) covariance matrix and to read in five (rather than four) means.
+
+Enjoy!
+ 

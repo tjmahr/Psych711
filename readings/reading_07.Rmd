@@ -3,7 +3,7 @@ source("../power.r")
 print.PowerSummary <- function(...) str(...)
 ```
 
-Questions about Rex Kline's book (for Tue., Oct. 22)
+Questions about Rex Kline's book (for Tues., Oct. 22)
 ===============================================================================
 
 > Read pages 154-175, 182 (summary), and 222-228 in Kline's book. Be prepared to answer the questions below WITHOUT LOOKING AT YOUR NOTES. 

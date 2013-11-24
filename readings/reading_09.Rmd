@@ -1,8 +1,8 @@
-```{r, echo=FALSE}
+```{r, echo = FALSE}
 options(width = 100)
 ```
 
-Questions about Rex Kline's book (for Tue., Nov. 12)
+Questions about Rex Kline's book (for Tues., Nov. 12)
 ===============================================================================
 
 > Read Kline (pp. 245-261), Tabachnick and Fidell (pp. 734-749), and Kline (pp. 118-122). Be prepared to answer the questions below. Please also do the data analysis exercise described below. 
