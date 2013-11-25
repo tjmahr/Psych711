@@ -1,7 +1,4 @@
-
-
-
-Questions about Rex Kline's book (for Tue., Nov. 12)
+Questions about Rex Kline's book (for Tues., Nov. 12)
 ===============================================================================
 
 > Read Kline (pp. 245-261), Tabachnick and Fidell (pp. 734-749), and Kline (pp. 118-122). Be prepared to answer the questions below. Please also do the data analysis exercise described below. 
@@ -104,17 +101,18 @@ library(lavaan)
 ```
 
 ```
-## Loading required package: MASS
-## Loading required package: boot
-## Loading required package: mnormt
-## Loading required package: pbivnorm
-## Loading required package: quadprog
-## This is lavaan 0.5-14
+## Warning: package 'lavaan' was built under R version 3.0.2
+```
+
+```
+## This is lavaan 0.5-15
 ## lavaan is BETA software! Please report any bugs.
 ```
 
 ```r
 library(foreign)
+# Fit huge correlation matrices
+options(width = 100)
 d <- read.spss("../data/data_carnet3.sav", to.data.frame = TRUE)
 ```
 
@@ -152,7 +150,7 @@ summary(fit1, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
 
 ```
-## lavaan (0.5-14) converged normally after  44 iterations
+## lavaan (0.5-15) converged normally after  44 iterations
 ## 
 ##   Number of observations                            98
 ## 
@@ -167,7 +165,7 @@ summary(fit1, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ##   Degrees of freedom                                45
 ##   P-value                                        0.000
 ## 
-## Full model versus baseline model:
+## User model versus baseline model:
 ## 
 ##   Comparative Fit Index (CFI)                    0.805
 ##   Tucker-Lewis Index (TLI)                       0.750
@@ -179,13 +177,13 @@ summary(fit1, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ## 
 ##   Number of free parameters                         20
 ##   Akaike (AIC)                                6182.749
-##   Bayesian (BIC)                              6234.448
-##   Sample-size adjusted Bayesian (BIC)         6171.291
+##   Bayesian (BIC)                              6234.243
+##   Sample-size adjusted Bayesian (BIC)         6171.090
 ## 
 ## Root Mean Square Error of Approximation:
 ## 
 ##   RMSEA                                          0.150
-##   90 Percent Confidence Interval          0.119  0.181
+##   90 Percent Confidence Interval          0.119  0.182
 ##   P-value RMSEA <= 0.05                          0.000
 ## 
 ## Standardized Root Mean Square Residual:
@@ -318,7 +316,7 @@ summary(fit2, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
 
 ```
-## lavaan (0.5-14) converged normally after  99 iterations
+## lavaan (0.5-15) converged normally after  99 iterations
 ## 
 ##   Number of observations                            98
 ## 
@@ -333,7 +331,7 @@ summary(fit2, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ##   Degrees of freedom                                45
 ##   P-value                                        0.000
 ## 
-## Full model versus baseline model:
+## User model versus baseline model:
 ## 
 ##   Comparative Fit Index (CFI)                    0.944
 ##   Tucker-Lewis Index (TLI)                       0.921
@@ -345,14 +343,14 @@ summary(fit2, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ## 
 ##   Number of free parameters                         23
 ##   Akaike (AIC)                                6130.690
-##   Bayesian (BIC)                              6190.145
-##   Sample-size adjusted Bayesian (BIC)         6117.514
+##   Bayesian (BIC)                              6189.909
+##   Sample-size adjusted Bayesian (BIC)         6117.283
 ## 
 ## Root Mean Square Error of Approximation:
 ## 
-##   RMSEA                                          0.084
+##   RMSEA                                          0.085
 ##   90 Percent Confidence Interval          0.043  0.122
-##   P-value RMSEA <= 0.05                          0.080
+##   P-value RMSEA <= 0.05                          0.079
 ## 
 ## Standardized Root Mean Square Residual:
 ## 
@@ -497,7 +495,7 @@ summary(fit3, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
 
 ```
-## lavaan (0.5-14) converged normally after 102 iterations
+## lavaan (0.5-15) converged normally after 102 iterations
 ## 
 ##   Number of observations                            98
 ## 
@@ -512,7 +510,7 @@ summary(fit3, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ##   Degrees of freedom                                45
 ##   P-value                                        0.000
 ## 
-## Full model versus baseline model:
+## User model versus baseline model:
 ## 
 ##   Comparative Fit Index (CFI)                    0.975
 ##   Tucker-Lewis Index (TLI)                       0.963
@@ -524,14 +522,14 @@ summary(fit3, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ## 
 ##   Number of free parameters                         25
 ##   Akaike (AIC)                                6120.076
-##   Bayesian (BIC)                              6184.700
-##   Sample-size adjusted Bayesian (BIC)         6105.754
+##   Bayesian (BIC)                              6184.443
+##   Sample-size adjusted Bayesian (BIC)         6105.502
 ## 
 ## Root Mean Square Error of Approximation:
 ## 
 ##   RMSEA                                          0.058
-##   90 Percent Confidence Interval          0.000  0.101
-##   P-value RMSEA <= 0.05                          0.371
+##   90 Percent Confidence Interval          0.000  0.102
+##   P-value RMSEA <= 0.05                          0.368
 ## 
 ## Standardized Root Mean Square Residual:
 ## 

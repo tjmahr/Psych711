@@ -1,0 +1,79 @@
+Lecture 11/14/13 - Structural Regression
+===============================================================================
+
+Make a structural regression model.
+
+```{r, tidy = FALSE, warning = FALSE, message = FALSE}
+options(width = 100)
+library(lavaan)
+library(foreign)
+library(semPlot)
+d <- read.spss("../data/data_carnet3.sav", to.data.frame = TRUE)
+# Keep just the `mpn` columns
+d <- d[, paste("mpn", 1:10, sep = "")]
+m <- "
+  F1 =~ mpn2 + mpn4 + mpn6 + mpn9
+  F2 =~ mpn1 + mpn7 + mpn10
+  F3 =~ mpn3 + mpn5 + mpn8
+  F2 ~ F3 + F1
+  F3 ~ F1"
+fit <- sem(m, d, likelihood = "wishart")
+summary(fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+```
+
+This model has the same chi-square as the `m2` model from above; it is an equivalent model. We basically turn covariance paths to causal paths. We need to check whether the structural part of the model (the paths among the factors) is just-identified or over-identified. The other part of the model is the measurement component of the model.
+
+If we fix one path to zero in the structural part of the model, the chi-square of the model will increase. 
+
+If you start out with a poor measurement model, your structural model can only be worse.
+
+```{r, tidy = FALSE}
+m4 <- "
+  F1 =~ mpn2 + mpn4 + mpn6 + mpn9
+  F2 =~ mpn1 + mpn7 + mpn10
+  F3 =~ mpn3 + mpn5 + mpn8
+  F3 ~ F1
+  F2 ~ F3"
+fit <- sem(m4, d, likelihood = "wishart")
+summary(fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+```
+
+```{r, tidy = FALSE}
+m5 <- "
+  F1 =~ mpn2 + mpn4 + mpn6 + mpn9
+  F3 =~ mpn3 + mpn5 + mpn8
+  F3 ~ F1
+  mpn7 ~ F3"
+fit <- sem(m5, d, likelihood = "wishart")
+summary(fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+```
+
+```
+p = 36
+q = 5 loadings + 7 measurement errors + 2 causal paths + 1 exo variance + 2 disturbances of endogenous
+df = 19
+```
+
+Suppose that path from F2 to mpn7 is fixed to 1. Then disturbance of F2 and measurement error of mpn7 are the same thing.
+
+```{r, tidy = FALSE}
+m6 <- "
+  F1 =~ mpn2 + mpn4 + mpn6 + mpn9
+  F3 =~ mpn3 + mpn5 + mpn8
+  F2 =~ mpn7
+  F3 ~ F1
+  F2 ~ F3
+  mpn7 ~~ 11.42*mpn7
+"
+fit6 <- sem(m6, d, likelihood = "wishart")
+summary(fit6, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+semPaths(fit6, layout = "tree", whatLabels = "est")
+```
+
+
+***
+
+```{r}
+sessionInfo()
+```
+

@@ -1,0 +1,130 @@
+11/21/2013 - Mean Structures
+===============================================================================
+
+```{r, message = FALSE, warning = FALSE}
+library(lavaan)
+library(semPlot)
+library(lmSupport)
+d <- lm.readDat("../data/data_apgar.dat")
+```
+
+### How do you find the mean of X without using `mean`?
+
+```{r}
+d$one <- 1
+m1 <- lm(data = d, smokes ~ 0 + one)
+summary(m1)
+```
+
+The coefficient for `one` is the mean. This is a one-sample t-test too.
+
+```{r}
+m2 <- lm(data = d, smokes ~ 1)
+summary(m2)
+```
+
+The path from the exogenous variable `one` to `smokes` is the mean.
+
+Now, how to find the mean of an endogenous variable?
+
+```{r}
+m3 <- lm(data = d, gestat ~ 0 + smokes + one)
+summary(m3)
+```
+
+The mean of `gestat` is the total effect of `one` on `gestat`.
+
+```{r}
+# Indirect effect + direct effect
+unname(coef(m3)["smokes"] * coef(m1)["one"] + coef(m3)["one"])
+mean(d$gestat)
+```
+
+## Mean structures
+
+Recall `apgar2`.
+
+```{r, tidy=FALSE}
+apgar2 <- "
+  apgar ~ gestat + wgtgain
+  gestat ~ smokes
+"
+fit1 <- sem(apgar2, d, likelihood = "wishart")
+summary(fit1)
+```
+
+Including the means structure adds 4 new pieces of information.
+
+```{r}
+(p <- 4 * (4 + 3) / 2)
+(q <- 3 + 1 + 4 + 4)
+p - q
+```
+
+`smokes` and `wgtgain` are no longer exogenous variables so we have to tell lavaan to let the two variables covary with `~~`. 
+
+```{r, tidy=FALSE}
+apgar2ms <- "
+  apgar ~ gestat + wgtgain
+  gestat ~ smokes
+  apgar ~ 1
+  gestat ~ 1
+  wgtgain ~ 1
+  smokes ~ 1
+  wgtgain ~~ smokes
+"
+fit1ms <- sem(apgar2ms, d, likelihood = "wishart")
+summary(fit1ms)
+semPaths(fit1ms, whatLabels = "est")
+```
+
+Set `meanstructure = TRUE` instead of adding intercept terms.
+
+```{r, tidy=FALSE}
+fit1ms2 <- sem(apgar2, d, likelihood = "wishart", meanstructure = TRUE)
+summary(fit1ms2)
+```
+
+The four means are replicated perfectly by the total effects for each variable. We use all four means in the model, so we have a "just-identified mean structure", so the means are perfectly replicated. The chi-square does not change with the addition of the (just-identified) mean structure. 
+
+### Under-identified mean structure
+
+The following model has 5 intercept paths but only 4 means. The mean structure is under-identified.
+
+```{r, tidy=FALSE}
+m_ex <- "
+  F1 =~ v1 + v2 + v3 + v4
+  F1 ~ 1
+  v1 ~ 1
+  v2 ~ 1
+  v3 ~ 1
+  v4 ~ 1
+"
+```
+
+
+### Latent growth models
+
+The test whether Change ~ 1 is different from 0 is all we care about in this kind of model.
+
+```{r, tidy=FALSE}
+m_latent_growth <- "
+  Initial =~ 1*t1 + 1*t2 + 1*t3 + 1*t4
+  Change  =~ 0*t1 + 1*t2 + 2*t3 + 3*t4
+  Change ~~ Initial
+  Initial ~ 1
+  Change ~ 1
+"
+# cov: p = 14, q = 5, df_cov = 5
+# mean: p = 4, q = 2, df_mean = 2
+```
+
+
+
+
+***
+
+```{r}
+sessionInfo()
+```
+
