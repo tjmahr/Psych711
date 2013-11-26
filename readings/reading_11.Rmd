@@ -1,13 +1,46 @@
-```{r, echo = FALSE, message = FALSE}
-library(foreign)
-library(lavaan)
-library(semPlot)
-```
-
 Questions about Rex Kline's book (for Tues., Nov. 26)
 ===============================================================================
 
 > Read chapter 11 of Kline's book be prepared to answer the questions below. Please also do the data analysis exercise described at the end.
+
+```{r, message = FALSE, warning=FALSE}
+# Preliminary steps
+library(foreign)
+library(lavaan)
+
+# Make a function to print out the constrained/free parameters from a model.
+inspect_parameters <- function(model) {
+  param_table <- inspect(model, what = "list")
+  # Simplify the table
+  param_table <- transform(param_table, call = paste(lhs, op, rhs, sep = " "))
+  param_table <- param_table[c("call", "free", "group", "user", "ustart")]
+  # Sort by the `free` column
+  param_table[order(param_table$free, param_table$call), ]
+}
+
+# Load the data-sets
+d_intell_fem <- read.spss("../data/Grnt_fem.sav", to.data.frame = TRUE)
+d_intell_mal <- read.spss("../data/Grnt_mal.sav", to.data.frame = TRUE)
+d_intell_fem$gender <- "female"
+d_intell_mal$gender <- "male"
+d <- rbind(d_intell_fem, d_intell_mal)
+# Make a numeric version of `gender`
+d <- transform(d, sex = ifelse(gender == "female", 0, 1))
+
+# Data for exercises 15-16
+covmatrix <- matrix(
+  c(6.502500, 4.793490, 4.652985, 4.373760, 0.199410,
+    4.793490, 5.808100, 4.521401, 4.391984, 0.221720,
+    4.652985, 4.521401, 6.604900, 5.165700, 0.242351,
+    4.373760, 4.391984, 5.165700, 7.182400, 0.295872,
+    0.199410, 0.221720, 0.242351, 0.295872, 0.052900),
+  nrow = 5, dimnames = list(
+    c("sales1", "sales2", "sales3", "sales4", "region"),
+    c("sales1", "sales2", "sales3", "sales4", "region")))
+myDataMeans <- c(6.08, 7.22, 8.14, 9.38, 0.48)
+names(myDataMeans) <- c("sales1", "sales2", "sales3", "sales4", "region")
+```
+
 
 #### 1. Assuming you include a mean structure, how do you determine the model-implied (predicted) mean for a given variable?
 
@@ -59,16 +92,12 @@ SEM provides a mechanism for modeling measurement error, and we can allow measur
 
 #### 8. What would we do, if we wanted to estimate a curvilinear trend in addition to the linear trend specified in Figure 11.2? What would be the df of the model that includes also a curvilinear trend?
 
-With 4 observations, P = (4 * 7) / 2 = 14.
-
 Figure 11.2 has:
 
 ```
-2 factor variances
-4 measurement error variances
-1 factor covariance
-3 error covariances
-2 factor means
+P = (4 * 7) / 2 = 14.
+Q = 2 factor variances + 4 measurement errors variances + 1 factor covariance + 
+    3 error covariances + 2 factor means
 Q = 12 
 df = 14 - 12 = 2
 ```
@@ -76,10 +105,8 @@ df = 14 - 12 = 2
 Adding the quadratic change factor would also add:
 
 ```
-1 factor mean
-1 factor variance
-2 factor covariances
-Q = 12 + 4 = 16
+Q_new = Q + 1 factor mean + 1 factor variance + 2 factor covariances
+Q_new = 16
 df = 14 - 16 = -2
 ```
 
@@ -88,32 +115,24 @@ df = 14 - 16 = -2
 > As a reminder, we tested a CFA model with two factors and three indicators per factor. The factor "spatial" was assumed to influence the indicators "visperc", cubes", and "lozenges", and the factor "verbal" was assumed to influence the indicators "paragraph", "sentence", and "wordmean". There were two samples, women ("Grnt_fem.sav") and men ("Grnt_mal.sav"). We already did that. Just redraw the model we drew several weeks ago. What are the # of observations, # of estimated parameters, and df of this model? Is this model at least just-identified?
 
 ```{r, warning = FALSE, tidy = FALSE}
-d_intell_fem <- read.spss("../data/Grnt_fem.sav", to.data.frame = TRUE)
-d_intell_mal <- read.spss("../data/Grnt_mal.sav", to.data.frame = TRUE)
-d_intell_fem$gender <- "female"
-d_intell_mal$gender <- "male"
-d <- rbind(d_intell_fem, d_intell_mal)
 # Configural invariance model
 m_form <- '
   spatial =~ visperc + cubes + lozenges 
   verbal =~ paragrap + sentence + wordmean'
 h_form <- cfa(m_form, data = d, likelihood = "wishart", group = "gender", 
               meanstructure = FALSE)
-summary(h_form, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
-# semPaths(h_form, layout = "tree", whatLabels = "est")
-```
-
-```
-P = (6 * 7) / 2 * 2 samples = 42
-2 factor variances
-1 factor covariance
-4 factor loadings
-6 measurement errors
-Q = 13 * 2 samples = 26
-df = 42 - 26 - 16
+# summary(h_form, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
 
 The model is over-identified.
+
+```
+P = (6 * 7) / 2 * 2 samples = 42
+Q_base = 2 factor variances + 1 factor covariance + 
+         4 factor loadings + 6 measurement errors
+Q = 13 * 2 samples = 26
+df = 42 - 26 = 16
+```
 
 
 
@@ -129,7 +148,8 @@ m_lambda <- '
   verbal =~ paragrap + c(c, c)*sentence + c(d, d)*wordmean'
 h_lambda <- cfa(m_lambda, data = d, likelihood = "wishart", group = "gender", 
               meanstructure = FALSE)
-summary(h_lambda, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+inspect_parameters(h_lambda)
+# summary(h_lambda, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
 
 The chi-square difference test indicates that the fit is not significantly worse, so H-lambda is retained.
@@ -150,7 +170,8 @@ m_lambda_1s <- '
   spatial + verbal ~ 1'
 # I think the under-indentified mean structure upsets lavaan
 h_lambda_1s <- cfa(m_lambda_1s, data = d, likelihood = "wishart", group = "gender")
-summary(h_lambda_1s, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+inspect_parameters(h_lambda_1s)
+# summary(h_lambda_1s, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
 
 > What are the # of observations, # of estimated parameters, and df of the covariance structure? Is the covariance structure at least just-identified? 
@@ -159,15 +180,17 @@ The covariance structure is unaffected. P = 42, Q = 22, df = 20. It is over-iden
 
 > What are the # of observations, # of estimated parameters, and df of the mean structure? Is the mean structure at least just-identified? 
 
+The mean structure is under-identified.
+
 ```
 P = 6 means * 2 samples = 12
 Q = (6 indicators means + 2 factor means) * 2 samples = 16
 df = -4
 ```
 
-The mean structure is under-identified.
-
 > What are the # of observations, # of estimated parameters, and df of the total model? Is the total model at least just-identified?
+
+The total model is over-indentified.
 
 ```
 P = 54
@@ -175,106 +198,183 @@ Q = 22 covariance parameters + 16 mean parameters = 38
 df = 16
 ```
 
-The total model is over-indentified.
 
 
 
-#### 12. Modify the model so that we can test whether there are gender differences on the two factors. You'll find detailed instructions on the bottom half of page 317 and on the bottom half of page 318 in Kline's book. Make sure both the covariance structure and the mean structure are at least just-identified. Once you are done, determine the df for the entire model.  
+#### 12. Modify the model so that we can test whether there are gender differences on the two factors. 
 
+> You'll find detailed instructions on the bottom half of page 317 and on the bottom half of page 318 in Kline's book. Make sure both the covariance structure and the mean structure are at least just-identified. Once you are done, determine the df for the entire model.  
 
+First, we should test if we can use the same intercepts for the two groups. We do this taking our `h_lambda` model (with the equal loadings for the two groups) and adding on a mean structure. We compare a mean structure with freely estimated intercepts to one with equal intercepts for the two groups. 
 
+```{r, tidy = FALSE}
+m_lambda_tau <- '
+  spatial =~ visperc + cubes + lozenges 
+  verbal =~ paragrap + sentence + wordmean
+  verbal ~ c(a, b)*1
+  spatial ~ c(c, d)*1'
+# Freely estimated intercepts
+h_form_mean <- cfa(m_lambda_tau, data = d, likelihood = "wishart", 
+                    group = "gender", group.equal = c("loadings"))
+inspect_parameters(h_form_mean)
+# Now we constrain the intercepts to be the same for each group
+h_lambda_tau <- cfa(m_lambda_tau, data = d, likelihood = "wishart", 
+                    group = "gender", group.equal = c("loadings", "intercepts"))
+inspect_parameters(h_lambda_tau)
+# summary(h_lambda_tau, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+anova(h_form_mean, h_lambda_tau)
+```
 
+`h_lambda_tau` is retained, meaning that we can use the same intercepts and factor loadings for the two groups. 
 
+Now we investigate whether there is a difference between the groups.
 
+```{r, tidy = FALSE}
+m_factor_means <- '
+  spatial =~ visperc + cubes + lozenges 
+  verbal =~ paragrap + sentence + wordmean
+  verbal ~ c(a, b)*1
+  spatial ~ c(c, d)*1
+  a == 0
+  c == 0'
+h_factor_means <- cfa(m_factor_means, data = d, likelihood = "wishart", 
+                      group = "gender", group.equal = c("loadings", "intercepts"))
+inspect_parameters(h_factor_means)
+summary(h_factor_means, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+```
 
+The male subjects had a mean spatial factor 1.01 units higher than the female subjects, but this difference is not significant, z = 1.2, p = 0.23. The female subjects had a mean verbal factor 0.96 units higher than the male subjects, and this difference falls just short of achieving significance, z = 1.82, p = 0.068. 
 
-
-
-
-
-#### 13. Respecify the model as a MIMIC model in which the two factors are regressed on a dichotomous cause indicator "gender".  What are the # of observations, # of estimated parameters, and df of this model? Is this model at least just-identified?
-
-
-
-#### 14. A MIMIC model to test for factor differences across groups makes a certain assumption, and yet does not allow us to test for this assumption. What is this assumption?
-
-
-
-#### 15. The manager of Abercrombie & Fitch would like to test whether sales increased over a 4-year period. She looks at the yearly sales in 51 stores in two regions (West and East). The covariance matrix and the means are below. Be prepared to draw the model and to show your computations for the df. Using lavaan, run a latent growth model according to the example in Figure 11.2 (but without correlations between the measurement errors). What conclusions can the manager draw: Is there a linear increase in sales?
-
-
-```{r}
-covmatrix <- matrix(
-  c(6.502500, 4.793490, 4.652985, 4.373760, 0.199410,
-    4.793490, 5.808100, 4.521401, 4.391984, 0.221720,
-    4.652985, 4.521401, 6.604900, 5.165700, 0.242351,
-    4.373760, 4.391984, 5.165700, 7.182400, 0.295872,
-    0.199410, 0.221720, 0.242351, 0.295872, 0.052900),
-  nrow=5, dimnames=list(
-    c("sales1", "sales2", "sales3", "sales4", "region"),
-    c("sales1", "sales2", "sales3", "sales4", "region"))
-  )
- 
-myDataMeans <- c(6.08, 7.22, 8.14, 9.38, 0.48)
-names(myDataMeans) <- c("sales1", "sales2", "sales3", "sales4","region")
+```
+Group 1 [female]:
+Intercepts:        Estimate  Std.err  Z-value  P(>|z|)   Std.lv  Std.all
+    verbal    (a)     0.000    0.000    7.677    0.000    0.000    0.000
+    spatial   (c)     0.000    0.000    6.640    0.000    0.000    0.000
+Group 2 [male]:
+Intercepts:
+    verbal    (b)    -0.956    0.524   -1.823    0.068   -0.358   -0.358
+    spatial   (d)     1.066    0.887    1.201    0.230    0.267    0.267
 ```
 
 
- 
+
+```
+P_mean = 6 * 2 samples = 12
+Q_mean = 6 shared indicator intercepts + 2 estimated factor means
+df_mean = 4
+
+P_cov = 42
+Q_cov = (6 measurement errors + 2 factor variances + 1 factor covariance) * 2 +
+        (4 shared factor loadings) = 22
+df_cov = 20
+
+df_all = 24
+```
+
+#### 13. Respecify the model as a MIMIC model in which the two factors are regressed on a dichotomous cause indicator "gender".  What are the # of observations, # of estimated parameters, and df of this model? Is this model at least just-identified?
+
+```{r}
+m_mimic <- '
+  spatial =~ visperc + cubes + lozenges 
+  verbal =~ paragrap + sentence + wordmean
+  spatial ~ sex
+  verbal ~ sex
+  sex ~~ sex
+'
+h_mimic <- cfa(m_mimic, data = d, likelihood = "wishart")
+inspect_parameters(h_mimic)
+summary(h_mimic, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+```
+
+This model is over-identified.
+
+```
+P = 7 * 8 / 2 = 28
+Q = 2 factor disturbances + 6 measurement errors + 4 factor loadings + 
+    1 factor disturbance covariance + 2 paths + 1 exogenous variance
+Q = 16
+df = 12
+```
+
+These estimates are close to the estimated group differences in the previous model.
+
+```
+Regressions:       Estimate  Std.err  Z-value  P(>|z|)   Std.lv  Std.all
+  spatial ~
+    sex               1.086    0.858    1.266    0.205    0.254    0.127
+  verbal ~
+    sex              -0.949    0.518   -1.831    0.067   -0.321   -0.161
+```
+
+#### 14. A MIMIC model to test for factor differences across groups makes a certain assumption, and yet does not allow us to test for this assumption. What is this assumption?
+
+Measurement invariance across the groups.
 
 
 
-#### 16. The manager also wants to know if there are differences between the two regions. Were sales higher in one region than in the other at year 1? And did the sales in one region increase faster than in the other region? Using lavaan, run a latent growth model according to the example in Figure 11.3 (replace "gender" by "region" and drop "family status" from the model). Be prepared to draw the model and to show your computations for the df. What conclusions can the manager draw?
+#### 15. The manager of Abercrombie & Fitch would like to test whether sales increased over a 4-year period. She looks at the yearly sales in 51 stores in two regions (West and East). 
+
+> The covariance matrix and the means are below. Be prepared to draw the model and to show your computations for the df. Using lavaan, run a latent growth model according to the example in Figure 11.2 (but without correlations between the measurement errors). What conclusions can the manager draw: Is there a linear increase in sales?
+
+```{r, tidy = FALSE}
+m_growth <- "
+  IS =~ 1*sales1 + 1*sales2 + 1*sales3 + 1*sales4
+  LC =~ 0*sales1 + 1*sales2 + 2*sales3 + 3*sales4
+  LC + IS ~ 1
+  sales1 + sales2 + sales3 + sales4 ~ 0*1"
+h_growth <- cfa(m_growth, sample.cov = covmatrix, sample.mean = myDataMeans, 
+                sample.nobs = 51, likelihood = "wishart")
+summary(h_growth, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+```
 
 
+```
+P = 4 * 7 / 2 = 14
+Q_cov  = 7 = 2 factor variances + 1 factor covariance + 4 measurement errors
+Q_mean = 2 factor means
+Q = 9
+df = 5
+```
+
+Yes there is a significant linear effect of time on sales. On average, sales increase by 1.08 units annually, z = 10.53, p < 0.001.
 
 
+#### 16. The manager also wants to know if there are differences between the two regions. 
+
+> Were sales higher in one region than in the other at year 1? And did the sales in one region increase faster than in the other region? Using lavaan, run a latent growth model according to the example in Figure 11.3 (replace "gender" by "region" and drop "family status" from the model). Be prepared to draw the model and to show your computations for the df. What conclusions can the manager draw?
 
 
+```{r, tidy = FALSE}
+m_growth_2 <- "
+  IS =~ 1*sales1 + 1*sales2 + 1*sales3 + 1*sales4
+  LC =~ 0*sales1 + 1*sales2 + 2*sales3 + 3*sales4
+  LC ~ region
+  IS ~ region
+  LC ~~ IS
+  LC + IS + region ~ 1
+  sales1 + sales2 + sales3 + sales4 ~ 0*1"
+h_growth_2 <- cfa(m_growth_2, sample.cov = covmatrix, sample.mean = myDataMeans, 
+                  sample.nobs = 51, likelihood = "wishart")
+summary(h_growth_2, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+```
 
+```
+P = 5(8) / 2 = 20
+Q_cov  = 4 measurement errors + 2 paths + 2 factor disturbances + 
+         1 exogenous variance + 1 disturbance covariance
+Q_mean = 2 factor intercepts + 1 variable mean
+Q = 13
+df = 7
+```
 
-
-
-
-
-
-
-
+The path from Region to Initial Status is significant, meaning that one region had greater sales initially, b = 3.68, z = 2.59, p = 0.01. The path from Region is not significant, so the regions did not differ significantly in sales growth, b = 0.58, z = 1.32, p = 0.19.
 
 
 
 
 ***
 
-Questions 15 and 16 are tricky.
-
-I think that for question 15, you have to specify a covariance matrix that contains only the four variables used in this analysis. You can do this as follows:
-
 ```{r}
-subset <- c("sales1", "sales2", "sales3", "sales4")
-   covmatrix_s <- covmatrix[subset, subset]
+sessionInfo()
 ```
 
-
-
-
-Further, you have to tell lavaan what the means are. I used the following script:
-```{r}
-fit1 <- sem (m1, likelihood = "wishart", sample.cov = covmatrix_s, sample.nobs = 51,
-            sample.mean = c(6.08, 7.22, 8.14, 9.38))
-```
-
-
-... but I am sure there are more elegant ways to do this.
-
-Finally, don't forget to specify that the path from the "one" to the observed variables should be zero. One way to do this is to include the following lines in the model statement:
-    sales1 ~ 0
-    sales2 ~ 0
-    sales3 ~ 0
-    sales4 ~ 0
-
-
-In question 16, you then have to use the full (5 x 5) covariance matrix and to read in five (rather than four) means.
-
-Enjoy!
- 
