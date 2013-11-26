@@ -455,10 +455,8 @@ summary(h_lambda, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
 
 ```r
-semPaths(h_lambda, panelGroups = TRUE, ask = FALSE, title = FALSE)
+# semPaths(h_lambda, panelGroups = TRUE, ask = FALSE, title = FALSE)
 ```
-
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png) 
 
 
 The chi-square difference test indicates that the fit is not significantly worse, so H-lambda is retained.
@@ -813,7 +811,7 @@ inspect_parameters(h_form_mean)
 ```
 
 ```r
-semPaths(h_form_mean, panelGroups = TRUE, ask = FALSE, title = FALSE)
+# semPaths(h_form_mean, panelGroups = TRUE, ask = FALSE, title = FALSE)
 # Now we constrain the intercepts to be the same for each group
 h_lambda_tau <- cfa(m_lambda_tau, data = d, likelihood = "wishart", 
                     group = "gender", group.equal = c("loadings", "intercepts"))
@@ -1030,12 +1028,7 @@ summary(h_lambda_tau, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
 
 ```r
-semPaths(h_lambda_tau, panelGroups = TRUE, ask = FALSE, title = FALSE)
-```
-
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
-
-```r
+# semPaths(h_lambda_tau, panelGroups = TRUE, ask = FALSE, title = FALSE)
 anova(h_form_mean, h_lambda_tau)
 ```
 
@@ -1276,10 +1269,8 @@ summary(h_factor_means, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE
 ```
 
 ```r
-semPaths(h_factor_means, panelGroups = TRUE, ask = FALSE, title = FALSE)
+# semPaths(h_factor_means, panelGroups = TRUE, ask = FALSE, title = FALSE)
 ```
-
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png) 
 
 
 The male subjects had a mean spatial factor 1.01 units higher than the female subjects, but this difference is not significant, z = 1.2, p = 0.23. The female subjects had a mean verbal factor 0.96 units higher than the male subjects, and this difference falls just short of achieving significance, z = 1.82, p = 0.068. 
