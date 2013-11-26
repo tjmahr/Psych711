@@ -8,6 +8,7 @@ Questions about Rex Kline's book (for Tues., Nov. 26)
 # Preliminary steps
 library(foreign)
 library(lavaan)
+library(semPlot)
 
 # Make a function to print out the constrained/free parameters from a model.
 inspect_parameters <- function(model) {
@@ -85,7 +86,7 @@ Yes. The covariance describes how much the Initial Status predicts later rates o
 
 #### 7. Compare latent growth analysis in SEM with more traditional data analysis techniques, such as "repeated measures analysis of variance" (within-subject ANOVA), "multivariate analysis of variance" (MANOVA). What assumptions do these different techniques make for the measurement errors? How do they treat individual differences in growth trajectories?
 
-SEM provides a mechanism for modeling measurement error, and we can allow measurement errors to covary with each other. ANOVA assumes that error variance is constant and independent (tough assumptions for repeated measures within subjects). MANOVA requires less strict assumptions. "Both ANOVA and MANOVA treat individual differences in growth trajectories as error variance" (p. 307) whereas latent growth models can model such differences.
+SEM provides a mechanism for modeling measurement error, and we can allow measurement errors to covary with each other. ANOVA assumes that error variance is constant and independent (tough assumptions for repeated measures within subjects). MANOVA requires less strict assumptions (allowing non-independent errors). "Both ANOVA and MANOVA treat individual differences in growth trajectories as error variance" (p. 307) whereas latent growth models can model such differences.
 
 
 
@@ -121,8 +122,142 @@ m_form <- '
   verbal =~ paragrap + sentence + wordmean'
 h_form <- cfa(m_form, data = d, likelihood = "wishart", group = "gender", 
               meanstructure = FALSE)
-# summary(h_form, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+summary(h_form, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
+
+```
+## lavaan (0.5-15) converged normally after 122 iterations
+## 
+##   Number of observations per group         
+##   female                                            73
+##   male                                              72
+## 
+##   Estimator                                         ML
+##   Minimum Function Test Statistic               16.480
+##   Degrees of freedom                                16
+##   P-value (Chi-square)                           0.420
+## 
+## Chi-square for each group:
+## 
+##   female                                         7.853
+##   male                                           8.627
+## 
+## Model test baseline model:
+## 
+##   Minimum Function Test Statistic              337.557
+##   Degrees of freedom                                30
+##   P-value                                        0.000
+## 
+## User model versus baseline model:
+## 
+##   Comparative Fit Index (CFI)                    0.998
+##   Tucker-Lewis Index (TLI)                       0.997
+## 
+## Loglikelihood and Information Criteria:
+## 
+##   Loglikelihood user model (H0)              -2570.027
+##   Loglikelihood unrestricted model (H1)      -2561.672
+## 
+##   Number of free parameters                         26
+##   Akaike (AIC)                                5192.053
+##   Bayesian (BIC)                              5269.087
+##   Sample-size adjusted Bayesian (BIC)         5186.819
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.020
+##   90 Percent Confidence Interval          0.000  0.112
+##   P-value RMSEA <= 0.05                          0.603
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.045
+## 
+## Parameter estimates:
+## 
+##   Information                                 Expected
+##   Standard Errors                             Standard
+## 
+## Group 1 [female]:
+## 
+##                    Estimate  Std.err  Z-value  P(>|z|)   Std.lv  Std.all
+## Latent variables:
+##   spatial =~
+##     visperc           1.000                               4.861    0.703
+##     cubes             0.610    0.143    4.249    0.000    2.964    0.654
+##     lozenges          1.198    0.272    4.405    0.000    5.824    0.736
+##   verbal =~
+##     paragrap          1.000                               3.133    0.880
+##     sentence          1.334    0.160    8.321    0.000    4.180    0.827
+##     wordmean          2.234    0.263    8.482    0.000    7.000    0.841
+## 
+## Covariances:
+##   spatial ~~
+##     verbal            7.417    2.607    2.845    0.004    0.487    0.487
+## 
+## Variances:
+##     visperc          24.204    6.070                     24.204    0.506
+##     cubes            11.763    2.620                     11.763    0.572
+##     lozenges         28.668    8.002                     28.668    0.458
+##     paragrap          2.873    0.881                      2.873    0.226
+##     sentence          8.077    1.895                      8.077    0.316
+##     wordmean         20.202    5.020                     20.202    0.292
+##     spatial          23.626    8.237                      1.000    1.000
+##     verbal            9.817    2.189                      1.000    1.000
+## 
+## 
+## 
+## Group 2 [male]:
+## 
+##                    Estimate  Std.err  Z-value  P(>|z|)   Std.lv  Std.all
+## Latent variables:
+##   spatial =~
+##     visperc           1.000                               4.035    0.581
+##     cubes             0.450    0.176    2.556    0.011    1.817    0.415
+##     lozenges          1.510    0.461    3.273    0.001    6.095    0.708
+##   verbal =~
+##     paragrap          1.000                               2.646    0.863
+##     sentence          1.275    0.171    7.463    0.000    3.375    0.806
+##     wordmean          2.294    0.308    7.451    0.000    6.070    0.805
+## 
+## Covariances:
+##   spatial ~~
+##     verbal            6.937    2.404    2.886    0.004    0.650    0.650
+## 
+## Variances:
+##     visperc          32.016    7.080                     32.016    0.663
+##     cubes            15.914    2.945                     15.914    0.828
+##     lozenges         37.041   11.694                     37.041    0.499
+##     paragrap          2.397    0.737                      2.397    0.255
+##     sentence          6.120    1.453                      6.120    0.350
+##     wordmean         19.974    4.724                     19.974    0.352
+##     spatial          16.284    7.622                      1.000    1.000
+##     verbal            7.001    1.645                      1.000    1.000
+## 
+## R-Square Group female:
+## 
+##     visperc           0.494
+##     cubes             0.428
+##     lozenges          0.542
+##     paragrap          0.774
+##     sentence          0.684
+##     wordmean          0.708
+## 
+## R-Square Group male:
+## 
+##     visperc           0.337
+##     cubes             0.172
+##     lozenges          0.501
+##     paragrap          0.745
+##     sentence          0.650
+##     wordmean          0.648
+```
+
+```r
+semPaths(h_form, panelGroups = TRUE, ask = FALSE, title = FALSE)
+```
+
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
 
 
 The model is over-identified.
@@ -188,8 +323,142 @@ inspect_parameters(h_lambda)
 ```
 
 ```r
-# summary(h_lambda, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+summary(h_lambda, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
+
+```
+## lavaan (0.5-15) converged normally after 113 iterations
+## 
+##   Number of observations per group         
+##   female                                            73
+##   male                                              72
+## 
+##   Estimator                                         ML
+##   Minimum Function Test Statistic               18.291
+##   Degrees of freedom                                20
+##   P-value (Chi-square)                           0.568
+## 
+## Chi-square for each group:
+## 
+##   female                                         8.554
+##   male                                           9.737
+## 
+## Model test baseline model:
+## 
+##   Minimum Function Test Statistic              337.557
+##   Degrees of freedom                                30
+##   P-value                                        0.000
+## 
+## User model versus baseline model:
+## 
+##   Comparative Fit Index (CFI)                    1.000
+##   Tucker-Lewis Index (TLI)                       1.008
+## 
+## Loglikelihood and Information Criteria:
+## 
+##   Loglikelihood user model (H0)              -2570.945
+##   Loglikelihood unrestricted model (H1)      -2561.672
+## 
+##   Number of free parameters                         22
+##   Akaike (AIC)                                5185.891
+##   Bayesian (BIC)                              5251.073
+##   Sample-size adjusted Bayesian (BIC)         5181.462
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.000
+##   90 Percent Confidence Interval          0.000  0.092
+##   P-value RMSEA <= 0.05                          0.749
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.053
+## 
+## Parameter estimates:
+## 
+##   Information                                 Expected
+##   Standard Errors                             Standard
+## 
+## Group 1 [female]:
+## 
+##                    Estimate  Std.err  Z-value  P(>|z|)   Std.lv  Std.all
+## Latent variables:
+##   spatial =~
+##     visperc           1.000                               4.723    0.684
+##     cubes     (a)     0.557    0.114    4.890    0.000    2.631    0.596
+##     lozenges  (b)     1.327    0.248    5.349    0.000    6.266    0.778
+##   verbal =~
+##     paragrap          1.000                               3.140    0.880
+##     sentence  (c)     1.305    0.117   11.157    0.000    4.098    0.819
+##     wordmean  (d)     2.260    0.200   11.296    0.000    7.097    0.847
+## 
+## Covariances:
+##   spatial ~~
+##     verbal            7.325    2.492    2.939    0.003    0.494    0.494
+## 
+## Variances:
+##     visperc          25.430    5.913                     25.430    0.533
+##     cubes            12.554    2.516                     12.554    0.645
+##     lozenges         25.595    8.152                     25.595    0.395
+##     paragrap          2.874    0.845                      2.874    0.226
+##     sentence          8.228    1.841                      8.228    0.329
+##     wordmean         19.821    4.905                     19.821    0.282
+##     spatial          22.307    7.176                      1.000    1.000
+##     verbal            9.859    2.053                      1.000    1.000
+## 
+## 
+## 
+## Group 2 [male]:
+## 
+##                    Estimate  Std.err  Z-value  P(>|z|)   Std.lv  Std.all
+## Latent variables:
+##   spatial =~
+##     visperc           1.000                               4.051    0.582
+##     cubes     (a)     0.557    0.114    4.890    0.000    2.257    0.498
+##     lozenges  (b)     1.327    0.248    5.349    0.000    5.375    0.640
+##   verbal =~
+##     paragrap          1.000                               2.639    0.863
+##     sentence  (c)     1.305    0.117   11.157    0.000    3.444    0.814
+##     wordmean  (d)     2.260    0.200   11.296    0.000    5.965    0.799
+## 
+## Covariances:
+##   spatial ~~
+##     verbal            7.095    2.119    3.348    0.001    0.664    0.664
+## 
+## Variances:
+##     visperc          32.007    6.775                     32.007    0.661
+##     cubes            15.460    2.975                     15.460    0.752
+##     lozenges         41.551    9.825                     41.551    0.590
+##     paragrap          2.396    0.690                      2.396    0.256
+##     sentence          6.038    1.418                      6.038    0.337
+##     wordmean         20.218    4.533                     20.218    0.362
+##     spatial          16.411    5.968                      1.000    1.000
+##     verbal            6.966    1.486                      1.000    1.000
+## 
+## R-Square Group female:
+## 
+##     visperc           0.467
+##     cubes             0.355
+##     lozenges          0.605
+##     paragrap          0.774
+##     sentence          0.671
+##     wordmean          0.718
+## 
+## R-Square Group male:
+## 
+##     visperc           0.339
+##     cubes             0.248
+##     lozenges          0.410
+##     paragrap          0.744
+##     sentence          0.663
+##     wordmean          0.638
+```
+
+```r
+semPaths(h_lambda, panelGroups = TRUE, ask = FALSE, title = FALSE)
+```
+
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png) 
 
 
 The chi-square difference test indicates that the fit is not significantly worse, so H-lambda is retained.
@@ -282,8 +551,162 @@ inspect_parameters(h_lambda_1s)
 ```
 
 ```r
-# summary(h_lambda_1s, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+summary(h_lambda_1s, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
+
+```
+## lavaan (0.5-15) converged normally after 113 iterations
+## 
+##   Number of observations per group         
+##   female                                            73
+##   male                                              72
+## 
+##   Estimator                                         ML
+##   Minimum Function Test Statistic               18.291
+##   Degrees of freedom                                16
+##   P-value (Chi-square)                           0.307
+## 
+## Chi-square for each group:
+## 
+##   female                                         8.554
+##   male                                           9.737
+## 
+## Model test baseline model:
+## 
+##   Minimum Function Test Statistic              337.557
+##   Degrees of freedom                                30
+##   P-value                                        0.000
+## 
+## User model versus baseline model:
+## 
+##   Comparative Fit Index (CFI)                    0.993
+##   Tucker-Lewis Index (TLI)                       0.986
+## 
+## Loglikelihood and Information Criteria:
+## 
+##   Loglikelihood user model (H0)              -2570.945
+##   Loglikelihood unrestricted model (H1)      -2561.672
+## 
+##   Number of free parameters                         38
+##   Akaike (AIC)                                5217.891
+##   Bayesian (BIC)                              5330.479
+##   Sample-size adjusted Bayesian (BIC)         5210.240
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.045
+##   90 Percent Confidence Interval          0.000  0.122
+##   P-value RMSEA <= 0.05                          0.489
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.047
+## 
+## Parameter estimates:
+## 
+##   Information                                 Expected
+##   Standard Errors                             Standard
+## 
+## Group 1 [female]:
+## 
+##                    Estimate  Std.err  Z-value  P(>|z|)   Std.lv  Std.all
+## Latent variables:
+##   spatial =~
+##     visperc           1.000                               4.723    0.684
+##     cubes     (a)     0.557                               2.631    0.596
+##     lozenges  (b)     1.327                               6.266    0.778
+##   verbal =~
+##     paragrap          1.000                               3.140    0.880
+##     sentence  (c)     1.305                               4.098    0.819
+##     wordmean  (d)     2.260                               7.097    0.847
+## 
+## Covariances:
+##   spatial ~~
+##     verbal            7.325                               0.494    0.494
+## 
+## Intercepts:
+##     paragrap         10.589                              10.589    2.968
+##     sentence         19.301                              19.301    3.859
+##     wordmean         18.014                              18.014    2.150
+##     visperc          29.315                              29.315    4.243
+##     cubes            24.699                              24.699    5.597
+##     lozenges         14.836                              14.836    1.842
+##     spatial           0.000                               0.000    0.000
+##     verbal            0.000                               0.000    0.000
+## 
+## Variances:
+##     visperc          25.430                              25.430    0.533
+##     cubes            12.554                              12.554    0.645
+##     lozenges         25.595                              25.595    0.395
+##     paragrap          2.874                               2.874    0.226
+##     sentence          8.228                               8.228    0.329
+##     wordmean         19.821                              19.821    0.282
+##     spatial          22.307                               1.000    1.000
+##     verbal            9.859                               1.000    1.000
+## 
+## 
+## 
+## Group 2 [male]:
+## 
+##                    Estimate  Std.err  Z-value  P(>|z|)   Std.lv  Std.all
+## Latent variables:
+##   spatial =~
+##     visperc           1.000                               4.051    0.582
+##     cubes     (a)     0.557                               2.257    0.498
+##     lozenges  (b)     1.327                               5.375    0.640
+##   verbal =~
+##     paragrap          1.000                               2.639    0.863
+##     sentence  (c)     1.305                               3.444    0.814
+##     wordmean  (d)     2.260                               5.965    0.799
+## 
+## Covariances:
+##   spatial ~~
+##     verbal            7.095                               0.664    0.664
+## 
+## Intercepts:
+##     paragrap          9.306                               9.306    3.041
+##     sentence         18.389                              18.389    4.346
+##     wordmean         16.542                              16.542    2.214
+##     visperc          29.847                              29.847    4.289
+##     cubes            24.903                              24.903    5.493
+##     lozenges         17.111                              17.111    2.039
+##     spatial           0.000                               0.000    0.000
+##     verbal            0.000                               0.000    0.000
+## 
+## Variances:
+##     visperc          32.007                              32.007    0.661
+##     cubes            15.460                              15.460    0.752
+##     lozenges         41.551                              41.551    0.590
+##     paragrap          2.396                               2.396    0.256
+##     sentence          6.038                               6.038    0.337
+##     wordmean         20.218                              20.218    0.362
+##     spatial          16.411                               1.000    1.000
+##     verbal            6.966                               1.000    1.000
+## 
+## R-Square Group female:
+## 
+##     visperc           0.467
+##     cubes             0.355
+##     lozenges          0.605
+##     paragrap          0.774
+##     sentence          0.671
+##     wordmean          0.718
+## 
+## R-Square Group male:
+## 
+##     visperc           0.339
+##     cubes             0.248
+##     lozenges          0.410
+##     paragrap          0.744
+##     sentence          0.663
+##     wordmean          0.638
+```
+
+```r
+semPaths(h_lambda_1s, panelGroups = TRUE, ask = FALSE, title = FALSE)
+```
+
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
 
 
 > What are the # of observations, # of estimated parameters, and df of the covariance structure? Is the covariance structure at least just-identified? 
@@ -390,6 +813,7 @@ inspect_parameters(h_form_mean)
 ```
 
 ```r
+semPaths(h_form_mean, panelGroups = TRUE, ask = FALSE, title = FALSE)
 # Now we constrain the intercepts to be the same for each group
 h_lambda_tau <- cfa(m_lambda_tau, data = d, likelihood = "wishart", 
                     group = "gender", group.equal = c("loadings", "intercepts"))
@@ -454,7 +878,164 @@ inspect_parameters(h_lambda_tau)
 ```
 
 ```r
-# summary(h_lambda_tau, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+summary(h_lambda_tau, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+```
+
+```
+## lavaan (0.5-15) converged normally after 133 iterations
+## 
+##   Number of observations per group         
+##   female                                            73
+##   male                                              72
+## 
+##   Estimator                                         ML
+##   Minimum Function Test Statistic               22.536
+##   Degrees of freedom                                22
+##   P-value (Chi-square)                           0.428
+## 
+## Chi-square for each group:
+## 
+##   female                                        10.878
+##   male                                          11.658
+## 
+## Model test baseline model:
+## 
+##   Minimum Function Test Statistic              337.557
+##   Degrees of freedom                                30
+##   P-value                                        0.000
+## 
+## User model versus baseline model:
+## 
+##   Comparative Fit Index (CFI)                    0.998
+##   Tucker-Lewis Index (TLI)                       0.998
+## 
+## Loglikelihood and Information Criteria:
+## 
+##   Loglikelihood user model (H0)              -2573.097
+##   Loglikelihood unrestricted model (H1)      -2561.672
+## 
+##   Number of free parameters                         32
+##   Akaike (AIC)                                5210.194
+##   Bayesian (BIC)                              5305.005
+##   Sample-size adjusted Bayesian (BIC)         5203.752
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.018
+##   90 Percent Confidence Interval          0.000  0.101
+##   P-value RMSEA <= 0.05                          0.641
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.051
+## 
+## Parameter estimates:
+## 
+##   Information                                 Expected
+##   Standard Errors                             Standard
+## 
+## Group 1 [female]:
+## 
+##                    Estimate  Std.err  Z-value  P(>|z|)   Std.lv  Std.all
+## Latent variables:
+##   spatial =~
+##     visperc           1.000                               4.636    0.673
+##     cubes             0.557                               2.582    0.586
+##     lozenges          1.371                               6.358    0.786
+##   verbal =~
+##     paragrap          1.000                               3.176    0.882
+##     sentence          1.279                               4.062    0.815
+##     wordmean          2.211                               7.020    0.842
+## 
+## Covariances:
+##   spatial ~~
+##     verbal            7.286                               0.495    0.495
+## 
+## Intercepts:
+##     verbal    (a)     0.479                               0.151    0.151
+##     spatial   (c)    -0.541                              -0.117   -0.117
+##     visperc          29.621                              29.621    4.300
+##     cubes            24.826                              24.826    5.638
+##     lozenges         15.883                              15.883    1.964
+##     paragrap          9.932                               9.932    2.758
+##     sentence         18.866                              18.866    3.786
+##     wordmean         17.269                              17.269    2.072
+## 
+## Variances:
+##     visperc          25.967                              25.967    0.547
+##     cubes            12.722                              12.722    0.656
+##     lozenges         25.000                              25.000    0.382
+##     paragrap          2.878                               2.878    0.222
+##     sentence          8.325                               8.325    0.335
+##     wordmean         20.153                              20.153    0.290
+##     spatial          21.493                               1.000    1.000
+##     verbal           10.085                               1.000    1.000
+## 
+## 
+## 
+## Group 2 [male]:
+## 
+##                    Estimate  Std.err  Z-value  P(>|z|)   Std.lv  Std.all
+## Latent variables:
+##   spatial =~
+##     visperc           1.000                               3.997    0.575
+##     cubes             0.557                               2.226    0.492
+##     lozenges          1.371                               5.482    0.649
+##   verbal =~
+##     paragrap          1.000                               2.669    0.866
+##     sentence          1.279                               3.414    0.810
+##     wordmean          2.211                               5.899    0.793
+## 
+## Covariances:
+##   spatial ~~
+##     verbal            7.080                               0.664    0.664
+## 
+## Intercepts:
+##     verbal    (b)    -0.477                              -0.179   -0.179
+##     spatial   (d)     0.524                               0.131    0.131
+##     visperc          29.621                              29.621    4.262
+##     cubes            24.826                              24.826    5.486
+##     lozenges         15.883                              15.883    1.880
+##     paragrap          9.932                               9.932    3.222
+##     sentence         18.866                              18.866    4.477
+##     wordmean         17.269                              17.269    2.320
+## 
+## Variances:
+##     visperc          32.311                              32.311    0.669
+##     cubes            15.521                              15.521    0.758
+##     lozenges         41.287                              41.287    0.579
+##     paragrap          2.382                               2.382    0.251
+##     sentence          6.107                               6.107    0.344
+##     wordmean         20.607                              20.607    0.372
+##     spatial          15.980                               1.000    1.000
+##     verbal            7.122                               1.000    1.000
+## 
+## R-Square Group female:
+## 
+##     visperc           0.453
+##     cubes             0.344
+##     lozenges          0.618
+##     paragrap          0.778
+##     sentence          0.665
+##     wordmean          0.710
+## 
+## R-Square Group male:
+## 
+##     visperc           0.331
+##     cubes             0.242
+##     lozenges          0.421
+##     paragrap          0.749
+##     sentence          0.656
+##     wordmean          0.628
+```
+
+```r
+semPaths(h_lambda_tau, panelGroups = TRUE, ask = FALSE, title = FALSE)
+```
+
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
+
+```r
 anova(h_form_mean, h_lambda_tau)
 ```
 
@@ -694,6 +1275,12 @@ summary(h_factor_means, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE
 ##     wordmean          0.628
 ```
 
+```r
+semPaths(h_factor_means, panelGroups = TRUE, ask = FALSE, title = FALSE)
+```
+
+![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png) 
+
 
 The male subjects had a mean spatial factor 1.01 units higher than the female subjects, but this difference is not significant, z = 1.2, p = 0.23. The female subjects had a mean verbal factor 0.96 units higher than the male subjects, and this difference falls just short of achieving significance, z = 1.82, p = 0.068. 
 
@@ -727,7 +1314,7 @@ df_all = 24
 
 
 ```r
-m_mimic <- "\n  spatial =~ visperc + cubes + lozenges \n  verbal =~ paragrap + sentence + wordmean\n  spatial ~ sex\n  verbal ~ sex\n  sex ~~ sex\n"
+m_mimic <- "\n  spatial =~ visperc + cubes + lozenges \n  verbal =~ paragrap + sentence + wordmean\n  spatial ~ sex\n  verbal ~ sex\n  sex ~~ sex\n  spatial ~~ verbal"
 h_mimic <- cfa(m_mimic, data = d, likelihood = "wishart")
 ```
 
@@ -752,15 +1339,15 @@ inspect_parameters(h_mimic)
 ## 7         spatial ~ sex    5     1    1     NA
 ## 8          verbal ~ sex    6     1    1     NA
 ## 9            sex ~~ sex    7     1    1     NA
-## 10   visperc ~~ visperc    8     1    0     NA
-## 11       cubes ~~ cubes    9     1    0     NA
-## 12 lozenges ~~ lozenges   10     1    0     NA
-## 13 paragrap ~~ paragrap   11     1    0     NA
-## 14 sentence ~~ sentence   12     1    0     NA
-## 15 wordmean ~~ wordmean   13     1    0     NA
-## 16   spatial ~~ spatial   14     1    0     NA
-## 17     verbal ~~ verbal   15     1    0     NA
-## 18    spatial ~~ verbal   16     1    0     NA
+## 10    spatial ~~ verbal    8     1    1     NA
+## 11   visperc ~~ visperc    9     1    0     NA
+## 12       cubes ~~ cubes   10     1    0     NA
+## 13 lozenges ~~ lozenges   11     1    0     NA
+## 14 paragrap ~~ paragrap   12     1    0     NA
+## 15 sentence ~~ sentence   13     1    0     NA
+## 16 wordmean ~~ wordmean   14     1    0     NA
+## 17   spatial ~~ spatial   15     1    0     NA
+## 18     verbal ~~ verbal   16     1    0     NA
 ```
 
 ```r
@@ -856,6 +1443,12 @@ summary(h_mimic, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ##     spatial           0.016
 ##     verbal            0.026
 ```
+
+```r
+semPaths(h_mimic)
+```
+
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8.png) 
 
 
 This model is over-identified.
@@ -986,6 +1579,12 @@ summary(h_growth, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ##     sales3            0.745
 ##     sales4            0.765
 ```
+
+```r
+semPaths(h_growth)
+```
+
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9.png) 
 
 
 
@@ -1126,6 +1725,12 @@ summary(h_growth_2, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ##     LC                0.070
 ```
 
+```r
+semPaths(h_growth_2)
+```
+
+![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10.png) 
+
 
 ```
 P = 5(8) / 2 = 20
@@ -1163,12 +1768,17 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] lavaan_0.5-15  foreign_0.8-53 knitr_1.5     
+## [1] semPlot_0.3.3  lavaan_0.5-15  foreign_0.8-53 knitr_1.5     
 ## 
 ## loaded via a namespace (and not attached):
-## [1] evaluate_0.5.1 formatR_0.10   MASS_7.3-26    mnormt_1.4-5  
-## [5] pbivnorm_0.5-1 quadprog_1.5-5 stats4_3.0.1   stringr_0.6.2 
-## [9] tools_3.0.1
+##  [1] car_2.0-19       cluster_1.14.4   colorspace_1.2-4 corpcor_1.6.6   
+##  [5] ellipse_0.3-8    evaluate_0.5.1   formatR_0.10     Formula_1.1-1   
+##  [9] grid_3.0.1       Hmisc_3.13-0     igraph_0.6.6     jpeg_0.1-6      
+## [13] lattice_0.20-15  lisrelToR_0.1.4  MASS_7.3-26      mnormt_1.4-5    
+## [17] nnet_7.3-6       pbivnorm_0.5-1   plyr_1.8         png_0.1-6       
+## [21] psych_1.3.10.12  qgraph_1.2.3     quadprog_1.5-5   rockchalk_1.8.0 
+## [25] sem_3.1-3        splines_3.0.1    stats4_3.0.1     stringr_0.6.2   
+## [29] survival_2.37-4  tools_3.0.1      XML_3.98-1.1
 ```
 
 
