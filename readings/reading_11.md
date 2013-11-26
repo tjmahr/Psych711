@@ -1305,7 +1305,13 @@ df_all = 24
 
 
 ```r
-m_mimic <- "\n  spatial =~ visperc + cubes + lozenges \n  verbal =~ paragrap + sentence + wordmean\n  spatial ~ sex\n  verbal ~ sex\n  sex ~~ sex\n  spatial ~~ verbal"
+m_mimic <- '
+  spatial =~ visperc + cubes + lozenges 
+  verbal =~ paragrap + sentence + wordmean
+  spatial ~ sex
+  verbal ~ sex
+  sex ~~ sex
+  spatial ~~ verbal'
 h_mimic <- cfa(m_mimic, data = d, likelihood = "wishart")
 ```
 

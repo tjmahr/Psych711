@@ -280,7 +280,7 @@ df_all = 24
 
 #### 13. Respecify the model as a MIMIC model in which the two factors are regressed on a dichotomous cause indicator "gender".  What are the # of observations, # of estimated parameters, and df of this model? Is this model at least just-identified?
 
-```{r}
+```{r, tidy = FALSE}
 m_mimic <- '
   spatial =~ visperc + cubes + lozenges 
   verbal =~ paragrap + sentence + wordmean
