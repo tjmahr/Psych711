@@ -1,13 +1,27 @@
-
-
-
-
-Exercises about Rex Kline's book (for Tue., Sept. 24)
+Exercises about Rex Kline's book (for Tues., Sept. 24)
 ===============================================================================
 
-> A. Read pages 51--72 very carefully. Be prepared to explain to a novice what the topics below mean and why they are particularly important in SEM. For each of the topics you should be able to say two or three sentences without looking at your notes. 
 
-**Positive definiteness of matrices (causes, indicators of nonpositive definiteness)**
+```r
+library(plyr)
+library(psych)
+library(ggplot2)
+library(reshape2)
+library(lmSupport)
+long_scores <- read.csv("../data/hw3.csv", row.names = 1)
+just_scores <- read.csv("../data/hw3b.csv", row.names = 1)
+lengths <- read.csv("../data/hw3c.csv", row.names = 1)
+```
+
+
+Reading Notes
+-------------------------------------------------------------------------------
+
+### Be prepared to explain to a novice what the topics below mean and why they are particularly important in SEM. 
+
+> For each of the topics you should be able to say two or three sentences without looking at your notes. 
+
+#### Positive definiteness of matrices (causes, indicators of nonpositive definiteness)
 
 In order for us to do the SEM analysis on the covariance matrix (a description of the variables in our data and how they vary together), the matrix needs to be well-formed--that is, positive definite--so that we can do some linear algebra on them. The indicators of nonpositive definiteness:
 
@@ -16,34 +30,93 @@ In order for us to do the SEM analysis on the covariance matrix (a description o
 3. The determinant of the matrix is greater than zero.
 4. All of the correlations and covariances are not out of bounds.
 
-**Collinearity (between a pair of variables and between a variable and two or more others)**
+Causes: Include errors, outliers, collinearity.
 
-Collinearity indicates that two separate variables are measuring the same thing. 
+This problem will kill your model, so its pretty obvious to detect.
 
+#### Collinearity (between a pair of variables and between a variable and two or more others)
 
-**Outliers (univariate outliers, multivariate outliers)**
+Collinearity indicates that 2+ different variables are measuring the same thing. Redundant variables need to be eliminated or combined together. Check with VIF, squared multiple correlation, or tolleratnce.
 
-Outliers are extreme values that distort or exaggerate trends in the data.
+#### Outliers (univariate outliers, multivariate outliers)
 
-**Missing data (ignorable, systematic, MAR, MCAR, available case methods, mean substitution, regression-based imputation, model-based imputation)**
-
-Ignorable missing data is not systematic. If missingness is systematic, the results from the available cases may not generalize to the targeted population. Missing at random means that the missing scores only vary by chance. 
-
-**Normality (univariate, multivariate) and transformations**
+Outliers are extreme values that distort or exaggerate trends in the data. Set with a cutoff like 3SD or a distance measure. An outlier may not belong to the sample's true population. Multivariate outliers are calculated with Mahalanonis distance. 
 
 
+```r
+md <- mahalanobis(just_scores, colMeans(just_scores), cov = cov(just_scores))
+qplot(x = md)
+```
 
-**Linearity and homoscedasticity**
+```
+## stat_bin: binwidth defaulted to range/30. Use 'binwidth = x' to adjust this.
+```
 
-**Relative variances**
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-21.png) 
 
-**Reliability and validity**
+```r
+mardia(just_scores)
+```
 
-> B. Make a table that looks like the trouble shooting guide of the last dishwasher you bought. In the left column are the potential problems, in the middle column are the ways to diagnose the problems, and in the right column are ways to solve the problems (0.5 to 1 page max.). 
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-22.png) 
+
+```
+## Call: mardia(x = just_scores)
+## 
+## Mardia tests of multivariate skew and kurtosis
+## Use describe(x) the to get univariate tests
+## n.obs = 25   num.vars =  5 
+## b1p =  5.95   skew =  24.81  with probability =  0.9
+##  small sample skew =  28.89  with probability =  0.76
+## b2p =  28.79   kurtosis =  -1.86  with probability =  0.064
+```
+
+```r
+mod <- lm(Latency ~ PPVT + Condition + EVT + Age, long_scores)
+cases <- lm.caseAnalysis(mod, "influenceplot")
+```
+
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-23.png) 
 
 
+(_I should review Cook's D, hat values, Studentized values_.)
 
-> C. Once you are done with A. and B., take a recent data set of yours, select 5 to 10 variables that are important to your hypotheses, and do some data screening. Among the selected variables there should be at most one experimental manipulation with two levels. Selecting only measured variables is fine, too. Go through the table you made in B. Check whether each problem is present in your variables, i.e., check whether your covariance matrix is positive definite, check whether there is a collinearity problem in your data (e.g., by computing the variance inflation factor for each of the variables), check whether there are outliers (e.g., by computing Mahalanobis distance for each observation), and so forth. Summarize your data screening (what you did and what you found) in ½ to 1 page. If you want you can put additional information (R script, box plots, etc.) in an appendix, but your summary should be informative by itself (I must be able to understand it without looking in the appendix). 
+#### Missing data (ignorable, systematic, MAR, MCAR, available case methods, mean substitution, regression-based imputation, model-based imputation)
+
+Ignorable missing data is not systematic. If missingness is systematic, the results from the available cases may not generalize to the targeted population. Missing at random means that the missing scores only vary by chance. Missing completely at random means that missingness is not predicted by any other variable in the dataset. Available case methods are ways of dealing with missing data, including excluding incomplete subjects or trying to use as many of the observations as possible. Imputations describe different ways to fill in the missing data points. During a sensitivity analysis, we would compare results from analyses with different assumptions to see how they compare. For example, do the results under listwise deletion differ from the imputed results?
+
+#### Normality (univariate, multivariate) and transformations
+
+ML assumes normality. Normality tells us whether the data follow a classical bell curve or whether the data are skewed or have abnormal tails (kurtosis). Transformations try to compress parts of the data distribution with the goal of achieving a more normal distribution. 
+
+Multivariate normality implies that 
+
+1. Each variable is univariate normal
+2. Each pair of variables is bivariate normal.
+3. All bivariate scatterplots exhibit linearity and homoscedacity. 
+
+#### Linearity and homoscedasticity
+
+Linearity meets that bivariate scatter plots are linear. Homescedacity means that residuals have constant variance, i.e., a uniform distributation
+
+#### Relative variances
+
+In order for the ML algorithm to converge, the variances should have relatively comparable units of measures. The ratio of the largest variance to the smallest variance should be 10 or less, ideally, i.e., within a unit an order of magnitude.
+
+#### Reliability and validity
+
+Reliability is the extent to which you are measure something meaningful, as opposed to random error. Validity is the extent to which you are measuring the desired construct.
+
+### B. Make a table that looks like the trouble shooting guide of the last dishwasher you bought. 
+
+> In the left column are the potential problems, in the middle column are the ways to diagnose the problems, and in the right column are ways to solve the problems (0.5 to 1 page max.). 
+
+Exercises
+-------------------------------------------------------------------------------
+
+### C. Take a recent data set of yours, select 5 to 10 variables that are important to your hypotheses, and do some data screening. 
+
+> Among the selected variables there should be at most one experimental manipulation with two levels. Selecting only measured variables is fine, too. Go through the table you made in B. Check whether each problem is present in your variables, i.e., check whether your covariance matrix is positive definite, check whether there is a collinearity problem in your data (e.g., by computing the variance inflation factor for each of the variables), check whether there are outliers (e.g., by computing Mahalanobis distance for each observation), and so forth. Summarize your data screening (what you did and what you found) in ½ to 1 page. If you want you can put additional information (R script, box plots, etc.) in an appendix, but your summary should be informative by itself (I must be able to understand it without looking in the appendix). 
 
 I have chosen to screen some reaction time data from a language processing task with 30--45 month-old children. I am interested in whether vocabulary size predicts reaction time. There are two trial conditions, one in which the child is prompted to look a familiar object named using a real word (e.g., _dog_) and another condition in which the child is prompted to look at unfamiliar object named with a nonsense word. Therefore the five variables in this dataset are are two different measures of vocabulary, age in months, reaction time and trial condition.
 
@@ -99,11 +172,11 @@ eigen(cov(just_scores))
 ## 
 ## $vectors
 ##            [,1]       [,2]      [,3]       [,4]       [,5]
-## [1,] -5.274e-01  0.8388612  0.134771  0.0007000 -0.0007102
-## [2,] -8.423e-01 -0.5370409  0.046732 -0.0007632  0.0006004
-## [3,] -1.116e-01  0.0888626 -0.989772  0.0018844 -0.0013769
-## [4,]  4.300e-05 -0.0005739  0.000591 -0.3456488 -0.9383636
-## [5,] -5.169e-05 -0.0014525  0.002143  0.9383615 -0.3456458
+## [1,] -5.274e-01  0.8388612  0.134771 -0.0007000 -0.0007102
+## [2,] -8.423e-01 -0.5370409  0.046732  0.0007632  0.0006004
+## [3,] -1.116e-01  0.0888626 -0.989772 -0.0018844 -0.0013769
+## [4,]  4.300e-05 -0.0005739  0.000591  0.3456488 -0.9383636
+## [5,] -5.169e-05 -0.0014525  0.002143 -0.9383615 -0.3456458
 ```
 
 
@@ -137,12 +210,6 @@ Univariate normality was using measures for skew and kurtosis. Adequate values w
 
 
 ```r
-scatterplotMatrix(just_scores)
-```
-
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
-
-```r
 describe(just_scores)
 ```
 
@@ -161,9 +228,14 @@ describe(just_scores)
 ## real        -0.35 0.00
 ```
 
+```r
+car::scatterplotMatrix(just_scores)
+```
+
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
+
 
 Linearity and heteroscedacity were assessed for the additive model that regresses reaction time onto the four predictor variables, using a function that checks whether the GLM's assumptions hold for a model. All assumptions, including linearity and heteroscedacity, held for the additive model with log-transformed reaction times.
-
 
 
 ```r
@@ -207,31 +279,12 @@ lm.modelAssumptions(m)
 ## 
 ## Coefficients:
 ##   (Intercept)  Conditionreal            EVT           PPVT            Age  
-##      1.913272       0.003359      -0.000663       0.000612      -0.001442  
-## 
-## 
-## ASSESSMENT OF THE LINEAR MODEL ASSUMPTIONS
-## USING THE GLOBAL TEST ON 4 DEGREES-OF-FREEDOM:
-## Level of Significance =  0.05 
-## 
-## Call:
-##  gvlma(x = model) 
-## 
-##                      Value p-value                Decision
-## Global Stat        5.55481   0.235 Assumptions acceptable.
-## Skewness           2.39536   0.122 Assumptions acceptable.
-## Kurtosis           0.67731   0.411 Assumptions acceptable.
-## Link Function      0.00566   0.940 Assumptions acceptable.
-## Heteroscedasticity 2.47647   0.116 Assumptions acceptable.
+##      1.913272       0.003359      -0.000663       0.000612      -0.001442
 ```
 
 
 
-
-
-
-> D. Do exercise 5 on page 74 (preferably in R but other software is fine too). Write a one-sentence conclusion. 
-
+### D. Do exercise 5 on page 74
 
 
 ```r
@@ -242,12 +295,45 @@ m <- lm(full_data ~ 1)
 plot.lm(m, which = 2)
 ```
 
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png) 
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8.png) 
 
 
+> Create a single word document with your troubleshooting table (B.), the summary of your data screening (C.), the normal probability plot plus conclusion (D.).
 
 
-> Create a single word document with your troubleshooting table (B.), the summary of your data screening (C.), the normal probability plot plus conclusion (D.), and an appendix (optional) and send me the document on Tuesday, by 11:30 am. _Note: You should do these exercises by yourself but feel free to consult with others and to ask them for help. If you give help to others, help them find the solution themselves rather than giving them the solution._
+***
 
 
+```r
+sessionInfo()
+```
+
+```
+## R version 3.0.1 (2013-05-16)
+## Platform: x86_64-w64-mingw32/x64 (64-bit)
+## 
+## locale:
+## [1] LC_COLLATE=English_United States.1252 
+## [2] LC_CTYPE=English_United States.1252   
+## [3] LC_MONETARY=English_United States.1252
+## [4] LC_NUMERIC=C                          
+## [5] LC_TIME=English_United States.1252    
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] lmSupport_1.07.1 car_2.0-19       reshape2_1.2.2   ggplot2_0.9.3.1 
+## [5] psych_1.3.10.12  plyr_1.8         knitr_1.5       
+## 
+## loaded via a namespace (and not attached):
+##  [1] bitops_1.0-6       caTools_1.16       colorspace_1.2-4  
+##  [4] dichromat_2.0-0    digest_0.6.3       evaluate_0.5.1    
+##  [7] formatR_0.10       gdata_2.13.2       gplots_2.12.1     
+## [10] grid_3.0.1         gtable_0.1.2       gtools_3.1.1      
+## [13] gvlma_1.0.0.1      KernSmooth_2.23-10 labeling_0.2      
+## [16] MASS_7.3-26        munsell_0.4.2      nnet_7.3-6        
+## [19] proto_0.3-10       RColorBrewer_1.0-5 scales_0.2.3      
+## [22] stringr_0.6.2      tools_3.0.1
+```
 

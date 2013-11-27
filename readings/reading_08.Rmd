@@ -3,8 +3,18 @@ Questions about Rex Kline's book (for Tues., Nov. 5)
 
 > Read pp. 112-118 (chap. 5) and pp. 230-245 (chap. 9) of Rex Kline's book. Be prepared to answer the questions below. Please also do the data analysis exercise described below. 
 
+```{r, warning = FALSE, message = FALSE}
+library(lavaan)
+d <- read.csv("../data/kabc_cor2.csv", row.names = 1)
+cor_mat <- as.matrix(d)
+# Transform correlation matrix into a covariance matrix
+sd <- c(3.40, 2.40, 2.90, 2.70, 2.70, 4.20, 2.80, 3.00)
+covar_matrix <- cor2cov(cor_mat, sd)
+covar_matrix <- round(covar_matrix, digits = 3)
+```
 
-#### 1. What can researchers do when some of their indicators are formulated in one direction and other indicators in the other direction?
+
+### 1. What can researchers do when some of their indicators are formulated in one direction and other indicators in the other direction?
 
 Reverse-code all the indicators in one direction, so that all indicators have the same direction.
 
@@ -14,7 +24,7 @@ reverse_code(1:5, min = 1, max = 5)
 ```
 
 
-#### 2. Explain to a novice the difference between unidimensional and multidimensional measurement in factor models.
+### 2. Explain to a novice the difference between unidimensional and multidimensional measurement in factor models.
 
 In unidimensional measurement: 
 
@@ -29,7 +39,7 @@ In multidimensional measurement, one of these constraints is violated:
 When we allow measurement errors to covary, we are saying that the measurement errors have something in common beyond the factors inside the model. When we don't allow errors to covary, we are saying that the correlation between a pair of indicators to due to their shared factor loadings.
 
 
-##### Sidebar
+#### Sidebar
 
 Suppose we have two covarying factors, each with three independent indicators. We would like to see:
 
@@ -37,7 +47,7 @@ Suppose we have two covarying factors, each with three independent indicators. W
 2. Discriminant validity: Not-excessively-high estimated correlations between the factors, r < 0.90
 
 
-#### 3. What are the major differences between exploratory factor analysis (EFA) and confirmatory factor analysis (CFA)?
+### 3. What are the major differences between exploratory factor analysis (EFA) and confirmatory factor analysis (CFA)?
 
 In EFA:
 
@@ -47,7 +57,7 @@ In EFA:
 CFA on the other hand deals with hypothesis-driven, restricted-factor, largely identified models. In CFA, we also allow factors to covary.
 
 
-#### 4. Assuming each indicator is specified to load on only one factor, how do we interpret unstandardized and standardized factor loadings?
+### 4. Assuming each indicator is specified to load on only one factor, how do we interpret unstandardized and standardized factor loadings?
 
 * Unstandardized factor loadings are interpreted like regression coefficients. 
     + Except for the coefficient set to 1 to give the factor its scale. This coefficient does not have a standard error and hence no test of significance.
@@ -57,12 +67,12 @@ CFA on the other hand deals with hypothesis-driven, restricted-factor, largely i
     + Hopefully, the factor will explain more than 50% of the variance in each indicator.
 
 
-#### 5. Why can we use a chi-square difference test to compare a single-factor model to a multi-factor model?
+### 5. Why can we use a chi-square difference test to compare a single-factor model to a multi-factor model?
 
 Fixing the correlation between two factors to equal 1 essentially combines the two factors into a single factor. Therefore, the single-factor form of the model is nested within the two-factor version. We can use the chi-square difference test because the single factor model is a special case of the multi-factor model.
 
 
-#### 6. Kline concludes that the two-factor model in Figure 9.1 is unacceptable. Why?
+### 6. Kline concludes that the two-factor model in Figure 9.1 is unacceptable. Why?
 
 * Model chi-square is significant. Exact-fit hypothesis is rejected.
 * Upper bound of RMSEA exceeds 0.10, so poor-fit hypothesis is not rejected.
@@ -71,13 +81,13 @@ Fixing the correlation between two factors to equal 1 essentially combines the t
 * He also didn't like the low power.
 
 
-#### 7. What pattern of results suggests that you specified too many factors? Too few factors?
+### 7. What pattern of results suggests that you specified too many factors? Too few factors?
 
 * Poor discriminant validity: High factor correlations: Too many factors
 * Poor convergent validity: Low correlation (standardized estimates) between a factor and its indicators: Too few factors.
 
 
-#### 8. What are we testing when we fix the covariances between multiple factors to zero and we then compare the chi-square of this model to that of another model in which the factors are allowed to covary?
+### 8. What are we testing when we fix the covariances between multiple factors to zero and we then compare the chi-square of this model to that of another model in which the factors are allowed to covary?
 
 We are doing the _test for orthogonality_. This lets us know whether all of the factor covariances jointly/overall differ significantly from zero.
 
@@ -85,36 +95,31 @@ We are doing the _test for orthogonality_. This lets us know whether all of the 
 Data Analysis Exercise
 -------------------------------------------------------------------------------
 
-#### 9. Analyze the KABC dataset described on pages 234--239.
-
-```{r}
-# Transform correlation matrix into a covariance matrix
-library(lavaan)
-d <- read.csv("data/kabc_cor2.csv", row.names = 1)
-cor_mat <- as.matrix(d)
-sd <- c(3.40, 2.40, 2.90, 2.70, 2.70, 4.20, 2.80, 3.00)
-covar_matrix <- cor2cov(cor_mat, sd)
-covar_matrix <- round(covar_matrix, digits = 3)
-```
+### 9. Analyze the KABC dataset described on pages 234--239.
 
 > Start out with a one-factor model. What chi-square value do you find when you round the values of the data covariance matrix to 3 decimals (which is what I did in the script above)? Note: this value is similar but not identical to the value reported in the book. If you don't get a similar value, check whether you specified N = 200.
 
-```{r}
-m1 <- "f =~ hand + number + word + gestalt + triangles + spatial + analogies + photo"
-fit1 <- cfa(m1, sample.cov = covar_matrix, sample.nobs = 200, likelihood = "wishart")
+```{r, tidy = FALSE}
+m1 <- "
+  f =~ hand + number + word + gestalt + triangles + 
+       spatial + analogies + photo"
+fit1 <- cfa(m1, sample.cov = covar_matrix, sample.nobs = 200, 
+            likelihood = "wishart")
 summary(fit1, fit.measures = TRUE)
 fitMeasures(fit1, "chisq")
 ```
 
 
-#### 10. Now run the two-factor model described in Figure 9.1. 
+### 10. Now run the two-factor model described in Figure 9.1. 
 
 > Do you find similar fit indices than the ones reported in Table 9.4? What is your value for chi-square and RMSEA? Do you have similar parameter estimates than the ones reported in Table 9.2? Compute your value for the standardized estimate of the path from "F2" to "photo series". Explain your computations.
 
-```{r}
-m2 <- "f1 =~ hand + number + word
-       f2 =~ gestalt + triangles + spatial + analogies + photo"
-fit2 <- cfa(m2, sample.cov = covar_matrix, sample.nobs = 200, likelihood = "wishart")
+```{r, tidy = FALSE}
+m2 <- "
+  f1 =~ hand + number + word
+  f2 =~ gestalt + triangles + spatial + analogies + photo"
+fit2 <- cfa(m2, sample.cov = covar_matrix, sample.nobs = 200, 
+            likelihood = "wishart")
 summary(fit2, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 # Residuals
 residuals(fit2)
@@ -129,15 +134,17 @@ sqrt(r_squared)
 The standardized estimates and the factor loadings are the same. The variances all differ slightly (still within 1 unit).
 
 
-#### 11.  Now run a different two-factor model. This time, "number" and "word" load on the first factor, all other variables load on the second factor. Look at as many fit indices that you can get. Is this a satisfactory model?
+### 11.  Now run a different two-factor model. This time, "number" and "word" load on the first factor, all other variables load on the second factor. Look at as many fit indices that you can get. Is this a satisfactory model?
 
-```{r}
-m3 <- "f1 =~ number + word
-       f2 =~ hand + gestalt + triangles + spatial + analogies + photo"
-fit3 <- cfa(m3, sample.cov = covar_matrix, sample.nobs = 200, likelihood = "wishart")
+```{r, tidy = FALSE}
+m3 <- "
+  f1 =~ number + word
+  f2 =~ hand + gestalt + triangles + spatial + analogies + photo"
+fit3 <- cfa(m3, sample.cov = covar_matrix, sample.nobs = 200, 
+            likelihood = "wishart")
 summary(fit3, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
-residuals(fit3, type="cor") 
-residuals(fit3, type="standardized")
+residuals(fit3, type = "cor") 
+residuals(fit3, type = "standardized")
 ```
 
 * RMSEA looks good.
@@ -149,3 +156,9 @@ residuals(fit3, type="standardized")
 * 3-4 of the residual correlations are significant.
 
 It certainly is an improvement over the other model.
+
+***
+
+```{r}
+sessionInfo()
+```

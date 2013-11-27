@@ -1,11 +1,22 @@
-
-Questions about Rex Kline's book (for Tue., Nov. 5)
+Questions about Rex Kline's book (for Tues., Nov. 5)
 ===============================================================================
 
 > Read pp. 112-118 (chap. 5) and pp. 230-245 (chap. 9) of Rex Kline's book. Be prepared to answer the questions below. Please also do the data analysis exercise described below. 
 
 
-#### 1. What can researchers do when some of their indicators are formulated in one direction and other indicators in the other direction?
+```r
+library(lavaan)
+d <- read.csv("../data/kabc_cor2.csv", row.names = 1)
+cor_mat <- as.matrix(d)
+# Transform correlation matrix into a covariance matrix
+sd <- c(3.4, 2.4, 2.9, 2.7, 2.7, 4.2, 2.8, 3)
+covar_matrix <- cor2cov(cor_mat, sd)
+covar_matrix <- round(covar_matrix, digits = 3)
+```
+
+
+
+### 1. What can researchers do when some of their indicators are formulated in one direction and other indicators in the other direction?
 
 Reverse-code all the indicators in one direction, so that all indicators have the same direction.
 
@@ -21,7 +32,7 @@ reverse_code(1:5, min = 1, max = 5)
 
 
 
-#### 2. Explain to a novice the difference between unidimensional and multidimensional measurement in factor models.
+### 2. Explain to a novice the difference between unidimensional and multidimensional measurement in factor models.
 
 In unidimensional measurement: 
 
@@ -36,7 +47,7 @@ In multidimensional measurement, one of these constraints is violated:
 When we allow measurement errors to covary, we are saying that the measurement errors have something in common beyond the factors inside the model. When we don't allow errors to covary, we are saying that the correlation between a pair of indicators to due to their shared factor loadings.
 
 
-##### Sidebar
+#### Sidebar
 
 Suppose we have two covarying factors, each with three independent indicators. We would like to see:
 
@@ -44,7 +55,7 @@ Suppose we have two covarying factors, each with three independent indicators. W
 2. Discriminant validity: Not-excessively-high estimated correlations between the factors, r < 0.90
 
 
-#### 3. What are the major differences between exploratory factor analysis (EFA) and confirmatory factor analysis (CFA)?
+### 3. What are the major differences between exploratory factor analysis (EFA) and confirmatory factor analysis (CFA)?
 
 In EFA:
 
@@ -54,7 +65,7 @@ In EFA:
 CFA on the other hand deals with hypothesis-driven, restricted-factor, largely identified models. In CFA, we also allow factors to covary.
 
 
-#### 4. Assuming each indicator is specified to load on only one factor, how do we interpret unstandardized and standardized factor loadings?
+### 4. Assuming each indicator is specified to load on only one factor, how do we interpret unstandardized and standardized factor loadings?
 
 * Unstandardized factor loadings are interpreted like regression coefficients. 
     + Except for the coefficient set to 1 to give the factor its scale. This coefficient does not have a standard error and hence no test of significance.
@@ -64,12 +75,12 @@ CFA on the other hand deals with hypothesis-driven, restricted-factor, largely i
     + Hopefully, the factor will explain more than 50% of the variance in each indicator.
 
 
-#### 5. Why can we use a chi-square difference test to compare a single-factor model to a multi-factor model?
+### 5. Why can we use a chi-square difference test to compare a single-factor model to a multi-factor model?
 
 Fixing the correlation between two factors to equal 1 essentially combines the two factors into a single factor. Therefore, the single-factor form of the model is nested within the two-factor version. We can use the chi-square difference test because the single factor model is a special case of the multi-factor model.
 
 
-#### 6. Kline concludes that the two-factor model in Figure 9.1 is unacceptable. Why?
+### 6. Kline concludes that the two-factor model in Figure 9.1 is unacceptable. Why?
 
 * Model chi-square is significant. Exact-fit hypothesis is rejected.
 * Upper bound of RMSEA exceeds 0.10, so poor-fit hypothesis is not rejected.
@@ -78,13 +89,13 @@ Fixing the correlation between two factors to equal 1 essentially combines the t
 * He also didn't like the low power.
 
 
-#### 7. What pattern of results suggests that you specified too many factors? Too few factors?
+### 7. What pattern of results suggests that you specified too many factors? Too few factors?
 
 * Poor discriminant validity: High factor correlations: Too many factors
 * Poor convergent validity: Low correlation (standardized estimates) between a factor and its indicators: Too few factors.
 
 
-#### 8. What are we testing when we fix the covariances between multiple factors to zero and we then compare the chi-square of this model to that of another model in which the factors are allowed to covary?
+### 8. What are we testing when we fix the covariances between multiple factors to zero and we then compare the chi-square of this model to that of another model in which the factors are allowed to covary?
 
 We are doing the _test for orthogonality_. This lets us know whether all of the factor covariances jointly/overall differ significantly from zero.
 
@@ -92,44 +103,22 @@ We are doing the _test for orthogonality_. This lets us know whether all of the 
 Data Analysis Exercise
 -------------------------------------------------------------------------------
 
-#### 9. Analyze the KABC dataset described on pages 234--239.
-
-
-```r
-# Transform correlation matrix into a covariance matrix
-library(lavaan)
-```
-
-```
-## Loading required package: MASS
-## Loading required package: boot
-## Loading required package: mnormt
-## Loading required package: pbivnorm
-## Loading required package: quadprog
-## This is lavaan 0.5-14
-## lavaan is BETA software! Please report any bugs.
-```
-
-```r
-d <- read.csv("data/kabc_cor2.csv", row.names = 1)
-cor_mat <- as.matrix(d)
-sd <- c(3.4, 2.4, 2.9, 2.7, 2.7, 4.2, 2.8, 3)
-covar_matrix <- cor2cov(cor_mat, sd)
-covar_matrix <- round(covar_matrix, digits = 3)
-```
-
+### 9. Analyze the KABC dataset described on pages 234--239.
 
 > Start out with a one-factor model. What chi-square value do you find when you round the values of the data covariance matrix to 3 decimals (which is what I did in the script above)? Note: this value is similar but not identical to the value reported in the book. If you don't get a similar value, check whether you specified N = 200.
 
 
 ```r
-m1 <- "f =~ hand + number + word + gestalt + triangles + spatial + analogies + photo"
-fit1 <- cfa(m1, sample.cov = covar_matrix, sample.nobs = 200, likelihood = "wishart")
+m1 <- "
+  f =~ hand + number + word + gestalt + triangles + 
+       spatial + analogies + photo"
+fit1 <- cfa(m1, sample.cov = covar_matrix, sample.nobs = 200, 
+            likelihood = "wishart")
 summary(fit1, fit.measures = TRUE)
 ```
 
 ```
-## lavaan (0.5-14) converged normally after  36 iterations
+## lavaan (0.5-15) converged normally after  36 iterations
 ## 
 ##   Number of observations                           200
 ## 
@@ -144,7 +133,7 @@ summary(fit1, fit.measures = TRUE)
 ##   Degrees of freedom                                28
 ##   P-value                                        0.000
 ## 
-## Full model versus baseline model:
+## User model versus baseline model:
 ## 
 ##   Comparative Fit Index (CFI)                    0.819
 ##   Tucker-Lewis Index (TLI)                       0.746
@@ -156,8 +145,8 @@ summary(fit1, fit.measures = TRUE)
 ## 
 ##   Number of free parameters                         16
 ##   Akaike (AIC)                                7665.196
-##   Bayesian (BIC)                              7717.970
-##   Sample-size adjusted Bayesian (BIC)         7667.280
+##   Bayesian (BIC)                              7717.889
+##   Sample-size adjusted Bayesian (BIC)         7667.200
 ## 
 ## Root Mean Square Error of Approximation:
 ## 
@@ -209,19 +198,22 @@ fitMeasures(fit1, "chisq")
 
 
 
-#### 10. Now run the two-factor model described in Figure 9.1. 
+### 10. Now run the two-factor model described in Figure 9.1. 
 
 > Do you find similar fit indices than the ones reported in Table 9.4? What is your value for chi-square and RMSEA? Do you have similar parameter estimates than the ones reported in Table 9.2? Compute your value for the standardized estimate of the path from "F2" to "photo series". Explain your computations.
 
 
 ```r
-m2 <- "f1 =~ hand + number + word\n       f2 =~ gestalt + triangles + spatial + analogies + photo"
-fit2 <- cfa(m2, sample.cov = covar_matrix, sample.nobs = 200, likelihood = "wishart")
+m2 <- "
+  f1 =~ hand + number + word
+  f2 =~ gestalt + triangles + spatial + analogies + photo"
+fit2 <- cfa(m2, sample.cov = covar_matrix, sample.nobs = 200, 
+            likelihood = "wishart")
 summary(fit2, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
 
 ```
-## lavaan (0.5-14) converged normally after  43 iterations
+## lavaan (0.5-15) converged normally after  43 iterations
 ## 
 ##   Number of observations                           200
 ## 
@@ -236,7 +228,7 @@ summary(fit2, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ##   Degrees of freedom                                28
 ##   P-value                                        0.000
 ## 
-## Full model versus baseline model:
+## User model versus baseline model:
 ## 
 ##   Comparative Fit Index (CFI)                    0.959
 ##   Tucker-Lewis Index (TLI)                       0.940
@@ -248,14 +240,14 @@ summary(fit2, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ## 
 ##   Number of free parameters                         17
 ##   Akaike (AIC)                                7600.114
-##   Bayesian (BIC)                              7656.185
-##   Sample-size adjusted Bayesian (BIC)         7602.327
+##   Bayesian (BIC)                              7656.100
+##   Sample-size adjusted Bayesian (BIC)         7602.243
 ## 
 ## Root Mean Square Error of Approximation:
 ## 
 ##   RMSEA                                          0.071
 ##   90 Percent Confidence Interval          0.037  0.104
-##   P-value RMSEA <= 0.05                          0.136
+##   P-value RMSEA <= 0.05                          0.135
 ## 
 ## Standardized Root Mean Square Residual:
 ## 
@@ -402,7 +394,7 @@ inspect(fit2, "sampstat")
 ```
 
 ```r
-r_squared <- 1 - (3.5/9)
+r_squared <- 1 - (3.500 / 9.000)
 sqrt(r_squared)
 ```
 
@@ -414,17 +406,20 @@ sqrt(r_squared)
 The standardized estimates and the factor loadings are the same. The variances all differ slightly (still within 1 unit).
 
 
-#### 11.  Now run a different two-factor model. This time, "number" and "word" load on the first factor, all other variables load on the second factor. Look at as many fit indices that you can get. Is this a satisfactory model?
+### 11.  Now run a different two-factor model. This time, "number" and "word" load on the first factor, all other variables load on the second factor. Look at as many fit indices that you can get. Is this a satisfactory model?
 
 
 ```r
-m3 <- "f1 =~ number + word\n       f2 =~ hand + gestalt + triangles + spatial + analogies + photo"
-fit3 <- cfa(m3, sample.cov = covar_matrix, sample.nobs = 200, likelihood = "wishart")
+m3 <- "
+  f1 =~ number + word
+  f2 =~ hand + gestalt + triangles + spatial + analogies + photo"
+fit3 <- cfa(m3, sample.cov = covar_matrix, sample.nobs = 200, 
+            likelihood = "wishart")
 summary(fit3, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
 
 ```
-## lavaan (0.5-14) converged normally after  50 iterations
+## lavaan (0.5-15) converged normally after  49 iterations
 ## 
 ##   Number of observations                           200
 ## 
@@ -439,7 +434,7 @@ summary(fit3, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ##   Degrees of freedom                                28
 ##   P-value                                        0.000
 ## 
-## Full model versus baseline model:
+## User model versus baseline model:
 ## 
 ##   Comparative Fit Index (CFI)                    0.984
 ##   Tucker-Lewis Index (TLI)                       0.977
@@ -451,14 +446,14 @@ summary(fit3, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ## 
 ##   Number of free parameters                         17
 ##   Akaike (AIC)                                7588.218
-##   Bayesian (BIC)                              7644.290
-##   Sample-size adjusted Bayesian (BIC)         7590.432
+##   Bayesian (BIC)                              7644.205
+##   Sample-size adjusted Bayesian (BIC)         7590.348
 ## 
 ## Root Mean Square Error of Approximation:
 ## 
 ##   RMSEA                                          0.044
 ##   90 Percent Confidence Interval          0.000  0.081
-##   P-value RMSEA <= 0.05                          0.564
+##   P-value RMSEA <= 0.05                          0.562
 ## 
 ## Standardized Root Mean Square Residual:
 ## 
@@ -511,7 +506,7 @@ summary(fit3, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
 
 ```r
-residuals(fit3, type = "cor")
+residuals(fit3, type = "cor") 
 ```
 
 ```
@@ -566,3 +561,33 @@ residuals(fit3, type = "standardized")
 * 3-4 of the residual correlations are significant.
 
 It certainly is an improvement over the other model.
+
+***
+
+
+```r
+sessionInfo()
+```
+
+```
+## R version 3.0.1 (2013-05-16)
+## Platform: x86_64-w64-mingw32/x64 (64-bit)
+## 
+## locale:
+## [1] LC_COLLATE=English_United States.1252 
+## [2] LC_CTYPE=English_United States.1252   
+## [3] LC_MONETARY=English_United States.1252
+## [4] LC_NUMERIC=C                          
+## [5] LC_TIME=English_United States.1252    
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] lavaan_0.5-15 knitr_1.5    
+## 
+## loaded via a namespace (and not attached):
+## [1] evaluate_0.5.1 formatR_0.10   mnormt_1.4-5   pbivnorm_0.5-1
+## [5] quadprog_1.5-5 stats4_3.0.1   stringr_0.6.2  tools_3.0.1
+```
+

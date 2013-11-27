@@ -1,12 +1,12 @@
-Questions about Rex Kline's book (for Tue., Sept. 17)
+Questions about Rex Kline's book (for Tues., Sept. 17)
 ===============================================================================
 
-Read pages 28-51 (until "Data screening") and pp. 52-53 (Topic Box 3.1) in Rex Kline's book and prepare the answers to the following questions.
+> Read pages 28-51 (until "Data screening") and pp. 52-53 (Topic Box 3.1) in Rex Kline's book and prepare the answers to the following questions.
 
 Chapter 2
 -------------------------------------------------------------------------------
 
-**When my goal is to describe (in standardized terms) the relative explanatory power of each predictor controlling for the rest, should I report beta weights or partial correlations?**  
+### When my goal is to describe (in standardized terms) the relative explanatory power of each predictor controlling for the rest, should I report beta weights or partial correlations?**  
 
 $$
   b_{X} =
@@ -20,21 +20,21 @@ $$
     {\sqrt{1-\rho_{XZ}^2} \sqrt{1-\rho_{ZY}^2}}
 $$
 
-Beta weights are standardized regression coefficients. Partial correlations, when squared, can tell us about the proportion of variance in the dependent variable accounted for by one predictor, controlling for the others. These three things are all different lenses to view the data.
+The choice is yours. Beta weights are standardized regression coefficients. Partial correlations, when squared, can tell us about the proportion of variance in the dependent variable accounted for by one predictor, controlling for the others. Partial correlations, part correlations, and beta weights are all different lenses to view the data.
 
-**Spearman's rank-order correlation describes the relationship between two dichotomous variables. True or false?**
+### Spearman's rank-order correlation describes the relationship between two dichotomous variables. True or false?
 
-False. It is for a pair of ranked variables.
+False. It is for a pair of ranked variables. The phi coefficient correlates two dichotomous variables.
 
-**Can SEM handle dichotomous outcome variables?**
+### Can SEM handle dichotomous outcome variables?
 
 Yes, by using the principles from logistic regression.
 
-**What is the "critical ratio"? Above which value are critical ratios generally statistically significant?**
+### What is the "critical ratio"? Above which value are critical ratios generally statistically significant?
 
-A critical ratio is a sample statistic over its standard error. For the _z_ statistic, the critical ratio is 1.96 at the 0.05 level and 2.58 at the 0.01 level in a two-tailed test. 
+A critical ratio is a sample statistic over its standard error (at some level of significance). For the _z_ statistic, the critical ratio is 1.96 at the 0.05 level and 2.58 at the 0.01 level in a two-tailed test. 
 
-**Name some factors that affect the statistical power of a test.**
+### Name some factors that affect the statistical power of a test.
 
 1. Magnitude of the actual effect in the population
 2. Sample size
@@ -44,22 +44,27 @@ A critical ratio is a sample statistic over its standard error. For the _z_ stat
 6. Whether a parametric or nonparametric statistic is used
 7. Measurement reliability
 
-**For which types of solutions are standard errors generally calculated in maximum likelihood estimation: for the standardized or for the unstandardized solution? Once my SEM has generated the estimates for one type of solution, can I apply the statistical significance of the estimates to the other type of solution (i.e., does the statistical significance of the standardized regression weights apply to the unstandardized regression weights and/or vice versa)?**
+### For which types of solutions are standard errors generally calculated in maximum likelihood estimation: for the standardized or for the unstandardized solution? 
 
-Standard errors are generally calculate for the unstandardized solution. The significance of the unstandardized estimate does not automatically carry over to the standarized estimate. 
+> Once my SEM has generated the estimates for one type of solution, can I apply the statistical significance of the estimates to the other type of solution (i.e., does the statistical significance of the standardized regression weights apply to the unstandardized regression weights and/or vice versa)?
 
-**We are going to evaluate our structural models by computing a Chi square statistic. Does chi square indicate the degree of perfect fit or the degree of approximate fit.**
+Standard errors are generally calculated for the unstandardized solution. The significance of the unstandardized estimate does not automatically carry over to the standarized estimate. 
 
-Approximate fit. 
+### We are going to evaluate our structural models by computing a Chi square statistic. Does chi square indicate the degree of perfect fit or the degree of approximate fit.
 
-**What is the difference between parametric and nonparametric bootstrapping?**
+Approximate fit. It permits an acceptable degree of departure from a perfect or exact fit.
 
-In parametric bootstrapping, the observations are resampled from a theoretical probability distribution, whereas in nonparametric bootstrapping, observations are resampled from a pseudopopulation (our sample).
+### What is the difference between parametric and nonparametric bootstrapping?
+
+In parametric bootstrapping, the observations are resampled from a theoretical probability distribution, whereas in nonparametric bootstrapping, observations are resampled (with replacement) from a pseudopopulation (our sample).
+
+
+
 
 Chapter 3
 -------------------------------------------------------------------------------
  
-**Assuming means are not analyzed, what are the three types of data input formats that all standard SEM programs can analyze?**
+### Assuming means are not analyzed, what are the three types of data input formats that all standard SEM programs can analyze?
 
 1. Raw data
 2. Covariance matrix
@@ -67,22 +72,22 @@ Chapter 3
 
 Use 4-decimal accuracy for matrix summaries.
 
-**Kline talks about matrices in "lower diagonal form". What does he refer to?**
+### Kline talks about matrices in "lower diagonal form". What does he refer to?
 
-A matrix which omits any cells that fall above the diagonal:
+A matrix which omits any cells that fall above the diagonal.
 
-**Is it acceptable to submit for analyses just a correlation matrix without standard deviations? Justify your answer.**
+### Is it acceptable to submit for analyses just a correlation matrix without standard deviations? Justify your answer.
 
 Only if the raw data just happens to have a covariance matrix that is identical to its correlation matrix. 
 
-**A data matrix is positive definite only if it possesses certain characteristics. Name at least three of these characteristics:**
+### A data matrix is positive definite only if it possesses certain characteristics. Name at least three of these characteristics:
 
 1. The matrix is nonsingular, or invertible.
 2. All eigenvalues of the matrix are greater than zero.
 3. The determinant of the matrix is greater than zero.
 4. All of the correlations and covariances are not out of bounds.
 
-**Name three of the most common causes of nonpositive definite matrices.**
+### Name three of the most common causes of nonpositive definite matrices.
 
 1. Extreme collinearity
 2. Outliers that inflate the correlations
@@ -91,7 +96,13 @@ Only if the raw data just happens to have a covariance matrix that is identical 
 5. Sampling error
 6. Using matrices of estimated Pearson correlations
 
-**Exercise 1 (p. 73): Compute a correlation matrix from a lower diagonal covariance matrix:**
+
+Exercises
+-------------------------------------------------------------------------------
+
+### Exercise 1 (p. 73)
+
+> Compute a correlation matrix from a lower diagonal covariance matrix:
 
 
 ```r
@@ -149,12 +160,15 @@ cov2cor(d)
 ```
 
 
-**Exercise 2 (p. 73). Don't worry if you don't know how to do mean substitution.**
+### Exercise 2 (p. 73)
+
+> Don't worry if you don't know how to do mean substitution.
+
 
 ```r
 # Load in the data file, look at the correlations using different missing
 # data strategies
-d <- read.csv("data/chap02_ex02.csv")
+d <- read.csv("../data/chap02_ex02.csv")
 str(d)
 ```
 
@@ -191,20 +205,22 @@ cor(d, use = "pairwise.complete.obs")
 
 ```r
 # Mean substition
-SubstituteMean <- function(x) ifelse(is.na(x), mean(x, na.rm = T), x)
-d2 <- apply(d, 2, SubstituteMean)
-cor(d2)
+substitute_mean <- function(x) ifelse(is.na(x), mean(x, na.rm = TRUE), x)
+d2 <- apply(d, 2, substitute_mean)
+print(cor(d2), 2)
 ```
 
 ```
-##         X       Y      W
-## X 1.00000 0.04757 0.1016
-## Y 0.04757 1.00000 0.5323
-## W 0.10156 0.53227 1.0000
+##       X     Y    W
+## X 1.000 0.048 0.10
+## Y 0.048 1.000 0.53
+## W 0.102 0.532 1.00
 ```
 
 
-**Exercise 3 (p. 73)**
+Correlations will differ when the correlations are computed from differing numbers of participants.
+
+### Exercise 3 (p. 73)
 
 
 ```r
@@ -222,11 +238,13 @@ cov2cor(cov_matrix)
 
 The correlation is greater than 1.0, so it's out of bounds. 
 
-**Exercise 4 (p. 73). Hint: There two ways to show that a matrix is nonpositive definite. Either you submit the covariance matrix to an online matrix calculator (e.g., www.bluebit.gr/matrix-calculator). Or you show that the correlation matrix contains an out-of-bounds value.**
+### Exercise 4 (p. 73)
+
+> Hint: There two ways to show that a matrix is nonpositive definite. Either you submit the covariance matrix to [an online matrix calculator](www.bluebit.gr/matrix-calculator). Or you show that the correlation matrix contains an out-of-bounds value.
 
 
 ```r
-d <- read.csv("data/chap02_ex04.csv")
+d <- read.csv("../data/chap02_ex04.csv")
 str(d)
 ```
 
@@ -281,5 +299,35 @@ eigen(cov_matrix)
 ## [1,]  0.9333 -0.3494 0.08289
 ## [2,] -0.3020 -0.6391 0.70736
 ## [3,]  0.1941  0.6852 0.70197
+```
+
+
+
+***
+
+
+```r
+sessionInfo()
+```
+
+```
+## R version 3.0.1 (2013-05-16)
+## Platform: x86_64-w64-mingw32/x64 (64-bit)
+## 
+## locale:
+## [1] LC_COLLATE=English_United States.1252 
+## [2] LC_CTYPE=English_United States.1252   
+## [3] LC_MONETARY=English_United States.1252
+## [4] LC_NUMERIC=C                          
+## [5] LC_TIME=English_United States.1252    
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] knitr_1.5
+## 
+## loaded via a namespace (and not attached):
+## [1] evaluate_0.5.1 formatR_0.10   stringr_0.6.2  tools_3.0.1
 ```
 

@@ -1,32 +1,37 @@
-Questions about Rex Kline's book (for Tue., Oct. 15)
+Questions about Rex Kline's book (for Tues., Oct. 15)
 ===============================================================================
- 
- Mina: Communication, how new media mediate interpersonal relationships.
- Kara: Accounting
- 
+
 > Read pages 189-222 in Kline's book (until "...other predictive fit indices"), and pages pp. 715-720 in Tabachnik and Fidell's book (chapter 14.5.3). Be prepared to answer the questions below. Please also to the data analysis exercise described the end. 
+
+
+```r
+library(lavaan)
+d <- read.csv("../data/roth_data.csv", row.names = 1)
+d <- as.matrix(d)
+```
+
  
-#### 1. According to Rex Kline, it is not very impressive to come up with a model that fits the data. Why?
+### 1. According to Rex Kline, it is not very impressive to come up with a model that fits the data. Why?
 
 It is trivial to make a fitting model. Just add more parameters. We can also prune paths with non-significant paths.
 
 
-#### 2. Is Rex Kline suggesting to adopt more strict standards or more lax standards than have been applied in the past? Explain his position.
+### 2. Is Rex Kline suggesting to adopt more strict standards or more lax standards than have been applied in the past? Explain his position.
 
 Stricter than ever before. It's too easily to rely on the many fit indices. We should provide more information about the model to the readers. We should be our model's toughest critics.
 
 
-#### 3. "A model with a good fit generally has good predictive power (explains a lot of variances in the endogenous variables)." True or false?
+### 3. "A model with a good fit generally has good predictive power (explains a lot of variances in the endogenous variables)." True or false?
 
 False.
 
 
-#### 4. What can we conclude when our chi square is non-significant? When it is significant?
+### 4. What can we conclude when our chi square is non-significant? When it is significant?
 
 We can keep the model if it is non-significant; (maybe) reject exact-fit hypothesis if it is significant. 
 
 
-#### 5. Be prepared to say what factors affect the value of chi square (tend to make it more or less significant). Say whether the factor artificially increases or decreases chi-square.
+### 5. Be prepared to say what factors affect the value of chi square (tend to make it more or less significant). Say whether the factor artificially increases or decreases chi-square.
 
 1. Multivariate non-normality. Increase or decrease.
 2. Correlation sizes. Large correlations inflate discrepancies.
@@ -34,22 +39,22 @@ We can keep the model if it is non-significant; (maybe) reject exact-fit hypothe
 4. Sample size: Increase.
 
 
-#### 6. Given that we adopt a "accept-support logic" when examining the model chi square, do we have greater or smaller chances to find support for our model when we have low statistical power?
+### 6. Given that we adopt a "accept-support logic" when examining the model chi square, do we have greater or smaller chances to find support for our model when we have low statistical power?
 
 We have a greater chance of accepting our model.
 
 
-#### 7. Give two or three reasons why Kline suggests that we should interpret approximate fit indices with utmost caution.
+### 7. Give two or three reasons why Kline suggests that we should interpret approximate fit indices with utmost caution.
 
 They don't measure sampling error. The threshold rules-of-thumb come from computer simulations that made specific assumptions about the models. A model may have good overall fit but poorly explain some relationships in the model. There is poor correlation between these different fit indices.
 
 
-#### 8. What is the baseline model considered as the standard of reference in most comparative fit indices?
+### 8. What is the baseline model considered as the standard of reference in most comparative fit indices?
 
 The independence model (the null-model) with no covariances between the parameters.
 
 
-#### 9. Name the main reasons why Kline considers Roth et al.'s model to have an inadequate fit.
+### 9. Name the main reasons why Kline considers Roth et al.'s model to have an inadequate fit.
 
 * Chi-square(5) = 11.078, p = < 0.49. Exact fit hypothesis is rejected.
 * Poor fit hypothesis cannot be rejected; the RMSEA confidence interval is too large.
@@ -58,67 +63,50 @@ The independence model (the null-model) with no covariances between the paramete
 * Some of the standardized residual correlations are significant.
 
 
-#### 10. What is a "Lagrange Multiplier" and why will you be struck by lightning if you mention the term in your instructor's presence?
+### 10. What is a "Lagrange Multiplier" and why will you be struck by lightning if you mention the term in your instructor's presence?
 
 A Lagrange Multiplier, in the context of SEM, estimates how much the overall chi-square statistic would change if a particular path were estimated. Relying on LMs to respecify a model capitalizes on chance. Our model respecifications should be theoretically driven first, not empirically driven.
 
 
-#### 11. Two formulas to compute the AIC are being used in the SEM literature. Report these two formulas and say which is used by lavaan?
+### 11. Two formulas to compute the AIC are being used in the SEM literature. Report these two formulas and say which is used by lavaan?
 
+```
 Chi-square + 2q
 
 Chi-square - 2dfM
 
-
 AIC <- -2 * logl.H0 + 2 * npar
+```
 
-
-#### 12. Why does Kline conclude that the "conventional medical model" (Figure 8.3.b) fits the data better than the "psychosomatic model" (Figure 8.3.a)?
+### 12. Why does Kline conclude that the "conventional medical model" (Figure 8.3.b) fits the data better than the "psychosomatic model" (Figure 8.3.a)?
 
 It has the lowest AIC value and passes the chi-square test.
 
 
-#### 13. Compare Tabachnik and Fidell's formula of the CFI (p. 717) with that of Kline (p. 208). Are these formulas identical? 
+### 13. Compare Tabachnik and Fidell's formula of the CFI (p. 717) with that of Kline (p. 208). Are these formulas identical? 
 
 Yes.
 
 
-#### 14. Compare Tabachnik and Fidell's formula of the RMSEA (p. 717) with that of Kline (p. 205). Are these formulas identical? 
+### 14. Compare Tabachnik and Fidell's formula of the RMSEA (p. 717) with that of Kline (p. 205). Are these formulas identical? 
 
 No.
 
+### 15. Attached you will find a covariance matrix ("roth_data.csv") summarizing the Roth data that are based 373 observations (see Figure 8.1). Run this model with lavaan verify if you find the values reported in Tables 8.1. and 8.2.
 
-#### 15. Attached you will find a covariance matrix ("roth_data.csv") summarizing the Roth data that are based 373 observations (see Figure 8.1). Run this model with lavaan verify if you find the values reported in Tables 8.1. and 8.2.
-
-
-```r
-library(lavaan)
-```
-
-```
-## Loading required package: MASS
-## Loading required package: boot
-## Loading required package: mnormt
-## Loading required package: pbivnorm
-## Loading required package: quadprog
-## This is lavaan 0.5-14
-## lavaan is BETA software! Please report any bugs.
-```
 
 ```r
-d <- read.csv("../data/roth_data.csv")
-# Change first column to row names
-row.names(d) <- d$X
-d <- as.matrix(d[-1])
-
-m <- "\n  # regressions\n  illness ~  fitness + stress\n  stress ~ hardiness\n  fitness ~ exercise\n"
+m <- '
+  # regressions
+  illness ~  fitness + stress
+  stress ~ hardiness
+  fitness ~ exercise'
 m_fit <- sem(m, sample.cov = d, sample.nobs = 373, likelihood = "wishart")
-
 summary(m_fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
 
 ```
-## lavaan (0.5-14) converged normally after  22 iterations
+## lavaan (0.5-15) converged normally after  22 iterations
 ## 
 ##   Number of observations                           373
 ## 
@@ -133,7 +121,7 @@ summary(m_fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ##   Degrees of freedom                                 9
 ##   P-value                                        0.000
 ## 
-## Full model versus baseline model:
+## User model versus baseline model:
 ## 
 ##   Comparative Fit Index (CFI)                    0.961
 ##   Tucker-Lewis Index (TLI)                       0.930
@@ -145,14 +133,14 @@ summary(m_fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ## 
 ##   Number of free parameters                          7
 ##   Akaike (AIC)                               19907.554
-##   Bayesian (BIC)                             19935.005
-##   Sample-size adjusted Bayesian (BIC)        19912.796
+##   Bayesian (BIC)                             19934.986
+##   Sample-size adjusted Bayesian (BIC)        19912.777
 ## 
 ## Root Mean Square Error of Approximation:
 ## 
 ##   RMSEA                                          0.057
 ##   90 Percent Confidence Interval          0.001  0.103
-##   P-value RMSEA <= 0.05                          0.338
+##   P-value RMSEA <= 0.05                          0.337
 ## 
 ## Standardized Root Mean Square Residual:
 ## 
@@ -186,7 +174,7 @@ summary(m_fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
 
 ```r
-residuals(m_fit, type = "cor")
+residuals(m_fit, type = "cor")      
 ```
 
 ```
@@ -204,7 +192,7 @@ residuals(m_fit, type = "cor")
 ```
 
 ```r
-residuals(m_fit, type = "standardized")
+residuals(m_fit, type = "standardized")          
 ```
 
 ```
@@ -230,4 +218,34 @@ fitMeasures(m_fit, "gfi")
 ## 0.988
 ```
 
+
+
+***
+
+
+```r
+sessionInfo()
+```
+
+```
+## R version 3.0.1 (2013-05-16)
+## Platform: x86_64-w64-mingw32/x64 (64-bit)
+## 
+## locale:
+## [1] LC_COLLATE=English_United States.1252 
+## [2] LC_CTYPE=English_United States.1252   
+## [3] LC_MONETARY=English_United States.1252
+## [4] LC_NUMERIC=C                          
+## [5] LC_TIME=English_United States.1252    
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] lavaan_0.5-15 knitr_1.5    
+## 
+## loaded via a namespace (and not attached):
+## [1] evaluate_0.5.1 formatR_0.10   mnormt_1.4-5   pbivnorm_0.5-1
+## [5] quadprog_1.5-5 stats4_3.0.1   stringr_0.6.2  tools_3.0.1
+```
 

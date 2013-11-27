@@ -1,18 +1,21 @@
-
-```r
-source("../power.r")
-print.PowerSummary <- function(...) str(...)
-```
-
-
-Questions about Rex Kline's book (for Tue., Oct. 22)
+Questions about Rex Kline's book (for Tues., Oct. 22)
 ===============================================================================
 
 > Read pages 154-175, 182 (summary), and 222-228 in Kline's book. Be prepared to answer the questions below WITHOUT LOOKING AT YOUR NOTES. 
- 
-## Chapter 7
- 
-#### 1. Explain what (full information) maximum likelihood estimation is. Pretend you are explaining it to a SEM novice.
+
+
+```r
+source("../power.r")
+library(lavaan)
+d <- read.csv("../data/roth_data.csv", row.names = 1)
+d <- as.matrix(d)
+```
+
+
+Chapter 7
+-------------------------------------------------------------------------------
+
+### 1. Explain what (full information) maximum likelihood estimation is. Pretend you are explaining it to a SEM novice.
 
 You want to find some equations that describe how the data fit together. To do this, you need to estimate the relationships between the variables. Maximum likelihood generates estimates that maximize the likelihood that these relationships were sampled from the full population. Full-information means that the computer tries to solve the all the equations simultaneously instead of one-by-one. In order to maximize the likelihood, the computer minimizes a corresponding fit function which describes the deviance between the model's predictions and the data. 
 
@@ -21,12 +24,12 @@ ML estimation are generally iterative, meaning that the computer starts with an 
 ML is both scale free and scale invariant which means that we can linearly transform estimates to different scales and that scale of measurement does not affect the fitting function.
 
 
-#### 2. Kline suggests to us to pay particular attention to the start values. Why is that? 
+### 2. Kline suggests to us to pay particular attention to the start values. Why is that? 
 
 Accurate start values may help the estimation converge more quickly, and conversely, horribly inaccurate start values may prevent the estimation from converging or converging on an optimal solution. In this case, you should be ready to provide some initial estimates to help the model out.
 
 
-#### 3. What are Heywood cases? 
+### 3. What are Heywood cases? 
 
 Parameter estimates with nonsensical values, like a negative variance estimate or estimated correlations with an absolute value greater than 1. Causes include:
 
@@ -38,29 +41,32 @@ Parameter estimates with nonsensical values, like a negative variance estimate o
 * Extreme population correlations (yielding empirical underidentification)
 
 
-#### 4a. In Figure 7.1(a), the path from "school support" to "teacher-pupil interaction" has a value of .097. Interpret this path.
+### 4a. In Figure 7.1(a), the path from "school support" to "teacher-pupil interaction" has a value of .097. Interpret this path.
 
 An additional point of school support is predicted to yield a 0.097 unit increase in positive teacher-pupil interaction, when holding constant the direct effects of coercive control and teacher burnout on interaction. (Although the support variable needs to be un-transformed in order to be properly interpreted).
 
 
-#### 4b. Is it not surprising that this path coefficient becomes bigger, rather than smaller, in the standardized solution (.203)?
+### 4b. Is it not surprising that this path coefficient becomes bigger, rather than smaller, in the standardized solution (.203)?
 
-No. SD-Support / SD-Teacher-Pupil = 10.5212 / 5 = 2.1042. The ratio scales the path coefficient into a larger value: 2.1042 * 0.097 = 0.2041, which approximates the standardized solution.
+No. `SD-Support / SD-Teacher-Pupil = 10.5212 / 5 = 2.1042`. The ratio scales the path coefficient into a larger value: `2.1042 * 0.097 = 0.2041`, which approximates the standardized solution.
 
 
-#### 5. Explain what direct effects, indirect effects, total indirect effects, and total effects are. Pretend you are explaining it to a SEM novice.
+### 5. Explain what direct effects, indirect effects, total indirect effects, and total effects are. Pretend you are explaining it to a SEM novice.
 
 Consider a triangle with paths x~y, x~m, m~y. There are two ways to get from x to y. One is the direct path from x to y. This is the direct effect: It describes how a change in x corresponds to a change in y, controlling for the m~y effect. The indirect path from x to y involves the intermediate paths x to m and m to y. The indirect effect describes how a change in x yields a change in m yields a change in y. It's the effect of x on y via m, equal to the product of the two direct effects that make up the path x~m * m~y. The sum of all paths from x to y is the total effect. The total indirect effects is the sum of all the indirect paths.
 
 
-#### 6. According to Kline, it is not all surprising that all the correlation residuals involving coercive control, teacher burnout, school support, and teacher-pupil interaction are zero (see Table 7.5). In other words, we could have known that they are zero by simply looking at the path analytic model in Figure 7.1. Why is that?
+### 6. Zero correlation residulas
+
+> According to Kline, it is not all surprising that all the correlation residuals involving coercive control, teacher burnout, school support, and teacher-pupil interaction are zero (see Table 7.5). In other words, we could have known that they are zero by simply looking at the path analytic model in Figure 7.1. Why is that?
 
 Because that subset of the model is just-identified. There is a path between every pair of variables. Such models tend to perfectly fit the data.
 
  
-## Chapter 8
+Chapter 8
+-------------------------------------------------------------------------------
 
-#### 7. If one wants to test a model with 2 df and one wants to have a model power-level of at least .80, how many participants does one need to include in the study?
+### 7. If one wants to test a model with 2 df and one wants to have a model power-level of at least .80, how many participants does one need to include in the study?
 
 
 ```r
@@ -69,13 +75,13 @@ compute_sample_size(df = 2, rmseaa = 0.01)
 
 ```
 ## List of 7
-##  $ df         : num 2
-##  $ n          : num 2381
-##  $ rmsea0     : num 0.05
-##  $ rmseaa     : num 0.01
-##  $ alpha      : num 0.05
-##  $ hyptothesis: chr "Not-close-fit hypothesis"
-##  $ power      : num 0.8
+##  $ df        : num 2
+##  $ n         : num 2381
+##  $ rmsea0    : num 0.05
+##  $ rmseaa    : num 0.01
+##  $ alpha     : num 0.05
+##  $ hypothesis: chr "Not-close-fit hypothesis"
+##  $ power     : num 0.8
 ##  - attr(*, "class")= chr "PowerSummary"
 ```
 
@@ -85,22 +91,24 @@ compute_sample_size(df = 2, rmseaa = 0.08)
 
 ```
 ## List of 7
-##  $ df         : num 2
-##  $ n          : num 3500
-##  $ rmsea0     : num 0.05
-##  $ rmseaa     : num 0.08
-##  $ alpha      : num 0.05
-##  $ hyptothesis: chr "Close-fit hypothesis"
-##  $ power      : num 0.801
+##  $ df        : num 2
+##  $ n         : num 3500
+##  $ rmsea0    : num 0.05
+##  $ rmseaa    : num 0.08
+##  $ alpha     : num 0.05
+##  $ hypothesis: chr "Close-fit hypothesis"
+##  $ power     : num 0.801
 ##  - attr(*, "class")= chr "PowerSummary"
 ```
 
 
- * 3500 for the close-fit test. 
- * 2381.25 for the not-close-fit test.
+* 3500 for the close-fit test. 
+* 2381.25 for the not-close-fit test.
 
 
-#### 8. Go to [Kris Preacher's web page](http://www.quantpsy.org/rmsea/rmsea.htm) and generate the power values that are reported for the Roth et al. model in Table 8.7 of Kline's book (.317 and .229).  In other words, what does it mean to have a power of .317 for the close-fit test and a power of .229 for the not-close-fit test?
+### 8. Use [Kris Preacher's web page](http://www.quantpsy.org/rmsea/rmsea.htm) and generate the power values that are reported for the Roth et al. model in Table 8.7 of Kline's book (.317 and .229).  
+
+> In other words, what does it mean to have a power of .317 for the close-fit test and a power of .229 for the not-close-fit test?
 
 > The web page will ask you, among other things, for two pieces of information: the "Null RMSEA", which should always be .05, and the "Alt. RMSEA", which should be either .01 (for the not-close fit test) or .08 (for the close-fit test). Interpret the values you get (without looking at your notes).
 
@@ -113,13 +121,13 @@ compute_power(df = 5, n = 373, rmseaa = 0.01)
 
 ```
 ## List of 7
-##  $ df         : num 5
-##  $ n          : num 373
-##  $ rmsea0     : num 0.05
-##  $ rmseaa     : num 0.01
-##  $ alpha      : num 0.05
-##  $ hyptothesis: chr "Not-close-fit hypothesis"
-##  $ power      : num 0.229
+##  $ df        : num 5
+##  $ n         : num 373
+##  $ rmsea0    : num 0.05
+##  $ rmseaa    : num 0.01
+##  $ alpha     : num 0.05
+##  $ hypothesis: chr "Not-close-fit hypothesis"
+##  $ power     : num 0.229
 ##  - attr(*, "class")= chr "PowerSummary"
 ```
 
@@ -133,18 +141,18 @@ compute_power(df = 5, n = 373, rmseaa = 0.08)
 
 ```
 ## List of 7
-##  $ df         : num 5
-##  $ n          : num 373
-##  $ rmsea0     : num 0.05
-##  $ rmseaa     : num 0.08
-##  $ alpha      : num 0.05
-##  $ hyptothesis: chr "Close-fit hypothesis"
-##  $ power      : num 0.317
+##  $ df        : num 5
+##  $ n         : num 373
+##  $ rmsea0    : num 0.05
+##  $ rmseaa    : num 0.08
+##  $ alpha     : num 0.05
+##  $ hypothesis: chr "Close-fit hypothesis"
+##  $ power     : num 0.317
 ##  - attr(*, "class")= chr "PowerSummary"
 ```
 
 
-#### 9. Using Kris Preacher's web page to determine the power values for a model with 5 df and 60 observations (like our model apgar4)? Interpret these values.
+### 9. Using Kris Preacher's web page to determine the power values for a model with 5 df and 60 observations (like our model apgar4)? Interpret these values.
 
 
 ```r
@@ -153,13 +161,13 @@ compute_power(df = 5, n = 60, rmseaa = 0.01)
 
 ```
 ## List of 7
-##  $ df         : num 5
-##  $ n          : num 60
-##  $ rmsea0     : num 0.05
-##  $ rmseaa     : num 0.01
-##  $ alpha      : num 0.05
-##  $ hyptothesis: chr "Not-close-fit hypothesis"
-##  $ power      : num 0.0668
+##  $ df        : num 5
+##  $ n         : num 60
+##  $ rmsea0    : num 0.05
+##  $ rmseaa    : num 0.01
+##  $ alpha     : num 0.05
+##  $ hypothesis: chr "Not-close-fit hypothesis"
+##  $ power     : num 0.0668
 ##  - attr(*, "class")= chr "PowerSummary"
 ```
 
@@ -169,59 +177,48 @@ compute_power(df = 5, n = 60, rmseaa = 0.08)
 
 ```
 ## List of 7
-##  $ df         : num 5
-##  $ n          : num 60
-##  $ rmsea0     : num 0.05
-##  $ rmseaa     : num 0.08
-##  $ alpha      : num 0.05
-##  $ hyptothesis: chr "Close-fit hypothesis"
-##  $ power      : num 0.0969
+##  $ df        : num 5
+##  $ n         : num 60
+##  $ rmsea0    : num 0.05
+##  $ rmseaa    : num 0.08
+##  $ alpha     : num 0.05
+##  $ hypothesis: chr "Close-fit hypothesis"
+##  $ power     : num 0.0969
 ##  - attr(*, "class")= chr "PowerSummary"
 ```
 
 
-#### 10. Given that it is unrealistic to expect from a researcher to consider all equivalent and near-equivalent models, what does Kline suggest we should do?
+### 10. Given that it is unrealistic to expect from a researcher to consider all equivalent and near-equivalent models, what does Kline suggest we should do?
 
 Consider the theoretically substantive alternative models.
 
-#### 11. Using the Roth et al. dataset (see last homework), get as many fit indices as possible for the two models described in the second paragraph on page 228 of Kline's book. Interpret the results and explain why these two models are considered "near-equivalent".
+### 11. Fit Indices
+
+> Using the Roth et al. dataset (see last homework), get as many fit indices as possible for the two models described in the second paragraph on page 228 of Kline's book. Interpret the results and explain why these two models are considered "near-equivalent".
 
 
 ```r
-library(lavaan)
-```
-
-```
-## Loading required package: MASS
-## Loading required package: boot
-## Loading required package: mnormt
-## Loading required package: pbivnorm
-## Loading required package: quadprog
-## This is lavaan 0.5-14
-## lavaan is BETA software! Please report any bugs.
-```
-
-```r
-d <- read.csv("../data/roth_data.csv")
-# Change first column to row names
-row.names(d) <- d$X
-d <- as.matrix(d[-1])
-
-m0 <- "\n  # regressions\n  illness ~  fitness + stress\n  stress ~ hardiness\n  fitness ~ exercise\n"
-
-m1 <- "\n  # regressions\n  illness ~  fitness + stress\n  stress ~ hardiness + fitness\n  fitness ~ exercise\n"
-
-m2 <- "\n  # regressions\n  illness ~  fitness + stress\n  stress ~ hardiness\n  fitness ~ exercise + stress\n"
-
+m0 <- '
+  illness ~ fitness + stress
+  stress ~ hardiness
+  fitness ~ exercise'
+m1 <- '
+  illness ~ fitness + stress
+  stress ~ hardiness + fitness
+  fitness ~ exercise'
+m2 <- '
+  illness ~ fitness + stress
+  stress ~ hardiness
+  fitness ~ exercise + stress'
 m0_fit <- sem(m0, sample.cov = d, sample.nobs = 373, likelihood = "wishart")
 m1_fit <- sem(m1, sample.cov = d, sample.nobs = 373, likelihood = "wishart")
 m2_fit <- sem(m2, sample.cov = d, sample.nobs = 373, likelihood = "wishart")
-
+# Model 0
 summary(m0_fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
 
 ```
-## lavaan (0.5-14) converged normally after  22 iterations
+## lavaan (0.5-15) converged normally after  22 iterations
 ## 
 ##   Number of observations                           373
 ## 
@@ -236,7 +233,7 @@ summary(m0_fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ##   Degrees of freedom                                 9
 ##   P-value                                        0.000
 ## 
-## Full model versus baseline model:
+## User model versus baseline model:
 ## 
 ##   Comparative Fit Index (CFI)                    0.961
 ##   Tucker-Lewis Index (TLI)                       0.930
@@ -248,14 +245,14 @@ summary(m0_fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ## 
 ##   Number of free parameters                          7
 ##   Akaike (AIC)                               19907.554
-##   Bayesian (BIC)                             19935.005
-##   Sample-size adjusted Bayesian (BIC)        19912.796
+##   Bayesian (BIC)                             19934.986
+##   Sample-size adjusted Bayesian (BIC)        19912.777
 ## 
 ## Root Mean Square Error of Approximation:
 ## 
 ##   RMSEA                                          0.057
 ##   90 Percent Confidence Interval          0.001  0.103
-##   P-value RMSEA <= 0.05                          0.338
+##   P-value RMSEA <= 0.05                          0.337
 ## 
 ## Standardized Root Mean Square Residual:
 ## 
@@ -289,7 +286,7 @@ summary(m0_fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
 
 ```r
-residuals(m0_fit, type = "cor")
+residuals(m0_fit, type = "cor")      
 ```
 
 ```
@@ -307,7 +304,7 @@ residuals(m0_fit, type = "cor")
 ```
 
 ```r
-residuals(m0_fit, type = "standardized")
+residuals(m0_fit, type = "standardized")          
 ```
 
 ```
@@ -325,12 +322,12 @@ residuals(m0_fit, type = "standardized")
 ```
 
 ```r
-
+# Model 1
 summary(m1_fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
 
 ```
-## lavaan (0.5-14) converged normally after  22 iterations
+## lavaan (0.5-15) converged normally after  22 iterations
 ## 
 ##   Number of observations                           373
 ## 
@@ -345,7 +342,7 @@ summary(m1_fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ##   Degrees of freedom                                 9
 ##   P-value                                        0.000
 ## 
-## Full model versus baseline model:
+## User model versus baseline model:
 ## 
 ##   Comparative Fit Index (CFI)                    0.988
 ##   Tucker-Lewis Index (TLI)                       0.972
@@ -357,14 +354,14 @@ summary(m1_fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ## 
 ##   Number of free parameters                          8
 ##   Akaike (AIC)                               19904.384
-##   Bayesian (BIC)                             19935.756
-##   Sample-size adjusted Bayesian (BIC)        19910.375
+##   Bayesian (BIC)                             19935.735
+##   Sample-size adjusted Bayesian (BIC)        19910.353
 ## 
 ## Root Mean Square Error of Approximation:
 ## 
 ##   RMSEA                                          0.036
 ##   90 Percent Confidence Interval          0.000  0.092
-##   P-value RMSEA <= 0.05                          0.583
+##   P-value RMSEA <= 0.05                          0.582
 ## 
 ## Standardized Root Mean Square Residual:
 ## 
@@ -399,7 +396,7 @@ summary(m1_fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
 
 ```r
-residuals(m1_fit, type = "cor")
+residuals(m1_fit, type = "cor")      
 ```
 
 ```
@@ -417,7 +414,7 @@ residuals(m1_fit, type = "cor")
 ```
 
 ```r
-residuals(m1_fit, type = "standardized")
+residuals(m1_fit, type = "standardized")          
 ```
 
 ```
@@ -435,12 +432,12 @@ residuals(m1_fit, type = "standardized")
 ```
 
 ```r
-
+# Model 2
 summary(m2_fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
 
 ```
-## lavaan (0.5-14) converged normally after  23 iterations
+## lavaan (0.5-15) converged normally after  23 iterations
 ## 
 ##   Number of observations                           373
 ## 
@@ -455,7 +452,7 @@ summary(m2_fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ##   Degrees of freedom                                 9
 ##   P-value                                        0.000
 ## 
-## Full model versus baseline model:
+## User model versus baseline model:
 ## 
 ##   Comparative Fit Index (CFI)                    0.989
 ##   Tucker-Lewis Index (TLI)                       0.976
@@ -467,14 +464,14 @@ summary(m2_fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ## 
 ##   Number of free parameters                          8
 ##   Akaike (AIC)                               19904.130
-##   Bayesian (BIC)                             19935.502
-##   Sample-size adjusted Bayesian (BIC)        19910.121
+##   Bayesian (BIC)                             19935.481
+##   Sample-size adjusted Bayesian (BIC)        19910.099
 ## 
 ## Root Mean Square Error of Approximation:
 ## 
 ##   RMSEA                                          0.033
 ##   90 Percent Confidence Interval          0.000  0.091
-##   P-value RMSEA <= 0.05                          0.607
+##   P-value RMSEA <= 0.05                          0.606
 ## 
 ## Standardized Root Mean Square Residual:
 ## 
@@ -509,7 +506,7 @@ summary(m2_fit, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
 
 ```r
-residuals(m2_fit, type = "cor")
+residuals(m2_fit, type = "cor")      
 ```
 
 ```
@@ -527,7 +524,7 @@ residuals(m2_fit, type = "cor")
 ```
 
 ```r
-residuals(m2_fit, type = "standardized")
+residuals(m2_fit, type = "standardized")   
 ```
 
 ```
@@ -545,31 +542,82 @@ residuals(m2_fit, type = "standardized")
 ```
 
 ```r
-
-measures <- lapply(list(m0_fit, m1_fit, m2_fit), function(x) data.frame(as.list(fitMeasures(x))))
-Reduce(rbind, measures)
+# Put all the fit indices together
+measures <- lapply(list(m0_fit, m1_fit, m2_fit), 
+                   function(x) data.frame(as.list(fitMeasures(x))))
+fits <- Reduce(rbind, measures)
+row.names(fits) <- c("m0", "m1", "m2")
+round(t(fits), 2)
 ```
 
 ```
-##       fmin  chisq df  pvalue baseline.chisq baseline.df baseline.pvalue
-## 1 0.014889 11.078  5 0.04986          165.2           9               0
-## 2 0.007959  5.921  4 0.20509          165.2           9               0
-## 3 0.007618  5.668  4 0.22534          165.2           9               0
-##      cfi    tli   nnfi    rfi    nfi   pnfi    ifi    rni  logl
-## 1 0.9611 0.9299 0.9299 0.8793 0.9329 0.5183 0.9621 0.9611 -9947
-## 2 0.9877 0.9723 0.9723 0.9193 0.9641 0.4285 0.9881 0.9877 -9944
-## 3 0.9893 0.9760 0.9760 0.9228 0.9657 0.4292 0.9896 0.9893 -9944
-##   unrestricted.logl npar   aic   bic ntotal  bic2   rmsea rmsea.ci.lower
-## 1             -9941    7 19908 19935    373 19913 0.05709        0.00132
-## 2             -9941    8 19904 19936    373 19910 0.03589        0.00000
-## 3             -9941    8 19904 19936    373 19910 0.03344        0.00000
-##   rmsea.ci.upper rmsea.pvalue    rmr rmr_nomean    srmr srmr_nomean cn_05
-## 1        0.10301       0.3383 134.36     134.36 0.05128     0.05128 373.8
-## 2        0.09218       0.5830  75.46      75.46 0.03388     0.03388 598.6
-## 3        0.09054       0.6068  89.24      89.24 0.03118     0.03118 625.4
-##   cn_01    gfi   agfi   pgfi    mfi    ecvi
-## 1 509.0 0.9882 0.9647 0.3294 0.9919 0.06723
-## 2 837.3 0.9936 0.9761 0.2650 0.9974 0.05877
-## 3 874.7 0.9939 0.9771 0.2650 0.9978 0.05809
+##                         m0       m1       m2
+## fmin                  0.01     0.01     0.01
+## chisq                11.08     5.92     5.67
+## df                    5.00     4.00     4.00
+## pvalue                0.05     0.21     0.23
+## baseline.chisq      165.16   165.16   165.16
+## baseline.df           9.00     9.00     9.00
+## baseline.pvalue       0.00     0.00     0.00
+## cfi                   0.96     0.99     0.99
+## tli                   0.93     0.97     0.98
+## nnfi                  0.93     0.97     0.98
+## rfi                   0.88     0.92     0.92
+## nfi                   0.93     0.96     0.97
+## pnfi                  0.52     0.43     0.43
+## ifi                   0.96     0.99     0.99
+## rni                   0.96     0.99     0.99
+## logl              -9946.78 -9944.19 -9944.06
+## unrestricted.logl -9941.22 -9941.22 -9941.22
+## npar                  7.00     8.00     8.00
+## aic               19907.55 19904.38 19904.13
+## bic               19934.99 19935.73 19935.48
+## ntotal              373.00   373.00   373.00
+## bic2              19912.78 19910.35 19910.10
+## rmsea                 0.06     0.04     0.03
+## rmsea.ci.lower        0.00     0.00     0.00
+## rmsea.ci.upper        0.10     0.09     0.09
+## rmsea.pvalue          0.34     0.58     0.61
+## rmr                 134.36    75.46    89.24
+## rmr_nomean          134.36    75.46    89.24
+## srmr                  0.05     0.03     0.03
+## srmr_nomean           0.05     0.03     0.03
+## cn_05               372.76   597.04   623.68
+## cn_01               507.61   835.08   872.36
+## gfi                   0.99     0.99     0.99
+## agfi                  0.96     0.98     0.98
+## pgfi                  0.33     0.26     0.27
+## mfi                   0.99     1.00     1.00
+## ecvi                  0.07     0.06     0.06
+```
+
+
+***
+
+
+```r
+sessionInfo()
+```
+
+```
+## R version 3.0.1 (2013-05-16)
+## Platform: x86_64-w64-mingw32/x64 (64-bit)
+## 
+## locale:
+## [1] LC_COLLATE=English_United States.1252 
+## [2] LC_CTYPE=English_United States.1252   
+## [3] LC_MONETARY=English_United States.1252
+## [4] LC_NUMERIC=C                          
+## [5] LC_TIME=English_United States.1252    
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] lavaan_0.5-15 knitr_1.5    
+## 
+## loaded via a namespace (and not attached):
+## [1] evaluate_0.5.1 formatR_0.10   mnormt_1.4-5   pbivnorm_0.5-1
+## [5] quadprog_1.5-5 stats4_3.0.1   stringr_0.6.2  tools_3.0.1
 ```
 

@@ -1,31 +1,25 @@
-```{r, echo=FALSE, message=FALSE, warning=FALSE, error=FALSE}
-library(stringr)
-library(reshape2)
-library(psych)
-library(car)
-library(plyr)
-library(lmSupport)
-library(ggplot2)
-setwd("C:/Users/tjmahr/SkyDrive/Documents/Psych711/")
-load(file="data/HW3.Rdata")
-results$Latency <- log(results$Latency)
-scores <- dcast(results, formula = Subject + EVT + PPVT + Age ~ Condition, 
-                mean, value.var = "Latency")
-lengths <- dcast(results, formula = Subject + EVT + PPVT + Age ~ Condition, 
-                  length, value.var = "Latency")
-lengths <- mutate(lengths, Usable = nonsense + real)
-just_scores <- subset(scores, select=-Subject)
-long_scores <- melt(scores, measure.vars=c("nonsense", "real"), 
-                    value.name="Latency", variable.name="Condition")
-```
-
-
-Exercises about Rex Kline's book (for Tue., Sept. 24)
+Exercises about Rex Kline's book (for Tues., Sept. 24)
 ===============================================================================
 
-> A. Read pages 51--72 very carefully. Be prepared to explain to a novice what the topics below mean and why they are particularly important in SEM. For each of the topics you should be able to say two or three sentences without looking at your notes. 
+```{r, message = FALSE, warning = FALSE, error = FALSE}
+library(plyr)
+library(psych)
+library(ggplot2)
+library(reshape2)
+library(lmSupport)
+long_scores <- read.csv("../data/hw3.csv", row.names = 1)
+just_scores <- read.csv("../data/hw3b.csv", row.names = 1)
+lengths <- read.csv("../data/hw3c.csv", row.names = 1)
+```
 
-**Positive definiteness of matrices (causes, indicators of nonpositive definiteness)**
+Reading Notes
+-------------------------------------------------------------------------------
+
+### Be prepared to explain to a novice what the topics below mean and why they are particularly important in SEM. 
+
+> For each of the topics you should be able to say two or three sentences without looking at your notes. 
+
+#### Positive definiteness of matrices (causes, indicators of nonpositive definiteness)
 
 In order for us to do the SEM analysis on the covariance matrix (a description of the variables in our data and how they vary together), the matrix needs to be well-formed--that is, positive definite--so that we can do some linear algebra on them. The indicators of nonpositive definiteness:
 
@@ -38,37 +32,29 @@ Causes: Include errors, outliers, collinearity.
 
 This problem will kill your model, so its pretty obvious to detect.
 
-**Collinearity (between a pair of variables and between a variable and two or more others)**
+#### Collinearity (between a pair of variables and between a variable and two or more others)
 
 Collinearity indicates that 2+ different variables are measuring the same thing. Redundant variables need to be eliminated or combined together. Check with VIF, squared multiple correlation, or tolleratnce.
 
-**Outliers (univariate outliers, multivariate outliers)**
+#### Outliers (univariate outliers, multivariate outliers)
 
 Outliers are extreme values that distort or exaggerate trends in the data. Set with a cutoff like 3SD or a distance measure. An outlier may not belong to the sample's true population. Multivariate outliers are calculated with Mahalanonis distance. 
 
 ```{r}
-md <- mahalanobis(just_scores, colMeans(just_scores), cov=cov(just_scores))
-qplot(x=md)
+md <- mahalanobis(just_scores, colMeans(just_scores), cov = cov(just_scores))
+qplot(x = md)
 mardia(just_scores)
 mod <- lm(Latency ~ PPVT + Condition + EVT + Age, long_scores)
-lm.caseAnalysis(mod, "influenceplot")
+cases <- lm.caseAnalysis(mod, "influenceplot")
 ```
 
-(_Review Cook's D, hat values, Studentized values_)
+(_I should review Cook's D, hat values, Studentized values_.)
 
-
-**Missing data (ignorable, systematic, MAR, MCAR, available case methods, mean substitution, regression-based imputation, model-based imputation)**
+#### Missing data (ignorable, systematic, MAR, MCAR, available case methods, mean substitution, regression-based imputation, model-based imputation)
 
 Ignorable missing data is not systematic. If missingness is systematic, the results from the available cases may not generalize to the targeted population. Missing at random means that the missing scores only vary by chance. Missing completely at random means that missingness is not predicted by any other variable in the dataset. Available case methods are ways of dealing with missing data, including excluding incomplete subjects or trying to use as many of the observations as possible. Imputations describe different ways to fill in the missing data points. During a sensitivity analysis, we would compare results from analyses with different assumptions to see how they compare. For example, do the results under listwise deletion differ from the imputed results?
 
-
-```{r}
-library(mice)
-md.pattern(results)
-qqPlot(results$Latency)
-```
-
-**Normality (univariate, multivariate) and transformations**
+#### Normality (univariate, multivariate) and transformations
 
 ML assumes normality. Normality tells us whether the data follow a classical bell curve or whether the data are skewed or have abnormal tails (kurtosis). Transformations try to compress parts of the data distribution with the goal of achieving a more normal distribution. 
 
@@ -78,23 +64,28 @@ Multivariate normality implies that
 2. Each pair of variables is bivariate normal.
 3. All bivariate scatterplots exhibit linearity and homoscedacity. 
 
-**Linearity and homoscedasticity**
+#### Linearity and homoscedasticity
 
 Linearity meets that bivariate scatter plots are linear. Homescedacity means that residuals have constant variance, i.e., a uniform distributation
 
-**Relative variances**
+#### Relative variances
 
 In order for the ML algorithm to converge, the variances should have relatively comparable units of measures. The ratio of the largest variance to the smallest variance should be 10 or less, ideally, i.e., within a unit an order of magnitude.
 
-**Reliability and validity**
+#### Reliability and validity
 
 Reliability is the extent to which you are measure something meaningful, as opposed to random error. Validity is the extent to which you are measuring the desired construct.
 
-> B. Make a table that looks like the trouble shooting guide of the last dishwasher you bought. In the left column are the potential problems, in the middle column are the ways to diagnose the problems, and in the right column are ways to solve the problems (0.5 to 1 page max.). 
+### B. Make a table that looks like the trouble shooting guide of the last dishwasher you bought. 
 
+> In the left column are the potential problems, in the middle column are the ways to diagnose the problems, and in the right column are ways to solve the problems (0.5 to 1 page max.). 
 
+Exercises
+-------------------------------------------------------------------------------
 
-> C. Once you are done with A. and B., take a recent data set of yours, select 5 to 10 variables that are important to your hypotheses, and do some data screening. Among the selected variables there should be at most one experimental manipulation with two levels. Selecting only measured variables is fine, too. Go through the table you made in B. Check whether each problem is present in your variables, i.e., check whether your covariance matrix is positive definite, check whether there is a collinearity problem in your data (e.g., by computing the variance inflation factor for each of the variables), check whether there are outliers (e.g., by computing Mahalanobis distance for each observation), and so forth. Summarize your data screening (what you did and what you found) in ½ to 1 page. If you want you can put additional information (R script, box plots, etc.) in an appendix, but your summary should be informative by itself (I must be able to understand it without looking in the appendix). 
+### C. Take a recent data set of yours, select 5 to 10 variables that are important to your hypotheses, and do some data screening. 
+
+> Among the selected variables there should be at most one experimental manipulation with two levels. Selecting only measured variables is fine, too. Go through the table you made in B. Check whether each problem is present in your variables, i.e., check whether your covariance matrix is positive definite, check whether there is a collinearity problem in your data (e.g., by computing the variance inflation factor for each of the variables), check whether there are outliers (e.g., by computing Mahalanobis distance for each observation), and so forth. Summarize your data screening (what you did and what you found) in ½ to 1 page. If you want you can put additional information (R script, box plots, etc.) in an appendix, but your summary should be informative by itself (I must be able to understand it without looking in the appendix). 
 
 I have chosen to screen some reaction time data from a language processing task with 30--45 month-old children. I am interested in whether vocabulary size predicts reaction time. There are two trial conditions, one in which the child is prompted to look a familiar object named using a real word (e.g., _dog_) and another condition in which the child is prompted to look at unfamiliar object named with a nonsense word. Therefore the five variables in this dataset are are two different measures of vocabulary, age in months, reaction time and trial condition.
 
@@ -103,7 +94,7 @@ These reaction times already underwent one iteration of screening and correction
 Missingness was present in the dataset because not every trial yielded a usable reaction time, and a number of reaction times were trimmed as described above. It is possible that attention to the task predicts the number of usable reaction times, and therefore that the number of usable observations within each subject is not ignorable missing data. I checked against this possibility by regressing the number of reaction times onto condition, two measures of vocabulary, and age. There was a signifcant effect of age such that increasing one-month in age predicted an increase in usable data by 0.76 trials, controlling all other predictors. In other words, older kids may dispropriately represented in the unaggregated data-set.
 
 ```{r}
-lengths <- melt(lengths, measure.vars=c("nonsense", "real"))
+lengths <- melt(lengths, measure.vars = c("nonsense", "real"))
 lengths <- mutate(lengths, Condition = ifelse(variable == "nonsense", -.5, .5))
 summary(lm(value ~ EVT + PPVT + Age + Condition, lengths))
 ```
@@ -126,12 +117,11 @@ cor(just_scores)
 Univariate normality was using measures for skew and kurtosis. Adequate values were found for these measures.
 
 ```{r}
-scatterplotMatrix(just_scores)
 describe(just_scores)
+car::scatterplotMatrix(just_scores)
 ```
 
 Linearity and heteroscedacity were assessed for the additive model that regresses reaction time onto the four predictor variables, using a function that checks whether the GLM's assumptions hold for a model. All assumptions, including linearity and heteroscedacity, held for the additive model with log-transformed reaction times.
-
 
 ```{r}
 m <- lm(Latency ~ Condition + EVT + PPVT + Age, long_scores)
@@ -140,18 +130,20 @@ lm.modelAssumptions(m)
 ```
 
 
-
-
-
-> D. Do exercise 5 on page 74 (preferably in R but other software is fine too). Write a one-sentence conclusion. 
-
+### D. Do exercise 5 on page 74
 
 ```{r}
 dataset <- list(Score = c(10:17, 27), Counts = c(6, 15, 19, 18, 5, 5, 4, 1, 1))
 full_data <- unlist(Map(rep, dataset$Score, dataset$Counts))
 m <- lm(full_data ~ 1)
-plot.lm(m, which=2)
-qqnorm(y=full_data)
+plot.lm(m, which = 2)
 ```
 
-> Create a single word document with your troubleshooting table (B.), the summary of your data screening (C.), the normal probability plot plus conclusion (D.), and an appendix (optional) and send me the document on Tuesday, by 11:30 am. _Note: You should do these exercises by yourself but feel free to consult with others and to ask them for help. If you give help to others, help them find the solution themselves rather than giving them the solution._
+> Create a single word document with your troubleshooting table (B.), the summary of your data screening (C.), the normal probability plot plus conclusion (D.).
+
+
+***
+
+```{r}
+sessionInfo()
+```
