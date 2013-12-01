@@ -2,8 +2,31 @@ Questions about Rex Kline's book (for Tues., Nov. 19)
 ===============================================================================
 
 > Read chapter 10 of Kline's book and be prepared to answer the questions below. Please also do the data analysis exercise described below (and send me your R script by Tuesday 9 am). 
- 
-#### 1. Kline suggests that we should analyze a structural regression model in a two-step process. Describe this process.
+
+```{r, warning = FALSE, message = FALSE}
+library(lavaan)
+d <- structure(
+  c(1, 0.44, 0.69, 0.37, 0.23, 0.12, 0.09, 0.03, 0.44, 1, 0.54, 0.08, 0.05, 
+    0.08, 0.06, 0.02, 0.69, 0.54, 1, 0.24, 0.26, 0.08, 0.04, -0.02, 0.37, 0.08, 
+    0.24, 1, 0.29, 0.08, 0.01, -0.07, 0.23, 0.05, 0.26, 0.29, 1, -0.03, -0.02, 
+    -0.11, 0.12, 0.08, 0.08, 0.08, -0.03, 1, 0.38, 0.37, 0.09, 0.06, 0.04, 0.01, 
+    -0.02, 0.38, 1, 0.46, 0.03, 0.02, -0.02, -0.07, -0.11, 0.37, 0.46, 1), 
+  .Dim = c(8L, 8L), 
+  .Dimnames = list(c("acculscl", "genstat", "perlife", "educ", "income", 
+                     "interper", "job", "depscl"), 
+                   c("acculscl", "genstat", "perlife", "educ", "income", 
+                     "interper", "job", "depscl")))
+sd <- structure(c(3.119, 3.279, 2.408, 3.27, 3.44, 2.961, 3.604, 3.194), 
+                .Names = c("acculscl", "genstat", "perlife", "educ", "income", 
+                           "interper", "job", "depscl"))
+# lavaan has its own cor2cov function
+d <- cor2cov(R = d, sds = sd)
+```
+
+Readings
+-------------------------------------------------------------------------------
+
+### 1. Kline suggests that we should analyze a structural regression model in a two-step process. Describe this process.
 
 1. Specify the SR first as a measurement model to determine the indicators adequately measure the factors.
 2. Compare the fits of the SR models to the CFA model from step 1. An SR model with a just-identified structural part will have the same estimates as the CFA model.
@@ -12,7 +35,9 @@ If the factor loadings change substantially when different SR paths are modeled,
 
 
 
-#### 2. How do we compute the percentage of explained variance in endogenous factors? According to Kline, the model shown in Figure 10.3 explains 24.5% of the variance of the job satisfaction factor. How did he get this number?
+### 2. How do we compute the percentage of explained variance in endogenous factors? 
+
+> According to Kline, the model shown in Figure 10.3 explains 24.5% of the variance of the job satisfaction factor. How did he get this number?
 
 ```
 R^2 = 1 - (disturbance variance / model-implied variance)
@@ -24,48 +49,60 @@ R^2 = 1 - (disturbance variance / model-implied variance)
 
 
 
-#### 3. Kline suggests to retain the just-identified structural regression model shown in Figure 10.3 and not the over-identified structural regression model hypothesized by Houghton and Jinkerson (2007, see Figure 5.9, p. 120). Explain his reasoning.
+### 3. Figure 10.3 
+
+> Kline suggests to retain the just-identified structural regression model shown in Figure 10.3 and not the over-identified structural regression model hypothesized by Houghton and Jinkerson (2007, see Figure 5.9, p. 120). Explain his reasoning.
 
 When the two paths were removed from the just-identified model, Kline observed some "localized fit problems" in the correlation residuals (e.g., between Work2 and Imagery, Beliefs and Mood1/Mood2).
 
 
 
-#### 4. It turns out that the power for the model shown in Figure 10.3 is quite satisfactory. And yet, the dataset contains only 263 observations. How come that this model has satisfactory power despite the relatively small number of observations?
+### 4. Power
+
+> It turns out that the power for the model shown in Figure 10.3 is quite satisfactory. And yet, the dataset contains only 263 observations. How come that this model has satisfactory power despite the relatively small number of observations?
 
 The relatively high number of dfs (47) makes up for the small sample size. Using a lot of indicators in your measurement models buys you a lot of additional degrees of freedoms.
 
 
 
-#### 5. Be prepared to draw on the blackboard an equivalent model of the model shown in Figure 5.9 (p. 120). Make sure that your new equivalent looks rather different than the original model. Justify why your model is equivalent.
+### 5. Equivalent models
+
+> Be prepared to draw on the blackboard an equivalent model of the model shown in Figure 5.9 (p. 120). Make sure that your new equivalent looks rather different than the original model. Justify why your model is equivalent.
 
 
 
-#### 6. If it is possible to take into account measurement error by specifying a latent variable with a single indicator (and then fixing the variance of the measurement error associated with this indicator at some a priori value > 0), why don't we adopt this approach routinely in path analysis?
+### 6. Measurement error 
+
+> If it is possible to take into account measurement error by specifying a latent variable with a single indicator (and then fixing the variance of the measurement error associated with this indicator at some a priori value > 0), why don't we adopt this approach routinely in path analysis?
 
 Because we need to have a good estimate for the measurement error. And because you can get identification problems.
 
 
 
-#### 7. Describe the differences between "reflective measurement" and "formative measurement".
+### 7. Describe the differences between "reflective measurement" and "formative measurement".
 
 * In formative measurement, the indicators cause the factors. For example, components in a composite measurement form the _latent composite_. (Income and education cause SES in some respect.) These indicators are not interchangable, because it would fundamentally alter the make-up of the factor to change its constituent parts. These indicators need not be positively correlated. Cause indicators are exogenous variables that are free to covary; they do not have measurement error. "Measurement error is represented at the construct level, not at the indicator level as in reflective measurement" (p. 281). The measurement errors are captured in the disturbance.
 * In reflective measurement, the indicators are caused by the factors. You can interchange and swap around equally reliable reflective indicators without changing the definition of the factor. These indicators should also have positive correlations. 
 
-TODO: Note where dimensionality where comes into play.
+[TODO: Note where dimensionality where comes into play.]
 
-#### 8. Describe the "2+ emitted paths rule"
+
+
+### 8. Describe the "2+ emitted paths rule"
 
 A latent composite variable needs at least two outgoing paths (direct effects on endogenous variables) in order to have an identified disturbance variance.
 
 
 
-#### 9. The test of configural invariance across groups can be considered a test of moderation in that we examine whether the direct effects in the model 'depend' on group membership." True or false?
+### 9. Group tests
+
+> The test of configural invariance across groups can be considered a test of moderation in that we examine whether the direct effects in the model 'depend' on group membership." True or false?
 
 False. The test of equal direct effects may be considered a test of moderation.
 
 
 
-#### 10. Carefully read Thompson's (2000) "ten commandments" of structural equation modeling (see footnote of Table 10.7 on page 289) and be prepared to name at least three of them WITHOUT LOOKING AT YOUR NOTES.
+### 10. Carefully read Thompson's (2000) "ten commandments" of structural equation modeling.
 
 1. No small samples.
 2. Analyze covariance, not correlation matrices.
@@ -80,9 +117,117 @@ False. The test of equal direct effects may be considered a test of moderation.
 
 
 
-#### 11. Name three things we can do to avoid our tendency to focus on information that confirms our expectations with regard to a hypothesized structural model.
+### 11. Name three things we can do to avoid our tendency to focus on information that confirms our expectations with regard to a hypothesized structural model.
 
 1. Deal with equivalent models. Generative plausible alternatives and then argue for your preferred model.
 2. Deal with alternative, non-equivalent models. Argue for your model.
 3. Do not make claims about causality if your design is not experimental (i.e., lacks control groups, manipulated variables).
 
+
+
+
+
+Data Analysis
+-------------------------------------------------------------------------------
+
+### 12. Fit the model in Figure 10.5 to the data in Table 10.5. 
+
+
+```{r, tidy = FALSE}
+m1 <- "
+  Acculturation =~ acculscl + genstat + perlife
+  SES =~ educ + income
+  Stress =~ interper + job
+  Stress ~ Acculturation
+  depscl ~ Stress + SES
+  genstat ~~ perlife"
+fit1 <- sem(m1, sample.cov = d, sample.nobs = 983, likelihood = "wishart")
+summary(fit1, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+```
+
+### 13. Respecify this model with depression as a latent variable with a single indicator. 
+
+> Compare the output to that of the previous model: every single value should be identical!
+
+```{r, tidy = FALSE}
+m2 <- "
+  Acculturation =~ acculscl + genstat + perlife
+  SES =~ educ + income
+  Stress =~ interper + job
+  Depression =~ depscl
+  Stress ~ Acculturation
+  Depression ~ Stress + SES
+  genstat ~~ perlife
+  depscl ~~ 0*depscl"
+fit2 <- sem(m2, sample.cov = d, sample.nobs = 983, likelihood = "wishart")
+summary(fit2, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+```
+
+The two models have the same estimates.
+
+```{r}
+c1 <- data.frame(as.list(coef(fit1)))
+c2 <- data.frame(as.list(coef(fit2)))
+t(merge(c1, c2, all = TRUE))
+```
+
+
+### 14. Estimate the same model but this time the variance of the measurement error of the single indicator should be fixed to 30% of the (rescaled) variance of the manifest depression variable (3.06).
+
+> Once you are done estimating the model, compare the output to that of the previous model: what is identical and what has changed? Look especially at (a) the path from stress to depression, (b) the path from SES to depression, and (c) the variance of the disturbance associated with the latent variable "depression". Finally, read the Rex Kline's explanations on page 383. Be prepared to explain to a novice what is going on here.
+
+```{r, tidy = FALSE}
+m3 <- "
+  Acculturation =~ acculscl + genstat + perlife
+  SES =~ educ + income
+  Stress =~ interper + job
+  Depression =~ depscl
+  Stress ~ Acculturation
+  Depression ~ Stress + SES
+  genstat ~~ perlife
+  depscl ~~ 3.06*depscl"
+fit3 <- sem(m3, sample.cov = d, sample.nobs = 983, likelihood = "wishart")
+summary(fit3, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+
+```
+
+Only one unstandardized (free parameter) estimate has changed.
+
+```{r}
+c2 <- data.frame(as.list(round(coef(fit2), 3)))
+c3 <- data.frame(as.list(round(coef(fit3), 3)))
+coefs <- data.frame(t(merge(c2, c3, all = TRUE)))
+names(coefs) <- c("C3", "C2")
+subset(coefs, C2 != C3)
+```
+
+But several standardized estimates have changed. The standardized estimate from Stress to Depression increased and the standardized estimate from SES increased in magnitude.
+
+```{r}
+standardized <- inspect(fit3, "std.coef")[1:4]
+names(standardized)[4] <- "Fit3"
+standardized <- cbind(standardized, Fit2 = inspect(fit2, "std.coef")$est.std)
+subset(standardized, round(Fit3, 3) != round(Fit2, 3))
+```
+
+
+The explained variance in depscl decreased by .30 while the explained variance in Depression increased by .21.
+
+```{r}
+round(cbind(M2 = inspect(fit2, "rsquare"), M3 = inspect(fit3, "rsquare")), 3)
+```
+
+For the novice: In the original model, we assumed we were measuring the 
+depression factor with no measurement error. All of this error was being 
+captured in the disturbance for the Depression factor. By shifting some of
+that unexplained variance into measurement error, the disturbance variance and
+the structural paths to this factor will be estimated controlling for
+measurement error in the factor. 
+
+
+
+***
+
+```{r}
+sessionInfo()
+```

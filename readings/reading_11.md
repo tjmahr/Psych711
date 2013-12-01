@@ -1311,6 +1311,7 @@ m_mimic <- '
   spatial ~ sex
   verbal ~ sex
   sex ~~ sex
+  # Note: Correlated disturbances
   spatial ~~ verbal'
 h_mimic <- cfa(m_mimic, data = d, likelihood = "wishart")
 ```

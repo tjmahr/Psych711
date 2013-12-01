@@ -1,0 +1,154 @@
+Structural Regression Models
+===============================================================================
+
+```{r, warning = FALSE, message = FALSE}
+library(lavaan)
+library(foreign)
+data_carnet <- read.spss("../data/data_carnet3.sav", to.data.frame = TRUE)
+round(psych::describe(data_carnet, skew = FALSE), 2)
+```
+
+> Please find below the R script I used in class today. In models 6 and 7 (which are mathematically equivalent), we are assuming that mpn7, the single indicator of the factor F2, has been measured with perfect reliability. In model 8, we are assuming that the reliability of mpn7 is .7, i.e., that 30% of its variability is due to random noise.
+
+
+The Measurement Model
+-------------------------------------------------------------------------------
+
+
+### One latent variable
+
+```{r, tidy = FALSE}
+m1 <- '
+  # latent variable definitions
+    Fsingle =~ mpn1 + mpn2 + mpn3 + mpn4 + mpn5 + 
+               mpn6 + mpn7 + mpn8 + mpn9 + mpn10'
+fit1 <- sem(m1, data_carnet, likelihood = "wishart")
+summary(fit1, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+residuals(fit1, type = "cor")
+residuals(fit1, type = "standardized")
+```
+
+### Three latent variables
+
+```{r, tidy = FALSE}
+m2 <- '
+  # latent variable definitions
+    F1 =~ mpn2 + mpn4 + mpn6 + mpn9
+    F2 =~ mpn1 + mpn7 + mpn10
+    F3 =~ mpn3 + mpn5 + mpn8'
+fit2 <- sem(m2, data_carnet, likelihood = "wishart")
+summary(fit2, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+residuals(fit2, type = "cor")
+residuals(fit2, type = "standardized")
+```
+
+Problem: Factors F1 and F3 are too highly correlated (r = .94).
+
+### Two latent variables
+
+```{r, tidy = FALSE}
+m3 <- '
+  # latent variable definitions
+    F1 =~ mpn2 + mpn3 + mpn4 + mpn5 + mpn6 + mpn8 + mpn9
+    F2 =~ mpn1 + mpn7 + mpn10'
+fit3 <- sem(m3, data_carnet, likelihood = "wishart")
+summary(fit3, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+residuals(fit3, type = "cor")
+residuals(fit3, type = "standardized")
+anova(fit1, fit3)
+```
+
+## Introduction to structural models
+
+Let's ignore the fact that F1 and F3 are too highly correlated.
+
+### Our first structural model: three causal paths
+
+```{r, tidy = FALSE}
+m4 <- '
+  # latent variable definitions
+    F1 =~ mpn2 + mpn4 + mpn6 + mpn9
+    F2 =~ mpn1 + mpn7 + mpn10
+    F3 =~ mpn3 + mpn5 + mpn8
+  # regressions
+    F3 ~ F1
+    F2 ~ F3 + F1'
+fit4 <- sem(m4, data_carnet, likelihood = "wishart")
+summary(fit4, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+anova(fit2,fit4)
+```
+
+### Two causal paths (over-identified structural component)
+
+```{r, tidy = FALSE}
+m5 <- '
+  # latent variable definitions
+    F1 =~ mpn2 + mpn4 + mpn6 + mpn9
+    F2 =~ mpn1 + mpn7 + mpn10
+    F3 =~ mpn3 + mpn5 + mpn8
+  # regressions
+    F3 ~ F1
+    F2 ~ F3'
+fit5 <- sem(m5, data_carnet, likelihood = "wishart")
+summary(fit5, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+```
+
+### Model where outcome variable is an observed (manifest) variable
+
+```{r, tidy = FALSE}
+m6 <- '
+  # latent variable definitions
+    F1 =~ mpn2 + mpn4 + mpn6 + mpn9
+    F3 =~ mpn3 + mpn5 + mpn8
+  # regressions
+    F3 ~ F1
+    mpn7 ~ F3'
+fit6 <- sem(m6, data_carnet, likelihood = "wishart")
+summary(fit6, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+```
+
+### One factor has only one indicator (same model, written differently)
+
+Note: in both models, which are equivalent, we are assuming that the latent factor explains 100% of the variance in its (single) indicator. Probably an unreasonable assumption.
+
+```{r, tidy = FALSE}
+m7 <- '
+  # latent variable definitions
+    F1 =~ mpn2 + mpn4 + mpn6 + mpn9
+    F2 =~ mpn7
+    F3 =~ mpn3 + mpn5 + mpn8
+  # regressions
+    F3 ~ F1
+    F2 ~ F3
+  # residual correlations
+    mpn7 ~~ 0*mpn7'
+fit7 <- sem(m7, data_carnet, likelihood = "wishart")
+summary(fit7, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+# Get the sample covariance matrix
+inspect(fit7, "sampstat")
+```
+
+### Fixed measurement error
+
+Our third structural model: same model, but this time we are fixing the variance of the measurement error of mpn7 to 30% of the variance of mpn7.
+
+```{r, tidy = FALSE}
+m8 <- '
+  # latent variable definitions
+    F1 =~ mpn2 + mpn4 + mpn6 + mpn9
+    F2 =~ mpn7
+    F3 =~ mpn3 + mpn5 + mpn8
+  # regressions
+    F3 ~ F1
+    F2 ~ F3
+  # residual correlations
+    mpn7 ~~ 11.42*mpn7'
+fit8 <- sem(m8, data_carnet, likelihood = "wishart")
+summary(fit8, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+```
+
+***
+
+```{r}
+sessionInfo()
+```

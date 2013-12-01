@@ -3,7 +3,7 @@ Questions about Rex Kline's book (for Tues., Nov. 26)
 
 > Read chapter 11 of Kline's book be prepared to answer the questions below. Please also do the data analysis exercise described at the end.
 
-```{r, message = FALSE, warning=FALSE}
+```{r, message = FALSE, warning = FALSE}
 # Preliminary steps
 library(foreign)
 library(lavaan)
@@ -111,6 +111,9 @@ Q_new = 16
 df = 14 - 16 = -2
 ```
 
+
+
+
 #### 9. Consider the "intell" data we analyzed several weeks ago. Be prepared to draw on the blackboard a multi-group measurement model that allows us to test for configural invariance.
 
 > As a reminder, we tested a CFA model with two factors and three indicators per factor. The factor "spatial" was assumed to influence the indicators "visperc", cubes", and "lozenges", and the factor "verbal" was assumed to influence the indicators "paragraph", "sentence", and "wordmean". There were two samples, women ("Grnt_fem.sav") and men ("Grnt_mal.sav"). We already did that. Just redraw the model we drew several weeks ago. What are the # of observations, # of estimated parameters, and df of this model? Is this model at least just-identified?
@@ -142,7 +145,7 @@ df = 42 - 26 = 16
 
 > If you don't remember what this is, reread chapter 9 of Kline's book. You will have to constrain certain parameters to be the same across groups. Do so by assigning to them the same lower-case letter in both samples. What are the # of observations, # of estimated parameters, and df of this model? Is this model at least just-identified?
 
-Construct-level metric invariance specifies equal factor loadings across both groups. We have to estimate four fewer parameters because the same factor loadings will be used for each sample. Therefore, P = 42, Q = 26 - 4 = 22, df = 16 + 4 = 20. The model is overidentified.
+Construct-level metric invariance specifies equal factor loadings across both groups. We have to estimate four fewer parameters because the same factor loadings will be used for each sample. Therefore, `P = 42, Q = 26 - 4 = 22, df = 16 + 4 = 20`. The model is overidentified.
 
 ```{r, tidy = FALSE}
 m_lambda <- '
@@ -287,6 +290,7 @@ m_mimic <- '
   spatial ~ sex
   verbal ~ sex
   sex ~~ sex
+  # Note: Correlated disturbances
   spatial ~~ verbal'
 h_mimic <- cfa(m_mimic, data = d, likelihood = "wishart")
 inspect_parameters(h_mimic)
