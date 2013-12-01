@@ -1,4 +1,4 @@
-Psych 711: Structural Equation Modeling (Fall 2013)
+Structural Equation Modeling (Fall 2013)
 ===============================================================================
 
 
