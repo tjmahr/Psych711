@@ -17,7 +17,7 @@ Structural Equation Modeling (2013)
 9. Respecify rationally. (Test the respecified model on new or split-halves data.)
 10. Acknowledge equivalent models.
 
-### References 
+### Course References 
 
 Kline, R. B. (2010). *Principles and practice of structural equation modeling* (3rd ed.).  New York: Guilford Press.
 
