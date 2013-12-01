@@ -1,4 +1,4 @@
-Structural Equation Modeling (Fall 2013)
+Structural Equation Modeling (2013)
 ===============================================================================
 
 
