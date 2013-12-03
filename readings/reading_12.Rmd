@@ -5,11 +5,20 @@ Questions about Rex Kline's book (for Tues., Dec. 3)
 
 ```{r, warning = FALSE, message = FALSE}
 library(lavaan)
-# Make a shortcut version of our usual summary function
-summary2 <- function(...) { 
-  summary(..., standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
-}
+library(foreign)
 options(width = 100, digits = 3)
+# Data for exercise 20.
+covmatrix <- matrix(
+  c(6.502500, 4.793490, 4.652985, 4.373760, 0.199410,
+    4.793490, 5.808100, 4.521401, 4.391984, 0.221720,
+    4.652985, 4.521401, 6.604900, 5.165700, 0.242351,
+    4.373760, 4.391984, 5.165700, 7.182400, 0.295872,
+    0.199410, 0.221720, 0.242351, 0.295872, 0.052900),
+  nrow = 5, dimnames = list(
+    c("sales1", "sales2", "sales3", "sales4", "region"),
+    c("sales1", "sales2", "sales3", "sales4", "region")))
+myDataMeans <- c(6.08, 7.22, 8.14, 9.38, 0.48)
+names(myDataMeans) <- c("sales1", "sales2", "sales3", "sales4", "region")
 ```
 
 Reading
@@ -17,29 +26,58 @@ Reading
 
 ### 1. Kline talks about "conditional regression lines"? What are they? How do we know whether the slope of a given "conditional regression line" is statistically significant?
 
+
+
 ### 2. According to Whisman and McClelland (2005), is better to focus on standardized or unstandardized regression coefficients in moderated multiple regression? Why?
+
+
 
 ### 3. When we include product terms in a multiple regression analysis, we often face the problem that the product term is very highly correlated with at least one of the two variables that constitute it. What can be done about this problem of collinearity?
 
+
+
 ### 4. According to Kenny, interactive effects can easily be confounded with curvilinear effects. Why is that?
+
+
 
 ### 5. Explain to a novice what "mediated moderation" is (without looking at your notes).  
 
+Stuffing and turkey are just okay, but compliment each other really well (moderation). But no matter how well the two go together, you need gravy for a truly delicious thanksgiving plate (mediation).
+
+
 ### 6. Briefly describe the "indicant product approach" of SEM (the Kenny-Judd method) using the example of an interaction between two exogenous latent factors (A and B) that each has two indicators.
+
+
 
 ### 7. What are two major problems of the "indicant product approach" (the Kenny-Judd method)?
 
+
+
 ### 8. Andreas Klein and his colleagues recently suggested new approaches to estimate interaction effects in SEM. What are these approaches called and what is their advantage over the "indicant product approach" (the Kenny-Judd method)?
+
+
 
 ### 9. Explain to a novice what a "design effect" is (without looking at your notes).
 
+
+
 ### 10. What does Kline mean when he talks about "cross-level interactions"?
+
+
 
 ### 11. What is a "slopes-and-intercepts-as-outcomes model"?
 
+
+
 ### 12. Which hypothesis exactly is being tested in the slopes-and intercepts-as-outcomes model" shown in Figure 12.8?
 
+
+
 ### 13. Kline talks about three basic steps in analyzing a multilevel structural equation model. Describe these three steps.
+
+1. 
+2. 
+3. 
 
 Israel Data Analysis
 -------------------------------------------------------------------------------
@@ -52,16 +90,12 @@ Israel Data Analysis
 # Load data and fit model
 d <- as.matrix(read.csv("../data/data_israel.csv", row.names = 1))
 m1 <- "F =~ V7 + V8 + V9 + V11 + V12 + V13 + V16 + V17 + V18 + V19 + V20 + V21"
-fit1 <- cfa(m1, likelihood = "wishart", sample.cov = d, sample.nobs = 450)
+fit1 <- cfa(m1, sample.cov = d, sample.nobs = 450, likelihood = "wishart")
 # Inspect the model
 summary(fit1, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
-residuals(fit1, type = "cor")$cor
-residuals(fit1, type = "standardized")$cov
 ```
 
-The model has a very unsatisfactory fit.
-
-The RMSEA equals 0.25 (CI: 0.242, 0.263)
+The model has a very unsatisfactory fit, RMSEA = 0.25, SRMR = 0.16, chi-square(54) = 1595.14, p < 0.001.
 
 
 ### 15. Run a confirmatory factor analysis with four factors
@@ -74,16 +108,16 @@ m2 <- "
   Attitude =~ V11 + V12 + V13
   Relaxed =~ V16 + V17 + V18 
   Religion =~ V19 + V20 + V21"
-fit2 <- cfa(m2, likelihood = "wishart", sample.cov = d, sample.nobs = 450)
+fit2 <- cfa(m2, sample.cov = d, sample.nobs = 450, likelihood = "wishart")
 summary(fit2, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
-residuals(fit2, type = "cor")$cor
 residuals(fit2, type = "standardized")$cov
+# Look at the distribution of the correlation residuals
+(cor_resid <- residuals(fit2, type = "cor")$cor)
+cor_resid[upper.tri(cor_resid, diag = TRUE)] <- NA
+stem(cor_resid)
 ```
 
-
-The RMSEA equals 0.04 (CI: 0.025, 0.054).
-
-The SRMR is 0.04.
+The model has a much more satisfactory fit. The RMSEA equals 0.04 with a 90% confidence interval between 0.025--0.054, so the close-fit hypothesis is retained and the poor-fit hypothesis is rejected. The SRMR equals 0.04 with 5 residual correlations equaling or exceeding 0.8 in absolute value. The chi-square test for 48 degrees of freedom equals 82.44, p = 0.001, so the exact-fit hypothesis is rejected. 
 
 ### 16. Run the structural regression model depicted below
 
@@ -102,14 +136,15 @@ m3 <- "
   Friends ~ Religion"
 fit3 <- cfa(m3, likelihood = "wishart", sample.cov = d, sample.nobs = 450)
 summary(fit3, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
-residuals(fit3, type = "cor")$cor
 residuals(fit3, type = "standardized")$cov
-
+# Look at the distribution of the correlation residuals
+(cor_resid2 <- residuals(fit3, type = "cor")$cor)
+cor_resid2[upper.tri(cor_resid2, diag = TRUE)] <- NA
+stem(cor_resid2)
+anova(fit2, fit3)
 ```
 
-The RMSEA equals 0.04 (CI: 0.025, 0.054)
-
-The SRMR is 0.08.
+The model is an over-simplification of the previous CFA model. The RMSEA equals 0.056 with a 90% confidence interval between 0.044--0.069, so the close-fit hypothesis is retained and the poor-fit hypothesis is rejected. However, the SRMR equals 0.08 with 23 residual correlations equaling or exceeding 0.8 in absolute value; this is a case where an acceptable average correlation residual obscures a significant number of large correlation residuals. The model is a significant oversimplification of the related model with no causal paths, chi-square-diff(3) = 40.64, p < 0.001.
 
 
 ### 17. Transform the covariance matrix into a correlation matrix and examine the correlations. 
@@ -117,35 +152,139 @@ The SRMR is 0.08.
 > Are the variables supposed to measure the same latent construct highly (and positively) correlated with each other? Are there out-of-bounds correlations? If you think there is a problem with these correlations, say what the problem is? If not, what did you look at before concluding that these correlations are OK?
 
 ```{r}
+# Prepare subsets of the correlation matrix
 d_cor <- cov2cor(d)
 v_friends <- c("V7", "V8", "V9")
 v_attitude <- c("V11", "V12", "V13")
 v_relaxed <- c("V16", "V17", "V18")
 v_religion <- c("V19", "V20", "V21")
 v_all <- c(v_friends, v_attitude, v_relaxed, v_religion)
-
+# Check for out of bounds values
 abs(d_cor[v_all, v_all]) > 1
-
+# Check correlations within factors
 d_cor[v_friends, v_friends]
 d_cor[v_religion, v_religion]
 d_cor[v_relaxed, v_relaxed]
 d_cor[v_attitude, v_attitude]
-
-
-
 ```
+
+There are no out of bounds values. However, one of the indicators for the relaxed factor is reverse-coded with respect to its counterparts. This error in coding undermines the validity of the above analyses.
+
+
 
 
 Multigroup CFA
 -------------------------------------------------------------------------------
 
-### 18. Go through the R script "multigroup CFA and test of difference of factor means" I sent you last Tuesday. Redo all the analyses on your computer. In addition, obtain a large number of fit indices (and the correlation residuals) for the final model (the one with the over-identified mean structure = "m6"). Is this model satisfactory? Which parameters tell us whether there is a gender difference on each of the two factors? Are these parameters statistically significant? What conclusions can you draw from all the analyses performed on this dataset?
+### 18. Go through the R script "multigroup CFA and test of difference of factor means" I sent you last Tuesday. 
 
-### 19. What about the MIMIC model that is in the same R script (= "m7")? Does this model come to the same conclusions as the model discussed in the previous point? Please remind me what assumption is being made in this model. Do you think this is a reasonable assumption? Why?
+```{r, warning = FALSE}
+# Load the data-sets
+d_intell_fem <- read.spss("../data/Grnt_fem.sav", to.data.frame = TRUE)
+d_intell_mal <- read.spss("../data/Grnt_mal.sav", to.data.frame = TRUE)
+d_intell_fem$gender <- "female"
+d_intell_mal$gender <- "male"
+d <- rbind(d_intell_fem, d_intell_mal)
+# Make a numeric version of `gender`
+d <- transform(d, sex = ifelse(gender == "female", 0, 1))
+```
 
-### 20. Go through the R script "latent growth curve model - sales dataset" I sent you last Tuesday. Redo all the analyses on your computer. In the first analysis (the one without region), interpret each of the two paths from "one" to the two latent variables? What do these parameter estimates tell us? Are they significant? In the second analysis (the one with region), interpret the following five paths: the paths from "one" to "region" and to the two latent variables and the paths from "region" to the two latent variables? What do these parameter estimates tell us? Are they significant?
+> Redo all the analyses on your computer. In addition, obtain a large number of fit indices (and the correlation residuals) for the final model (the one with the over-identified mean structure = "m6"). Is this model satisfactory? Which parameters tell us whether there is a gender difference on each of the two factors? Are these parameters statistically significant? What conclusions can you draw from all the analyses performed on this dataset?
+
+I already computed all of these last week, so I am going to jump ahead to the final model.
+
+```{r}
+m_factor_means <- '
+  spatial =~ visperc + cubes + lozenges 
+  verbal =~ paragrap + sentence + wordmean
+  verbal ~ c(a, b)*1
+  spatial ~ c(c, d)*1
+  a == 0
+  c == 0'
+h_factor_means <- cfa(m_factor_means, data = d, likelihood = "wishart", 
+                      group = "gender", group.equal = c("loadings", "intercepts"))
+summary(h_factor_means, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+residuals(h_factor_means, type = "cor")
+residuals(h_factor_means, type = "standardized")
+```
+
+Is the model satisfactory...
+
+The male subjects had a mean spatial factor 1.01 units higher than the female subjects, but this difference is not significant, z = 1.2, p = 0.23. The female subjects had a mean verbal factor 0.96 units higher than the male subjects, and this difference falls just short of achieving significance, z = 1.82, p = 0.068. 
 
 
+
+### 19. What about the MIMIC model that is in the same R script (= "m7")? 
+
+> Does this model come to the same conclusions as the model discussed in the previous point? Please remind me what assumption is being made in this model. Do you think this is a reasonable assumption? Why?
+
+```{r, tidy = FALSE}
+m_mimic <- '
+  spatial =~ visperc + cubes + lozenges 
+  verbal =~ paragrap + sentence + wordmean
+  spatial ~ sex
+  verbal ~ sex
+  sex ~~ sex
+  # Note: Correlated disturbances
+  spatial ~~ verbal'
+h_mimic <- cfa(m_mimic, data = d, likelihood = "wishart")
+summary(h_mimic, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+```
+
+These estimates are approximate the estimated group differences in the previous model. This model of course assumes measurement invariance across the groups. This assumption is reasonable but only because we tested and confirmed measurement invariance across the groups already.
+
+```
+Regressions:       Estimate  Std.err  Z-value  P(>|z|)   Std.lv  Std.all
+  spatial ~
+    sex               1.086    0.858    1.266    0.205    0.254    0.127
+  verbal ~
+    sex              -0.949    0.518   -1.831    0.067   -0.321   -0.161
+```
+
+
+### 20. Go through the R script "latent growth curve model - sales dataset" I sent you last Tuesday. 
+
+> Redo all the analyses on your computer. In the first analysis (the one without region), interpret each of the two paths from "one" to the two latent variables? What do these parameter estimates tell us? Are they significant? 
+
+
+```{r, tidy = FALSE}
+m_growth <- "
+  IS =~ 1*sales1 + 1*sales2 + 1*sales3 + 1*sales4
+  LC =~ 0*sales1 + 1*sales2 + 2*sales3 + 3*sales4
+  LC + IS ~ 1
+  sales1 + sales2 + sales3 + sales4 ~ 0*1"
+h_growth <- cfa(m_growth, sample.cov = covmatrix, sample.mean = myDataMeans, 
+                sample.nobs = 51, likelihood = "wishart")
+summary(h_growth, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+```
+
+
+The path from the constant to the Initial Status factor estimates the intercept of sales, and the path to the Linear Change factor estimates the linear effect of time on sales. 
+
+There is a significant linear effect of time on sales. On average, sales increase by 1.08 units annually, z = 10.53, p < 0.001.
+
+> In the second analysis (the one with region), interpret the following five paths: the paths from "one" to "region" and to the two latent variables and the paths from "region" to the two latent variables? What do these parameter estimates tell us? Are they significant?
+
+
+```{r, tidy = FALSE}
+m_growth_2 <- "
+  IS =~ 1*sales1 + 1*sales2 + 1*sales3 + 1*sales4
+  LC =~ 0*sales1 + 1*sales2 + 2*sales3 + 3*sales4
+  LC ~ region
+  IS ~ region
+  LC ~~ IS
+  LC + IS + region ~ 1
+  sales1 + sales2 + sales3 + sales4 ~ 0*1"
+h_growth_2 <- cfa(m_growth_2, sample.cov = covmatrix, sample.mean = myDataMeans, 
+                  sample.nobs = 51, likelihood = "wishart")
+summary(h_growth_2, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+```
+
+1. Region ~ 1: 
+2. IS ~ 1: 
+3. LC ~ 1: 
+4. IS ~ Region: 
+5. LC ~ Region: 
 
 
 ***
