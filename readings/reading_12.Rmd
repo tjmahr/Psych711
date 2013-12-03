@@ -1,0 +1,155 @@
+Questions about Rex Kline's book (for Tues., Dec. 3)
+===============================================================================
+
+> Read chapter 12 of Kline's book and be prepared to answer the questions below. Please also do the data analysis exercise described in steps 14, 15, and 16. 
+
+```{r, warning = FALSE, message = FALSE}
+library(lavaan)
+# Make a shortcut version of our usual summary function
+summary2 <- function(...) { 
+  summary(..., standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+}
+options(width = 100, digits = 3)
+```
+
+Reading
+-------------------------------------------------------------------------------
+
+### 1. Kline talks about "conditional regression lines"? What are they? How do we know whether the slope of a given "conditional regression line" is statistically significant?
+
+### 2. According to Whisman and McClelland (2005), is better to focus on standardized or unstandardized regression coefficients in moderated multiple regression? Why?
+
+### 3. When we include product terms in a multiple regression analysis, we often face the problem that the product term is very highly correlated with at least one of the two variables that constitute it. What can be done about this problem of collinearity?
+
+### 4. According to Kenny, interactive effects can easily be confounded with curvilinear effects. Why is that?
+
+### 5. Explain to a novice what "mediated moderation" is (without looking at your notes).  
+
+### 6. Briefly describe the "indicant product approach" of SEM (the Kenny-Judd method) using the example of an interaction between two exogenous latent factors (A and B) that each has two indicators.
+
+### 7. What are two major problems of the "indicant product approach" (the Kenny-Judd method)?
+
+### 8. Andreas Klein and his colleagues recently suggested new approaches to estimate interaction effects in SEM. What are these approaches called and what is their advantage over the "indicant product approach" (the Kenny-Judd method)?
+
+### 9. Explain to a novice what a "design effect" is (without looking at your notes).
+
+### 10. What does Kline mean when he talks about "cross-level interactions"?
+
+### 11. What is a "slopes-and-intercepts-as-outcomes model"?
+
+### 12. Which hypothesis exactly is being tested in the slopes-and intercepts-as-outcomes model" shown in Figure 12.8?
+
+### 13. Kline talks about three basic steps in analyzing a multilevel structural equation model. Describe these three steps.
+
+Israel Data Analysis
+-------------------------------------------------------------------------------
+
+### 14. Run analyses on the Israel dataset. 
+
+> First, run a one-factor confirmatory factor analysis with the variables v7, v8, v9, v11, v12, v13, v16, v17, v18, v19, v20, and v21. Determine whether this model has a satisfactory fit.
+
+```{r}
+# Load data and fit model
+d <- as.matrix(read.csv("../data/data_israel.csv", row.names = 1))
+m1 <- "F =~ V7 + V8 + V9 + V11 + V12 + V13 + V16 + V17 + V18 + V19 + V20 + V21"
+fit1 <- cfa(m1, likelihood = "wishart", sample.cov = d, sample.nobs = 450)
+# Inspect the model
+summary(fit1, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+residuals(fit1, type = "cor")$cor
+residuals(fit1, type = "standardized")$cov
+```
+
+The model has a very unsatisfactory fit.
+
+The RMSEA equals 0.25 (CI: 0.242, 0.263)
+
+
+### 15. Run a confirmatory factor analysis with four factors
+
+> "Friends" (v7, v8, v9), "Attitude" (v11, v12, v13), "Relaxed" (v16, v17, v18), and "Religion" (v19, v20, v21). Determine whether this model has a satisfactory fit.
+
+```{r, tidy = FALSE}
+m2 <- "
+  Friends =~ V7 + V8 + V9 
+  Attitude =~ V11 + V12 + V13
+  Relaxed =~ V16 + V17 + V18 
+  Religion =~ V19 + V20 + V21"
+fit2 <- cfa(m2, likelihood = "wishart", sample.cov = d, sample.nobs = 450)
+summary(fit2, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+residuals(fit2, type = "cor")$cor
+residuals(fit2, type = "standardized")$cov
+```
+
+
+The RMSEA equals 0.04 (CI: 0.025, 0.054).
+
+The SRMR is 0.04.
+
+### 16. Run the structural regression model depicted below
+
+![Exercise 16 Model](figure/reading12_sr_model.png)
+
+> Determine whether this model has a satisfactory fit. What conclusions would you draw from the analyses you have run in steps 14, 15, and 16?
+
+```{r}
+m3 <- "
+  Friends =~ V7 + V8 + V9 
+  Attitude =~ V11 + V12 + V13
+  Relaxed =~ V16 + V17 + V18 
+  Religion =~ V19 + V20 + V21
+  Attitude ~ Relaxed
+  Relaxed ~ Friends
+  Friends ~ Religion"
+fit3 <- cfa(m3, likelihood = "wishart", sample.cov = d, sample.nobs = 450)
+summary(fit3, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+residuals(fit3, type = "cor")$cor
+residuals(fit3, type = "standardized")$cov
+
+```
+
+The RMSEA equals 0.04 (CI: 0.025, 0.054)
+
+The SRMR is 0.08.
+
+
+### 17. Transform the covariance matrix into a correlation matrix and examine the correlations. 
+
+> Are the variables supposed to measure the same latent construct highly (and positively) correlated with each other? Are there out-of-bounds correlations? If you think there is a problem with these correlations, say what the problem is? If not, what did you look at before concluding that these correlations are OK?
+
+```{r}
+d_cor <- cov2cor(d)
+v_friends <- c("V7", "V8", "V9")
+v_attitude <- c("V11", "V12", "V13")
+v_relaxed <- c("V16", "V17", "V18")
+v_religion <- c("V19", "V20", "V21")
+v_all <- c(v_friends, v_attitude, v_relaxed, v_religion)
+
+abs(d_cor[v_all, v_all]) > 1
+
+d_cor[v_friends, v_friends]
+d_cor[v_religion, v_religion]
+d_cor[v_relaxed, v_relaxed]
+d_cor[v_attitude, v_attitude]
+
+
+
+```
+
+
+Multigroup CFA
+-------------------------------------------------------------------------------
+
+### 18. Go through the R script "multigroup CFA and test of difference of factor means" I sent you last Tuesday. Redo all the analyses on your computer. In addition, obtain a large number of fit indices (and the correlation residuals) for the final model (the one with the over-identified mean structure = "m6"). Is this model satisfactory? Which parameters tell us whether there is a gender difference on each of the two factors? Are these parameters statistically significant? What conclusions can you draw from all the analyses performed on this dataset?
+
+### 19. What about the MIMIC model that is in the same R script (= "m7")? Does this model come to the same conclusions as the model discussed in the previous point? Please remind me what assumption is being made in this model. Do you think this is a reasonable assumption? Why?
+
+### 20. Go through the R script "latent growth curve model - sales dataset" I sent you last Tuesday. Redo all the analyses on your computer. In the first analysis (the one without region), interpret each of the two paths from "one" to the two latent variables? What do these parameter estimates tell us? Are they significant? In the second analysis (the one with region), interpret the following five paths: the paths from "one" to "region" and to the two latent variables and the paths from "region" to the two latent variables? What do these parameter estimates tell us? Are they significant?
+
+
+
+
+***
+
+```{r}
+sessionInfo()
+```
