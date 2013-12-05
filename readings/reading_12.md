@@ -3,6 +3,8 @@ Questions about Rex Kline's book (for Tues., Dec. 3)
 
 **Take-home message: Structural Equation Modeling is not a data analysis technique that can easily handle interactions.**
 
+**Always check and interpret the parameter estimates, especially for final exam.**
+
 > Read chapter 12 of Kline's book and be prepared to answer the questions below. Please also do the data analysis exercise described in steps 14, 15, and 16. 
 
 
@@ -105,12 +107,12 @@ Regression analyses are conducted within-subjects and these are fed as input dat
 
 ### 12. Which hypothesis exactly is being tested in the slopes-and intercepts-as-outcomes model" shown in Figure 12.8?
 
-School size predicts achievement between schools and moderates the effect of TV on achievement within schools.
+School size predicts achievement between schools (intercepts) and moderates the effect of TV on achievement within schools (slopes).
 
 
 ### 13. Kline talks about three basic steps in analyzing a multilevel structural equation model. Describe these three steps.
 
-1. Compute the unconditional intraclass correlation, the proportion of the total variability explained by the clustering variable.
+1. Compute the unconditional intraclass correlation, the proportion of the total variability explained by the clustering variable (want rho < 0.1).
 2. Analyze the within-subjects model.
 3. Then specify the full within-between model, and estimate the full model.
 
@@ -414,7 +416,7 @@ stem(cor_resid)
 ```
 
 
-The model has a much more satisfactory fit. The RMSEA equals 0.04 with a 90% confidence interval between 0.025--0.054, so the close-fit hypothesis is retained and the poor-fit hypothesis is rejected. The SRMR equals 0.04 with 5 residual correlations equaling or exceeding 0.8 in absolute value. The chi-square test for 48 degrees of freedom equals 82.44, p = 0.001, so the exact-fit hypothesis is rejected. 
+The model has a much more satisfactory fit. The RMSEA equals 0.04 with a 90% confidence interval between 0.025--0.054, so the close-fit hypothesis is retained and the poor-fit hypothesis is rejected. The SRMR equals 0.04 with 3 residual correlations equaling or exceeding 0.1 in absolute value. The chi-square test for 48 degrees of freedom equals 82.44, p = 0.001, so the exact-fit hypothesis is rejected. 
 
 ### 16. Run the structural regression model depicted below
 
@@ -615,7 +617,7 @@ anova(fit2, fit3)
 ```
 
 
-The model is an over-simplification of the previous CFA model. The RMSEA equals 0.056 with a 90% confidence interval between 0.044--0.069, so the close-fit hypothesis is retained and the poor-fit hypothesis is rejected. However, the SRMR equals 0.08 with 23 residual correlations equaling or exceeding 0.8 in absolute value; this is a case where an acceptable average correlation residual obscures a significant number of large correlation residuals. The model is a significant oversimplification of the related model with no causal paths, chi-square-diff(3) = 40.64, p < 0.001.
+The model is an over-simplification of the previous CFA model. The RMSEA equals 0.056 with a 90% confidence interval between 0.044--0.069, so the close-fit hypothesis is retained and the poor-fit hypothesis is rejected. However, the SRMR equals 0.08 with 18 residual correlations equaling or exceeding 0.1 in absolute value; this is a case where an acceptable average correlation residual obscures a significant number of large correlation residuals. The model is a significant oversimplification of the related model with no causal paths, chi-square-diff(3) = 40.64, p < 0.001.
 
 
 ### 17. Transform the covariance matrix into a correlation matrix and examine the correlations. 
@@ -1080,7 +1082,7 @@ summary(h_mimic, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
 
 
-These estimates approximate the estimated group differences in the previous model. This model of course assumes measurement invariance across the groups. This assumption is reasonable but only because we tested and confirmed measurement invariance across the groups already.
+These estimates approximate the estimated group differences in the previous model. This model of course assumes measurement invariance across the groups (by lumping to two groups together into the same model). This assumption is reasonable but only because we tested and confirmed measurement invariance across the groups already.
 
 ```
 Regressions:       Estimate  Std.err  Z-value  P(>|z|)   Std.lv  Std.all
@@ -1094,7 +1096,6 @@ Regressions:       Estimate  Std.err  Z-value  P(>|z|)   Std.lv  Std.all
 ### 20. Go through the R script "latent growth curve model - sales dataset" I sent you last Tuesday. 
 
 > Redo all the analyses on your computer. In the first analysis (the one without region), interpret each of the two paths from "one" to the two latent variables? What do these parameter estimates tell us? Are they significant? 
-
 
 
 ```r
@@ -1196,8 +1197,9 @@ summary(h_growth, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
 ```
 
 
+The path from the constant to the Initial Status factor estimates the intercept of sales, i.e., the baseline level of sales correcting for measurement error. This value is the same as the observed mean of year-1 sales, b = 6.08. The path to the Linear Change factor estimates the linear effect of time on sales, correcting for measurement error. There is a significant linear effect of time on sales. On average, sales increase by 1.08 units annually, z = 10.53, p < 0.001. 
 
-The path from the constant to the Initial Status factor estimates the intercept of sales, i.e., the baseline level of sales correcting for measurement error. This value is the same as the observed mean of year-1 sales, b = 6.08. The path to the Linear Change factor estimates the linear effect of time on sales, correcting for measurement error. There is a significant linear effect of time on sales. On average, sales increase by 1.08 units annually, z = 10.53, p < 0.001.
+The value of IS is the initial status when LC is 0.
 
 > In the second analysis (the one with region), interpret the following five paths: the paths from "one" to "region" and to the two latent variables and the paths from "region" to the two latent variables? What do these parameter estimates tell us? Are they significant?
 
