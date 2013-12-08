@@ -1,0 +1,50 @@
+First Model
+===============================================================================
+
+## Look at the data
+
+```{r, warning = FALSE, message = FALSE}
+library(lavaan)
+library(lmSupport)
+d <- lm.readDat("../data/data_apgar.dat")
+
+# Just the modeled variables
+data_subset <- d[, c("apgar", "gestat", "smokes", "wgtgain")]
+round(psych::describe(data_subset), 2)
+# Get correlation matrix
+cor(data_subset)
+# Get the covariance matrix
+cov(data_subset)
+```
+
+## Start with lavaan
+
+```{r, tidy = FALSE}
+# Model apgar1
+m1 <- '
+  # regressions
+    gestat ~ smokes + wgtgain
+    apgar ~ smokes + wgtgain + gestat
+  # residual correlations
+    smokes ~~ wgtgain'
+fit <- sem(m1, data = d, likelihood = "wishart")
+summary(fit, standardized = TRUE)
+```
+
+### Covariance matrices
+
+```{r}
+# observed covariance matrix
+inspect(fit, "sampstat")
+# model covariance matrix
+fitted(fit)
+# residual covariance matrix
+resid(fit)
+```
+
+
+***
+
+```{r}
+sessionInfo()
+```

@@ -1,0 +1,218 @@
+Data Screening
+===============================================================================
+
+## Initial checks
+
+```{r, warning = FALSE, message = FALSE}
+library(lavaan)
+library(psych)
+library(lmSupport)
+library(mice)
+library(gvlma)
+
+d <- lm.readDat("../data/data_apgar.dat")
+
+# Just the modeled variables
+d <- d[, c("apgar", "gestat", "smokes", "wgtgain")]
+round(describe(d), 2)
+```
+
+
+### Positive Definite Matrix
+
+Check for a positive definite variance-covariance matrix. All eigenvalues are greater than 0.
+
+```{r}
+covar <- cov(d, use = "complete")
+eigen(covar)$values
+```
+
+
+### Multicollinearity
+
+Assume `apgar` is the primary outcome variable.
+
+```{r}
+cor(d)
+mod <- lm(apgar ~ smokes + wgtgain + gestat, data = d)
+# Variance inflation factors are not inordinately high
+vif(mod)
+```
+
+
+
+
+
+
+## Outliers
+
+
+### Mahalanobis distance
+
+```{r}
+md <- mahalanobis(d, colMeans(d, na.rm = TRUE), covar)
+hist(md)
+```
+
+
+### Studentized residuals
+
+These are calculated by dividing the residuals from a regression model by the standard deviation calculated by omitting the observation of interest. Because these are distributed as _t_, each residual can be tested for departure from the model.
+
+```{r}
+rstudent(mod)
+a <- lm.caseAnalysis(mod, "RESIDUALS")
+```
+
+
+### Cook's _d_
+
+```{r}
+a <- lm.caseAnalysis(mod, "cooksd")
+a <- lm.caseAnalysis(mod, "influenceplot")
+```
+
+
+### df Betas
+
+```{r}
+lm.caseAnalysis(mod, "dfbetas")
+```
+
+
+
+
+
+
+## Missing data diagnostics
+
+We'll randomly remove some data in a copy of the data, then inspect the missingness.
+
+```{r}
+d2 <- d
+# Randomly select 1 to 12 rows in each column and set them to NA.
+sample_rows <- function() sample(1:60, sample(1:12, 1), replace = FALSE)
+for(col in seq_along(colnames(d))) {
+  d2[sample_rows(), col] <- NA
+}
+```
+
+
+### `mice` functions
+
+`md.pairs` returns four matrices about the number of observations for which:
+
+1. `$rr`: Both the column and the row variable are observed.
+2. `$rm`: The row variable is observed, but the column is not.
+3. `$mr`: The column variable is observed, but the row is not.
+4. `$mm`: Neither the row nor the column is observed.
+
+```{r}
+md.pairs(d2)
+```
+
+`md.pattern` displays one matrix. Each row specifies a missingness pattern, for which `1` equals observed and `0` equals missing. The final row shows the number of cases that have missing values on each variable, while the first column shows the number of people who have the missingness pattern. The last column gives the number of variables missing for the given missingness pattern.
+
+```{r}
+md.pattern(d2)
+```
+
+
+### Correlations with missingness
+
+These correlations will help identify variables that will go into a multiple imputation for missing data.
+
+```{r, warning = FALSE}
+# Correlations among observed variables
+cor(d2, use = "pairwise.complete.obs")
+# Correlations between observerd variables and missingness
+cor(x = d2, y = is.na(d2), use = "pairwise.complete.obs")
+```
+
+
+
+
+## Model Assumptions
+
+```{r}
+summary(gvlma(mod))
+```
+
+
+### Normality
+
+```{r}
+qqPlot(mod)
+qqPlot(d$apgar)
+```
+
+Another approach...
+
+```{r, eval = FALSE}
+lm.modelAssumptions(mod, "NORMAL")
+```
+
+```{r hidden normal, echo = FALSE}
+par(cex.lab = 1.5, cex.axis = 1.2, lwd = 2)
+qqPlot(mod, labels = FALSE, sim = TRUE, main = "Quantile-Comparison Plot to Assess Normality", 
+       xlab = "t Quantiles", ylab = "Studentized Residuals")
+plot(density(rstudent(mod)), main = "Density Plot to Assess Normality of Residuals", xlab = "Studentized Residual")
+zx <- seq(-4, 4, length.out = 100)
+lines(zx, dnorm(zx, mean = 0, sd = sd(rstudent(mod))), lty = 2, col = "blue")
+cat("Descriptive Statistics for Studentized Residuals\n")
+describe(rstudent(mod))
+```
+
+
+### Constant Variance
+
+```{r, eval = FALSE}
+lm.modelAssumptions(mod, "CONSTANT")
+```
+
+```{r hidden constant, warning = FALSE, echo = FALSE}
+par(cex.lab = 1.5, cex.axis = 1.2, lwd = 2)
+plot(rstudent(mod) ~ fitted.values(mod), main = "Studentized Residuals vs. Fitted Values", 
+     xlab = "Fitted Values", ylab = "Studentized Residuals")
+abline(h = 0, lty = 2, col = "blue")
+print(spreadLevelPlot(mod))
+cat("\n\n")
+print(ncvTest(mod))
+```
+
+
+### Linearity assumption
+
+```{r, warning = FALSE}
+scatterplotMatrix(d2)
+```
+
+```{r, eval = FALSE}
+lm.modelAssumptions(mod, "LINEAR")
+```
+
+```{r hidden linear, warning = FALSE, echo = FALSE}
+par(cex.lab = 1.5, cex.axis = 1.2, lwd = 2)
+crPlots(mod, ask = FALSE)
+```
+
+
+### Ill-scaled variances
+
+```{r}
+var <- diag(covar)
+mat <- matrix(nrow = length(var), ncol = length(var) - 1)
+# For each variance, divide all the other variances by that variance
+for(i in 1:length(var)) {
+  mat[i, ] <- var[-i] / var[i]
+}
+mat
+# Check for values greater than 10 or less than .1
+mat > 10 | mat < .1 
+```
+
+***
+
+```{r}
+sessionInfo()
+```
