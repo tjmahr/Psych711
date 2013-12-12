@@ -1,0 +1,134 @@
+Comparing Factors between Groups
+===============================================================================
+
+```{r, warning = FALSE, message = FALSE}
+library(lavaan)
+library(foreign)
+
+data_intell_f <- read.spss("../data/Grnt_fem.sav", to.data.frame = TRUE)
+data_intell_m <- read.spss("../data/Grnt_mal.sav", to.data.frame = TRUE)
+data_intell_f$sex <- 0
+data_intell_m$sex <- 1
+
+d <- rbind(data_intell_f,data_intell_m)
+d$sex <- factor(d$sex, levels = c(0, 1), labels = c('Women', 'Men'))
+```
+
+
+Multigroup CFA (no mean structure)
+-------------------------------------------------------------------------------
+
+Two latent variables, different factor loadings for groups:
+
+```{r, tidy = FALSE}
+m2 <- '
+  Fspatial =~ visperc + cubes + lozenges
+  Fverbal =~ paragrap + sentence + wordmean'
+fit2 <- sem(m2, data = d, likelihood = "wishart", group = "sex")
+summary(fit2, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+residuals(fit2, type = "cor")
+residuals(fit2, type = "standardized")
+```
+
+
+Two latent variables, same factor loadings for groups:
+
+```{r}
+fit4 <- sem(m2, data = d, likelihood = "wishart", group = "sex", group.equal = "loadings")
+summary(fit4, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+residuals(fit4, type = "cor")
+residuals(fit4, type = "standardized")
+anova(fit2, fit4)
+```
+
+If you don't use `group.equal`, you can manually constrain the factor loadings to be the same for the groups.
+
+```{r, tidy = FALSE}
+m3 <- '
+  Fspatial =~ visperc + c(a, a)*cubes + c(b, b)*lozenges
+  Fverbal =~ paragrap + c(c, c)*sentence + c(d, d)*wordmean'
+```
+
+Same factor loadings and same factor covariances for both groups.
+
+```{r}
+fit5 <- sem(m2, data = d, likelihood = "wishart", group = "sex",
+            group.equal = c("loadings", "lv.covariances"))
+summary(fit5, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+residuals(fit5, type="cor")
+residuals(fit5, type = "standardized")
+anova(fit2, fit5)
+```
+
+
+Compare Factor Means Across Groups
+-------------------------------------------------------------------------------
+
+Same factor loadings, same intercepts across groups. The intercepts of the latent factors are set to zero in one group.
+
+```{r, tidy = FALSE}
+m7 <- '
+  Fspatial =~ visperc + cubes + lozenges
+  Fverbal =~ paragrap + sentence +  wordmean
+  # intercepts
+  Fspatial ~ c(aa, cc)*1
+  Fverbal ~ c(bb, dd)*1
+  # constraints
+  aa == 0
+  bb == 0'
+fit7 <- sem(m7, data = d, likelihood = "wishart", group = "sex", 
+            group.equal = c("intercepts", "loadings"))
+summary(fit7, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+residuals(fit7, type = "cor")
+residuals(fit7, type = "standardized")
+```
+
+Verbose syntax:
+
+```{r}
+m6 <- '
+  Fspatial =~ visperc + c(a, a)*cubes + c(b, b)*lozenges
+  Fverbal =~ paragrap + c(c, c)*sentence + c(d, d)*wordmean
+  
+  Fspatial ~ c(aa, cc)*1
+  Fverbal ~ c(bb, dd)*1
+  visperc ~ c(ee, ee)*1
+  cubes ~ c(ff, ff)*1
+  lozenges ~ c(gg, gg)*1
+  paragrap ~ c(hh, hh)*1
+  sentence ~ c(ii, ii)*1
+  wordmean ~ c(jj, jj)*1
+
+  aa == 0
+  bb == 0'
+```
+
+
+
+
+MIMIC Model
+-------------------------------------------------------------------------------
+
+This model assumes several levels of measurement invariance between the groups.
+
+```{r, tidy = FALSE}
+m8 <- '
+  Fspatial =~ visperc + cubes + lozenges
+  Fverbal =~ paragrap + sentence + wordmean
+
+  Fspatial ~ sex
+  Fverbal ~ sex
+
+  Fspatial ~~ Fverbal'
+
+fit8 <- sem(m8, data = d, likelihood = "wishart")
+summary(fit7, standardized = TRUE, fit.measures = TRUE, rsquare = TRUE)
+residuals(fit8, type = "cor")
+residuals(fit8, type = "standardized")
+```
+
+***
+  
+```{r}
+sessionInfo()
+```

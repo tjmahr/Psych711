@@ -1,0 +1,29 @@
+Power Analysis
+===============================================================================
+
+```{r, warning = FALSE, message = FALSE}
+# Load my power functions
+source("../power.r")
+```
+
+## Test of the Close-fit hypothesis
+
+```{r}
+close_fit(df = 5, n = 373)
+```
+
+Interpretation: if this model actually does not have close fit in the population, then the estimated probability that we can reject this incorrect model is 31.7%.
+
+## Test of the Not-close-fit hypothesis
+
+```{r}
+not_close_fit(df = 5, n = 373)
+```
+
+Interpretation: if this model actually has close fit in the population, then the estimated probability that we can detect this correct model is 22.9%.
+
+***
+
+```{r}
+sessionInfo()
+```
